@@ -3,17 +3,12 @@ import { useMemo, useState } from "react";
 import { WSIP_COUNTRIES } from "../../data/countries-meta";
 import type { CountryStatus, CountryMeta } from "../../data/countries-meta";
 import { listCountries } from "../../data";
+import { Droplet } from "../components/brand/Droplet";
 
 type Filter = "all" | "live" | "pipeline" | "planned";
 
-const STATUS_BADGE: Record<CountryStatus, string> = {
-  live: "bg-teal-600 text-white",
-  pipeline: "bg-sky-200 text-sky-900",
-  planned: "bg-slate-300 text-slate-800",
-};
-
 const STATUS_LABEL: Record<CountryStatus, string> = {
-  live: "Live data",
+  live: "Live",
   pipeline: "Pipeline",
   planned: "Planned",
 };
@@ -30,7 +25,10 @@ export function CountriesPage() {
   const [filter, setFilter] = useState<Filter>("all");
   const [region, setRegion] = useState<string>("all");
 
-  const regions = Array.from(new Set(WSIP_COUNTRIES.map((c) => c.region))).sort();
+  const regions = useMemo(
+    () => Array.from(new Set(WSIP_COUNTRIES.map((c) => c.region))).sort(),
+    []
+  );
 
   const filtered = WSIP_COUNTRIES.filter((c) => {
     if (filter !== "all" && c.status !== filter) return false;
@@ -46,65 +44,96 @@ export function CountriesPage() {
   };
 
   return (
-    <div className="space-y-6">
-      <section>
-        <h1 className="text-2xl font-bold tracking-tight text-slate-900">
-          Countries
-        </h1>
-        <p className="mt-1 max-w-3xl text-sm text-slate-600">
-          The WSIP Water Compact priority cohort (27 countries identified by the
-          WBG, plus Phase-3 additions). Click any "Live" card to open its
-          dashboard.
-        </p>
-      </section>
-
-      <section className="flex flex-wrap items-center gap-3 rounded-lg border border-slate-200 bg-white p-3 shadow-sm">
-        <div className="flex flex-wrap gap-1">
-          {(["all", "live", "pipeline", "planned"] as Filter[]).map((f) => (
-            <button
-              key={f}
-              onClick={() => setFilter(f)}
-              className={`rounded-full px-3 py-1 text-xs font-semibold ${
-                filter === f
-                  ? "bg-slate-900 text-white"
-                  : "bg-slate-100 text-slate-700 hover:bg-slate-200"
-              }`}
-            >
-              {f === "all" ? `All (${counts.all})` : `${STATUS_LABEL[f]} (${counts[f]})`}
-            </button>
-          ))}
+    <div className="space-y-12">
+      {/* ── Chapter cover ─────────────────────────────────────────────────── */}
+      <header className="grid grid-cols-12 gap-8 pt-8">
+        <div className="col-span-12 md:col-span-3">
+          <div className="eyebrow">Chapter · 02</div>
+          <div className="chapter-numeral mt-3 text-[120px] md:text-[140px]">
+            02
+          </div>
         </div>
-        <div className="ml-auto flex items-center gap-2">
-          <label className="text-xs font-semibold uppercase tracking-wide text-slate-500">
-            Region
-          </label>
-          <select
-            value={region}
-            onChange={(e) => setRegion(e.target.value)}
-            className="rounded-md border border-slate-300 bg-white px-3 py-1 text-sm shadow-sm focus:border-slate-500 focus:outline-none"
-          >
-            <option value="all">All regions</option>
-            {regions.map((r) => (
-              <option key={r} value={r}>
-                {r}
-              </option>
+        <div className="col-span-12 md:col-span-9">
+          <h1 className="font-display text-[clamp(32px,4.6vw,56px)] font-extrabold leading-[1.02] tracking-tightest text-brand-ink">
+            Countries.
+          </h1>
+          <p className="prose-editorial mt-5 max-w-[42rem] text-[19px] italic text-brand-ink/80">
+            The 27 WSIP Water Compact priority countries identified by the
+            World Bank Group. Brazil is the live pilot; the rest of the
+            cohort is pipelined. Each row links to the country's matrix and
+            dashboard when data is available.
+          </p>
+        </div>
+      </header>
+
+      {/* ── Small-multiples coverage glyph row ───────────────────────────── */}
+      <CohortGlyphs />
+
+      {/* ── Filters ───────────────────────────────────────────────────────── */}
+      <section className="border-y border-brand-rule py-5">
+        <div className="flex flex-wrap items-baseline justify-between gap-6">
+          <div className="flex flex-wrap items-baseline gap-x-6 gap-y-2">
+            <span className="eyebrow text-brand-ink/60">Status</span>
+            {(["all", "live", "pipeline", "planned"] as Filter[]).map((f) => (
+              <button
+                key={f}
+                onClick={() => setFilter(f)}
+                className={[
+                  "font-serif text-[15px] transition-colors",
+                  filter === f
+                    ? "text-brand-ink underline decoration-brand-deep decoration-2 underline-offset-[6px]"
+                    : "text-brand-ink/55 hover:text-brand-ink",
+                ].join(" ")}
+              >
+                {f === "all"
+                  ? `All (${counts.all})`
+                  : `${STATUS_LABEL[f]} (${counts[f]})`}
+              </button>
             ))}
-          </select>
+          </div>
+          <div className="flex items-baseline gap-2">
+            <span className="eyebrow text-brand-ink/60">Region</span>
+            <span className="relative">
+              <select
+                value={region}
+                onChange={(e) => setRegion(e.target.value)}
+                className="appearance-none bg-transparent pr-5 font-serif text-[15px] text-brand-ink underline decoration-brand-rule decoration-1 underline-offset-[6px] hover:decoration-brand-deep focus:outline-none"
+              >
+                <option value="all">All regions</option>
+                {regions.map((r) => (
+                  <option key={r} value={r}>
+                    {r}
+                  </option>
+                ))}
+              </select>
+              <span className="pointer-events-none absolute right-0 top-1/2 -translate-y-1/2 text-brand-ink/45">
+                ▾
+              </span>
+            </span>
+          </div>
         </div>
       </section>
 
+      {/* ── Directory listing ─────────────────────────────────────────────── */}
       <section>
-        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+        <ul className="divide-y divide-brand-rule">
           {filtered.map((c) => (
-            <CountryCard key={c.code} c={c} liveProfile={live[c.code]} />
+            <CountryRow key={c.code} c={c} liveProfile={live[c.code]} />
           ))}
-        </div>
+        </ul>
+        {filtered.length === 0 && (
+          <div className="py-12 text-center font-serif italic text-brand-ink/55">
+            No countries match this filter.
+          </div>
+        )}
       </section>
     </div>
   );
 }
 
-function CountryCard({
+/* ─────────────────────────────────────────────────────────────────────────── */
+
+function CountryRow({
   c,
   liveProfile,
 }: {
@@ -112,74 +141,182 @@ function CountryCard({
   liveProfile?: ReturnType<typeof listCountries>[number];
 }) {
   const clickable = c.status === "live";
+  const opacity =
+    c.status === "live"
+      ? "opacity-100"
+      : c.status === "pipeline"
+      ? "opacity-65"
+      : "opacity-40";
 
-  return (
-    <div
-      className={`group flex h-full flex-col rounded-lg border bg-white p-4 shadow-sm transition ${
-        clickable
-          ? "border-slate-200 hover:border-slate-400 hover:shadow"
-          : "border-slate-200 opacity-90"
-      }`}
-    >
-      <div className="flex items-start justify-between gap-2">
-        <div>
-          <div className="text-2xl">{c.flag}</div>
-          <div className="mt-1 text-base font-semibold text-slate-900">
-            {c.name}
-          </div>
-          <div className="text-[11px] uppercase tracking-wider text-slate-400">
-            {c.region}
-          </div>
-        </div>
-        <span
-          className={`rounded px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide ${STATUS_BADGE[c.status]}`}
-        >
-          {STATUS_LABEL[c.status]}
-        </span>
+  const inner = (
+    <div className="grid grid-cols-12 items-start gap-4 py-6 group">
+      <div className="col-span-12 md:col-span-1 flex items-start">
+        <span className="text-[32px] leading-none">{c.flag}</span>
       </div>
 
-      {c.blurb && (
-        <p className="mt-3 text-sm text-slate-600 line-clamp-3">{c.blurb}</p>
-      )}
-
-      {liveProfile && (
-        <div className="mt-3 grid grid-cols-2 gap-2 text-[11px] text-slate-600">
-          <div>
-            <div className="font-semibold text-slate-700">Sub-sectors</div>
-            <div>{liveProfile.subsectors.length} mapped</div>
-          </div>
-          <div>
-            <div className="font-semibold text-slate-700">Updated</div>
-            <div>{liveProfile.last_updated}</div>
-          </div>
+      <div className="col-span-12 md:col-span-5">
+        <div className="font-display text-[22px] font-extrabold leading-tight tracking-tightest text-brand-ink">
+          {c.name}
         </div>
-      )}
+        <div className="mt-1 eyebrow-ink text-brand-ink/55">
+          {c.code}&nbsp;·&nbsp;{c.region}
+        </div>
+        {c.blurb && (
+          <p className="mt-3 font-serif text-[14px] leading-[1.55] text-brand-ink/75 max-w-[36rem]">
+            {c.blurb}
+          </p>
+        )}
+      </div>
 
-      <div className="mt-auto flex flex-wrap gap-2 pt-3">
-        {clickable ? (
+      <div className="col-span-6 md:col-span-2">
+        <div className="eyebrow text-brand-ink/55">Status</div>
+        <div className="mt-1 flex items-center gap-2 font-serif text-[15px] text-brand-ink">
+          <Droplet
+            variant={
+              c.status === "live"
+                ? "filled"
+                : c.status === "pipeline"
+                ? "outline"
+                : "dotted"
+            }
+            color={
+              c.status === "live"
+                ? "#0FAACB"
+                : c.status === "pipeline"
+                ? "#0F2A44"
+                : "#9ca3af"
+            }
+            size={18}
+          />
+          {STATUS_LABEL[c.status]}
+        </div>
+      </div>
+
+      <div className="col-span-6 md:col-span-2">
+        {liveProfile ? (
           <>
-            <Link
-              to={`/country/${c.code}`}
-              className="flex-1 rounded-md bg-slate-900 px-2.5 py-1.5 text-center text-xs font-semibold text-white hover:bg-slate-700"
-            >
-              Open dashboard →
-            </Link>
+            <div className="eyebrow text-brand-ink/55">Sub-sectors</div>
+            <div className="mt-1 font-display text-[20px] font-extrabold tabular-nums leading-none text-brand-deep">
+              {liveProfile.subsectors.length}
+            </div>
+            <div className="mt-1 eyebrow-ink text-brand-ink/55">
+              Updated&nbsp;
+              <span className="tabular-nums">{liveProfile.last_updated}</span>
+            </div>
+          </>
+        ) : (
+          <div className="font-serif italic text-[13px] text-brand-ink/45">
+            {c.status === "pipeline" ? "Data forthcoming" : "Not yet planned"}
+          </div>
+        )}
+      </div>
+
+      <div className="col-span-12 md:col-span-2 md:text-right">
+        {clickable ? (
+          <div className="flex flex-col items-start gap-1 md:items-end">
+            <span className="link-editorial font-display text-[14px] font-semibold tracking-[0.02em]">
+              Open dashboard&nbsp;→
+            </span>
             <Link
               to={`/wsip-matrix?country=${c.code}`}
-              className="rounded-md border border-slate-300 bg-white px-2.5 py-1.5 text-xs font-semibold text-slate-700 hover:border-slate-400"
-              title="Jump straight to the WSIP × PIR matrix for this country"
+              onClick={(e) => e.stopPropagation()}
+              className="font-sans text-[12px] uppercase tracking-[0.18em] text-brand-ink/55 hover:text-brand-deep"
             >
               Matrix
             </Link>
-          </>
+          </div>
         ) : (
-          <div className="text-xs font-semibold text-slate-500">
-            {c.status === "pipeline"
-              ? "WSIP Water Compact priority — data coming"
-              : "Planned for an upcoming phase"}
+          <div className="eyebrow-ink text-brand-ink/45">
+            {c.status === "pipeline" ? "Pipeline" : "Planned"}
           </div>
         )}
       </div>
     </div>
+  );
+
+  if (clickable) {
+    return (
+      <li className={`relative ${opacity}`}>
+        <span
+          aria-hidden
+          className="absolute left-0 top-0 h-full w-[3px] bg-brand-deep"
+        />
+        <Link
+          to={`/country/${c.code}`}
+          className="block pl-4 transition-colors hover:bg-brand-sand/40"
+        >
+          {inner}
+        </Link>
+      </li>
+    );
+  }
+
+  return (
+    <li className={`pl-4 ${opacity}`}>
+      <div className="border-l border-dashed border-brand-rule -ml-4 pl-4">
+        {inner}
+      </div>
+    </li>
+  );
+}
+
+/* ─────────────────────────────────────────────────────────────────────────── */
+
+/**
+ * Tiny coverage glyph per cohort country, rendered as a strip — gives a quick
+ * sense of where the curation pipeline is. Live = filled brand-deep droplet,
+ * pipeline = outline, planned = dotted.
+ */
+function CohortGlyphs() {
+  return (
+    <section className="border-y border-brand-rule py-5">
+      <div className="flex flex-wrap items-baseline justify-between gap-3">
+        <div className="eyebrow">Cohort progress · WSIP Water Compact</div>
+        <div className="eyebrow-ink text-brand-ink/55">
+          <span className="tabular-nums">
+            {WSIP_COUNTRIES.filter((c) => c.status === "live").length}
+          </span>{" "}
+          live&nbsp;·&nbsp;
+          <span className="tabular-nums">
+            {WSIP_COUNTRIES.filter((c) => c.status === "pipeline").length}
+          </span>{" "}
+          pipelined&nbsp;·&nbsp;
+          <span className="tabular-nums">
+            {WSIP_COUNTRIES.filter((c) => c.status === "planned").length}
+          </span>{" "}
+          planned
+        </div>
+      </div>
+      <div className="mt-4 flex flex-wrap gap-x-3 gap-y-2">
+        {WSIP_COUNTRIES.map((c) => (
+          <span
+            key={c.code}
+            className="inline-flex flex-col items-center gap-1"
+            title={`${c.name} · ${STATUS_LABEL[c.status]}`}
+          >
+            <Droplet
+              variant={
+                c.status === "live"
+                  ? "filled"
+                  : c.status === "pipeline"
+                  ? "outline"
+                  : "dotted"
+              }
+              color={
+                c.status === "live"
+                  ? "#0FAACB"
+                  : c.status === "pipeline"
+                  ? "#0F2A44"
+                  : "#9ca3af"
+              }
+              size={18}
+            />
+            <span className="font-sans text-[9px] uppercase tracking-[0.14em] text-brand-ink/55">
+              {c.code}
+            </span>
+          </span>
+        ))}
+      </div>
+    </section>
   );
 }

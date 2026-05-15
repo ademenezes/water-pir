@@ -20,10 +20,10 @@ The two source PDFs live in `documents/`. Don't move them.
 | `/` | `views/HomePage.tsx` | Magazine cover (Spread 1) + thesis/Brazil-at-a-glance chart (2) + three numbered findings (3) + world map + featured insight (4) + Wizard CTA band (5). Rendered with `<Layout fullBleed>` so spreads can break out of the default container. |
 | `/wsip-matrix` | `views/WsipMatrixTab.tsx` | The Matrix tab. Chapter cover + editorial masthead ("SHOWING country · VIEW mode") + four views via `?view=`: `country` (default, single Matrix), `compare` (side-by-side), `by-subsector` (countries × dimensions for one sub-sector), `by-dimension` (countries × sub-sectors for one dimension). URL params: `?country=BRA&compare=KEN&view=…`. Cells open in `MatrixCellPanel` slide-over. Rendered `fullBleed`. |
 | `/pir-comparator` | *(redirect)* | Legacy route — redirects to `/wsip-matrix?view=by-subsector`. The comparator is folded into the Matrix tab. |
-| `/countries` | `views/CountriesPage.tsx` | Cards grid with filters; each Live card has "Open dashboard" + "Matrix" deep-link buttons. |
-| `/wizard` | `views/ProjectWizard.tsx` | Picker + per-project slice. Supports `?project=urban_wss_ppp&country=BRA`. |
-| `/about` | `views/AboutPage.tsx` | Methodology / sources. |
-| `/country/:code` | `views/CountryDashboard.tsx` | Country dashboard mirroring WSIP at a Glance. |
+| `/countries` | `views/CountriesPage.tsx` | Editorial directory listing — chapter cover ("02 · Countries"), cohort-glyph small-multiples strip, inline link filters, tabular row directory (live rows have a teal left-stripe, pipeline/planned are dimmed). |
+| `/wizard` | `views/ProjectWizard.tsx` | Picker + per-project slice. Supports `?project=urban_wss_ppp&country=BRA`. (Editorial restyle deferred to a later phase.) |
+| `/about` | `views/AboutPage.tsx` | Editorial about — chapter cover ("04 · About"), numbered TOC, then chapters: (01) The two frameworks with `WsipSchematic` + `PirWheel` as Figure 1 + Figure 2, (02) Source discipline with FAOLEX worked-example sand callout, (03) What we did/didn't, (04) How to flag an error, (05) Phasing. |
+| `/country/:code` | `views/CountryDashboard.tsx` | Country sheet — huge name + region/status/updated eyebrow, intro on the right, 6-up coverage-by-PIR-dimension stat strip, shared `Matrix` + slide-over panel in main col, marginalia gutter (sector note, reform lessons, curation date), sub-sector drill-in cards below. Rendered `fullBleed`. |
 | `/country/:code/matrix` | `views/MatrixView.tsx` | Per-country matrix (legacy backlinks). Uses the same shared `Matrix` component + slide-over panel as the Matrix tab. |
 | `/country/:code/subsector/:subKey` | `views/SubsectorDeepDive.tsx` | Full deep-dive with mandate map and PIR dimension cards. |
 
@@ -120,6 +120,7 @@ The visual reference is the BOSIB PIR Synthesis Report PDF (Circle Graphics / Ch
 - `DropletO` — inline droplet sized to cap-height for use inside display headlines and the header wordmark.
 - `PipeNetwork` — cover artwork. Used **once**, prominently, on the Home hero. Not a tileable background.
 - `PipeDivider` — thin pipe-line section divider with mid-line elbow. Use **sparingly** (≤ once per page).
+- `PirWheel` — donut of the 6 PIR dimensions, repainted to match BOSIB Figure 1.2: teal Policy / orange Regulation / olive Institutions / mid-teal Intergovernmental Context / light teal Financing / brand-deep Resilience core. Used on the About page (Figure 2). Accepts `highlight`, `onHover`, `onClick` props for interactive use (queued for Phase 4 — hover-link inside the Matrix tab).
 
 **Matrix components** (in `src/components/Matrix/`):
 - `Matrix` — shared 7×6 grid for one country. Editorial cell design: pillar-stripe row headers with display numeral, droplet coverage mark, eyebrow status word, serif mandate snippet (3-line clamp). Takes `country` + optional `onCellOpen(target)` callback. Both `/wsip-matrix` and `/country/:code/matrix` use this — **don't duplicate the cell-building logic**.

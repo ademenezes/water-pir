@@ -1,87 +1,86 @@
 import { PILLAR_LABELS, WSIP_SOLUTIONS } from "../framework";
 
-// Mini visual mirror of WSIP "At a Glance" (Figure 4 of P165586).
-// Static, non-interactive teaser.
-
+/**
+ * Editorial repaint of WSIP "At a Glance" (Figure 4 of P165586): three pillars
+ * across, seven scalable solutions below, three enablers at the foot. No card
+ * chrome — meant to be embedded inside a figure block on the About page.
+ */
 export function WsipSchematic() {
   return (
-    <div className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
-      <div className="mb-3">
-        <div className="text-[10px] font-bold uppercase tracking-wider text-slate-500">
-          Framework axis 1
-        </div>
-        <div className="text-sm font-semibold text-slate-900">
-          WSIP — 3 Pillars × 7 Scalable Solutions
-        </div>
-        <div className="text-[11px] text-slate-500">
-          Source: WBG Water Strategy Implementation Plan, Dec 2025, Figure 4.
+    <div className="font-sans">
+      <div className="border-y border-brand-rule bg-brand-ink py-3 text-center">
+        <div className="eyebrow text-brand-teal">Goal</div>
+        <div className="mt-1 font-display text-[13px] font-extrabold uppercase tracking-[0.18em] text-white">
+          Water security for 400 M people by 2030
         </div>
       </div>
 
-      <div className="rounded-md bg-slate-900 px-3 py-1.5 text-center text-[10px] font-bold uppercase tracking-widest text-white">
-        Goal: water security for 400 M people by 2030
-      </div>
-
-      <div className="mt-2 grid grid-cols-3 gap-1.5 text-center">
+      <div className="mt-3 grid grid-cols-3 gap-1 text-center">
         {(["people", "food", "planet"] as const).map((p) => (
           <div
             key={p}
-            className={`rounded-md px-2 py-1 text-[10px] font-bold uppercase tracking-wide ${
+            className={[
+              "py-2 font-display text-[11px] font-extrabold uppercase tracking-[0.18em] text-white",
               p === "people"
-                ? "bg-pillar-people/30 text-sky-900"
+                ? "bg-pillar-people"
                 : p === "food"
-                ? "bg-pillar-food/30 text-emerald-900"
-                : "bg-pillar-planet/30 text-amber-900"
-            }`}
+                ? "bg-pillar-food"
+                : "bg-pillar-planet",
+            ].join(" ")}
           >
             {PILLAR_LABELS[p]}
           </div>
         ))}
       </div>
 
-      <div className="mt-1 grid grid-cols-3 gap-1.5">
+      <div className="mt-1 grid grid-cols-3 gap-1">
         {(["people", "food", "planet"] as const).map((p) => (
           <div key={p} className="space-y-1">
             {WSIP_SOLUTIONS.filter((s) => s.pillar === p).map((s) => (
               <div
                 key={s.id}
-                className={`flex items-center gap-1 rounded px-1.5 py-1 text-[10px] leading-tight ${
+                className={[
+                  "flex items-center gap-2 px-2 py-2 text-[11px] leading-tight",
                   p === "people"
-                    ? "bg-pillar-people/10 text-sky-900"
+                    ? "bg-pillar-people/15"
                     : p === "food"
-                    ? "bg-pillar-food/10 text-emerald-900"
-                    : "bg-pillar-planet/10 text-amber-900"
-                }`}
+                    ? "bg-pillar-food/15"
+                    : "bg-pillar-planet/15",
+                ].join(" ")}
                 title={s.fullName}
               >
                 <span
-                  className={`flex h-4 w-4 shrink-0 items-center justify-center rounded-full text-[9px] font-bold text-white ${
+                  className={[
+                    "font-display text-[12px] font-extrabold tabular-nums",
                     p === "people"
-                      ? "bg-pillar-people"
+                      ? "text-pillar-people"
                       : p === "food"
-                      ? "bg-pillar-food"
-                      : "bg-pillar-planet"
-                  }`}
+                      ? "text-pillar-food"
+                      : "text-pillar-planet",
+                  ].join(" ")}
                 >
-                  {s.id}
+                  {String(s.id).padStart(2, "0")}
                 </span>
-                <span className="truncate font-medium">{s.shortName}</span>
+                <span className="font-medium text-brand-ink">{s.shortName}</span>
               </div>
             ))}
           </div>
         ))}
       </div>
 
-      <div className="mt-2 space-y-1">
-        <div className="rounded bg-slate-100 px-2 py-1 text-[10px] font-medium text-slate-700">
-          Enabler 1 · Scalable solutions
-        </div>
-        <div className="rounded bg-slate-100 px-2 py-1 text-[10px] font-medium text-slate-700">
-          Enabler 2 · Knowledge framework (incl. policies & regulations)
-        </div>
-        <div className="rounded bg-slate-100 px-2 py-1 text-[10px] font-medium text-slate-700">
-          Enabler 3 · Programmatic approaches & Country Water Compacts
-        </div>
+      <div className="mt-3 space-y-1">
+        {[
+          "Enabler 1 · Scalable solutions",
+          "Enabler 2 · Knowledge framework (policies & regulations)",
+          "Enabler 3 · Programmatic approaches & Country Water Compacts",
+        ].map((e) => (
+          <div
+            key={e}
+            className="border border-brand-rule bg-white px-3 py-2 text-[11px] font-medium text-brand-ink/75"
+          >
+            {e}
+          </div>
+        ))}
       </div>
     </div>
   );

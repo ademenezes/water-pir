@@ -62,7 +62,7 @@ export default function App() {
       <Route
         path="/country/:code"
         element={
-          <Layout>
+          <Layout fullBleed>
             <CountryDashboard />
           </Layout>
         }
