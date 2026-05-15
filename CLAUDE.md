@@ -18,13 +18,13 @@ The two source PDFs live in `documents/`. Don't move them.
 | Route | View | Purpose |
 |---|---|---|
 | `/` | `views/HomePage.tsx` | Magazine cover (Spread 1) + thesis/Brazil-at-a-glance chart (2) + three numbered findings (3) + world map + featured insight (4) + Wizard CTA band (5). Rendered with `<Layout fullBleed>` so spreads can break out of the default container. |
-| `/wsip-matrix` | `views/WsipMatrixTab.tsx` | Country-selectable WSIP × PIR matrix. Supports `?country=BRA` and `?compare=KEN`. |
-| `/pir-comparator` | `views/PirComparator.tsx` | Dual-mode: sub-sector × countries × dimensions, or dimension × countries × sub-sectors. |
+| `/wsip-matrix` | `views/WsipMatrixTab.tsx` | The Matrix tab. Chapter cover + editorial masthead ("SHOWING country · VIEW mode") + four views via `?view=`: `country` (default, single Matrix), `compare` (side-by-side), `by-subsector` (countries × dimensions for one sub-sector), `by-dimension` (countries × sub-sectors for one dimension). URL params: `?country=BRA&compare=KEN&view=…`. Cells open in `MatrixCellPanel` slide-over. Rendered `fullBleed`. |
+| `/pir-comparator` | *(redirect)* | Legacy route — redirects to `/wsip-matrix?view=by-subsector`. The comparator is folded into the Matrix tab. |
 | `/countries` | `views/CountriesPage.tsx` | Cards grid with filters; each Live card has "Open dashboard" + "Matrix" deep-link buttons. |
 | `/wizard` | `views/ProjectWizard.tsx` | Picker + per-project slice. Supports `?project=urban_wss_ppp&country=BRA`. |
 | `/about` | `views/AboutPage.tsx` | Methodology / sources. |
 | `/country/:code` | `views/CountryDashboard.tsx` | Country dashboard mirroring WSIP at a Glance. |
-| `/country/:code/matrix` | `views/MatrixView.tsx` | Per-country matrix (legacy from before WSIP Matrix tab; kept for backlinks). |
+| `/country/:code/matrix` | `views/MatrixView.tsx` | Per-country matrix (legacy backlinks). Uses the same shared `Matrix` component + slide-over panel as the Matrix tab. |
 | `/country/:code/subsector/:subKey` | `views/SubsectorDeepDive.tsx` | Full deep-dive with mandate map and PIR dimension cards. |
 
 ## Data model
@@ -116,12 +116,16 @@ The visual reference is the BOSIB PIR Synthesis Report PDF (Circle Graphics / Ch
 - Pill-shaped status badges as decoration.
 
 **Brand SVGs** (in `src/components/brand/`):
-- `Droplet` — 4-variant water-droplet glyph (`filled` / `half` / `outline` / `dotted`). Doubles as the coverage data mark in Phase 2.
+- `Droplet` — 4-variant water-droplet glyph (`filled` / `half` / `outline` / `dotted`). **Doubles as the coverage data mark in the matrix**: green → `filled`, yellow → `half`, red → `outline`, gray → `dotted`. Default colors come from the coverage palette; pass `color` to override.
 - `DropletO` — inline droplet sized to cap-height for use inside display headlines and the header wordmark.
 - `PipeNetwork` — cover artwork. Used **once**, prominently, on the Home hero. Not a tileable background.
 - `PipeDivider` — thin pipe-line section divider with mid-line elbow. Use **sparingly** (≤ once per page).
 
-**Layout wrapper**: `<Layout>` adds the teal stripe, header (5-tab underline nav, droplet wordmark), and navy footer. Pages get a default `max-w-7xl px-6 py-8` content container; pass `<Layout fullBleed>` to opt out (HomePage uses this for magazine spreads).
+**Matrix components** (in `src/components/Matrix/`):
+- `Matrix` — shared 7×6 grid for one country. Editorial cell design: pillar-stripe row headers with display numeral, droplet coverage mark, eyebrow status word, serif mandate snippet (3-line clamp). Takes `country` + optional `onCellOpen(target)` callback. Both `/wsip-matrix` and `/country/:code/matrix` use this — **don't duplicate the cell-building logic**.
+- `MatrixCellPanel` — slide-over (right-aligned, 44rem max-w) styled as a magazine sidebar: chapter mini-cover, mandate in serif, numbered legal-instrument citations with FAOLEX links, responsible-institution table, de-jure/de-facto callout (sand bg, amber border), "Open full deep-dive →" link. Closes on Escape and backdrop click.
+
+**Layout wrapper**: `<Layout>` adds the teal stripe, header (5-tab underline nav, droplet wordmark), and navy footer. Pages get a default `max-w-7xl px-6 py-8` content container; pass `<Layout fullBleed>` to opt out (HomePage and the Matrix tab use this for magazine spreads).
 
 ## Code style
 

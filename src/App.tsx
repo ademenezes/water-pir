@@ -1,10 +1,9 @@
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import { Layout } from "./components/Layout";
 import { HomePage } from "./views/HomePage";
 import { CountryDashboard } from "./views/CountryDashboard";
 import { MatrixView } from "./views/MatrixView";
 import { SubsectorDeepDive } from "./views/SubsectorDeepDive";
-import { PirComparator } from "./views/PirComparator";
 import { AboutPage } from "./views/AboutPage";
 import { WsipMatrixTab } from "./views/WsipMatrixTab";
 import { CountriesPage } from "./views/CountriesPage";
@@ -24,18 +23,15 @@ export default function App() {
       <Route
         path="/wsip-matrix"
         element={
-          <Layout>
+          <Layout fullBleed>
             <WsipMatrixTab />
           </Layout>
         }
       />
+      {/* Legacy route — PIR Comparator is folded into the Matrix tab as views. */}
       <Route
         path="/pir-comparator"
-        element={
-          <Layout>
-            <PirComparator />
-          </Layout>
-        }
+        element={<Navigate to="/wsip-matrix?view=by-subsector" replace />}
       />
       <Route
         path="/countries"

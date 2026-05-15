@@ -1,322 +1,327 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { listCountries } from "../../data";
 import { WSIP_COUNTRIES } from "../../data/countries-meta";
-import {
-  PIR_DIMENSIONS,
-  SUBSECTOR_LABELS,
-  WSIP_SOLUTIONS,
-} from "../framework";
-import {
-  CoverageDot,
-  CoverageLegend,
-  CELL_BG,
-} from "../components/CoverageDot";
-import type {
-  CoverageStatus,
-  PirDimension,
-  SubsectorEntry,
-  WsipSolutionId,
-} from "../types";
-import type { CountryProfile } from "../types";
+import { PIR_DIMENSIONS, SUBSECTOR_LABELS } from "../framework";
+import type { CountryProfile, PirDimension } from "../types";
+import { Matrix, type MatrixCellTarget } from "../components/Matrix/Matrix";
+import { MatrixCellPanel } from "../components/Matrix/MatrixCellPanel";
+import { Droplet } from "../components/brand/Droplet";
+import type { CoverageStatus } from "../types";
 
-const STATUS_LABEL: Record<CoverageStatus, string> = {
-  green: "Strong",
-  yellow: "Partial",
-  red: "Gap",
-  gray: "Not mapped",
+type View =
+  | "country"
+  | "compare"
+  | "by-subsector"
+  | "by-dimension";
+
+const VIEW_LABELS: Record<View, string> = {
+  country: "By country",
+  compare: "Side-by-side",
+  "by-subsector": "Sub-sector × countries",
+  "by-dimension": "Dimension × countries",
 };
 
-function rank(s: CoverageStatus): number {
-  return s === "green" ? 4 : s === "yellow" ? 3 : s === "red" ? 2 : 1;
-}
+const DROPLET_VARIANT: Record<
+  CoverageStatus,
+  "filled" | "half" | "outline" | "dotted"
+> = {
+  green: "filled",
+  yellow: "half",
+  red: "outline",
+  gray: "dotted",
+};
 
-function bestCellAcross(
-  subsectors: SubsectorEntry[],
-  pir: PirDimension
-): { status: CoverageStatus; subsector?: SubsectorEntry; mandate?: string } {
-  let best: { status: CoverageStatus; subsector?: SubsectorEntry; mandate?: string } = {
-    status: "gray",
-  };
-  for (const sub of subsectors) {
-    const cell = sub.cells.find((c) => c.pir_dimension === pir);
-    if (!cell) continue;
-    if (rank(cell.coverage_status) > rank(best.status)) {
-      best = {
-        status: cell.coverage_status,
-        subsector: sub,
-        mandate: cell.mandate_text,
-      };
-    }
-  }
-  return best;
-}
+/* ────────────────────────────────────────────────────────────────────────── */
 
 export function WsipMatrixTab() {
   const liveCountries = listCountries();
   const [params, setParams] = useSearchParams();
-  const code = (params.get("country") ?? liveCountries[0]?.code ?? "BRA").toUpperCase();
+  const view: View = (params.get("view") as View | null) ?? "country";
+  const code = (
+    params.get("country") ?? liveCountries[0]?.code ?? "BRA"
+  ).toUpperCase();
   const compareCode = params.get("compare")?.toUpperCase();
-
   const country = liveCountries.find((c) => c.code === code);
-  const compareCountry = compareCode ? liveCountries.find((c) => c.code === compareCode) : undefined;
-  const compareMeta = compareCode ? WSIP_COUNTRIES.find((c) => c.code === compareCode) : undefined;
+  const compareCountry = compareCode
+    ? liveCountries.find((c) => c.code === compareCode)
+    : undefined;
+  const compareMeta = compareCode
+    ? WSIP_COUNTRIES.find((c) => c.code === compareCode)
+    : undefined;
 
-  function update(key: string, value: string | null) {
+  const [panelTarget, setPanelTarget] = useState<MatrixCellTarget | null>(null);
+
+  function update(updates: Record<string, string | null>) {
     const next = new URLSearchParams(params);
-    if (value === null || value === "") next.delete(key);
-    else next.set(key, value);
+    for (const [key, val] of Object.entries(updates)) {
+      if (val === null || val === "") next.delete(key);
+      else next.set(key, val);
+    }
     setParams(next);
   }
 
+  function setView(v: View) {
+    const updates: Record<string, string | null> = { view: v === "country" ? null : v };
+    // Auto-set a comparison country if entering compare view without one
+    if (v === "compare" && !compareCode) {
+      const fallback =
+        liveCountries.find((c) => c.code !== code)?.code ??
+        WSIP_COUNTRIES.find((c) => c.code !== code)?.code ??
+        "";
+      if (fallback) updates.compare = fallback;
+    }
+    update(updates);
+  }
+
   return (
-    <div className="space-y-6">
-      <section className="flex flex-wrap items-end justify-between gap-4">
-        <div>
-          <h1 className="text-2xl font-bold tracking-tight text-slate-900">
-            WSIP × PIR Matrix
-          </h1>
-          <p className="mt-1 max-w-3xl text-sm text-slate-600">
-            7 WSIP scalable solutions (rows) × 6 PIR dimensions (columns). Each
-            cell shows the strongest mapped sub-sector for that intersection.
-            Empty cells reveal gaps in law or regulation.
-          </p>
+    <div>
+      {/* ── Chapter cover ─────────────────────────────────────────────────── */}
+      <section className="mx-auto max-w-[88rem] px-8 pt-16 pb-12">
+        <div className="grid grid-cols-12 gap-8 items-end">
+          <div className="col-span-12 md:col-span-3">
+            <div className="eyebrow">Chapter · 01</div>
+            <div className="chapter-numeral mt-3 text-[120px] md:text-[140px]">
+              01
+            </div>
+          </div>
+          <div className="col-span-12 md:col-span-8">
+            <h1 className="font-display text-[clamp(34px,4.6vw,60px)] font-extrabold leading-[1.02] tracking-tightest text-brand-ink">
+              The matrix.
+            </h1>
+            <p className="prose-editorial mt-5 max-w-[42rem] text-[19px] italic text-brand-ink/80">
+              Seven WSIP scalable solutions, six PIR dimensions. Forty-two
+              cells per country. The colour and the droplet tell you whether
+              the law is there; the cell text tells you what it actually says.
+              Empty cells reveal where reform is still required.
+            </p>
+          </div>
         </div>
-        <CoverageLegend />
       </section>
 
-      <section className="flex flex-wrap items-center gap-3 rounded-lg border border-slate-200 bg-white p-3 shadow-sm">
-        <CountrySelect
-          label="Country"
-          value={code}
-          onChange={(v) => update("country", v)}
-          live={liveCountries}
-        />
-        {compareCode ? (
-          <>
-            <span className="text-sm font-semibold text-slate-500">vs.</span>
-            <CountrySelect
-              label="Compare with"
-              value={compareCode}
-              onChange={(v) => update("compare", v)}
-              live={liveCountries.filter((c) => c.code !== code)}
-              allowPipeline
-            />
-            <button
-              onClick={() => update("compare", null)}
-              className="rounded-md border border-slate-300 bg-white px-2.5 py-1 text-xs font-semibold text-slate-700 hover:border-slate-400"
-            >
-              Exit comparison
-            </button>
-          </>
+      {/* ── Editorial masthead controls ───────────────────────────────────── */}
+      <section className="mx-auto max-w-[88rem] px-8 pb-6">
+        <div className="border-y border-brand-rule py-6">
+          <div className="flex flex-wrap items-baseline gap-x-8 gap-y-3 font-serif text-[17px] text-brand-ink">
+            <MastheadField label="Showing">
+              <CountrySelect
+                value={code}
+                onChange={(v) => update({ country: v })}
+                live={liveCountries}
+              />
+            </MastheadField>
+
+            {view === "compare" && (
+              <MastheadField label="Compare with">
+                <CountrySelect
+                  value={compareCode ?? ""}
+                  onChange={(v) => update({ compare: v })}
+                  live={liveCountries.filter((c) => c.code !== code)}
+                  allowPipeline
+                />
+              </MastheadField>
+            )}
+
+            <MastheadField label="View">
+              <ViewToggle value={view} onChange={setView} />
+            </MastheadField>
+
+            {country && (
+              <Link
+                to={`/country/${country.code}`}
+                className="ml-auto link-editorial font-sans text-[12px] tracking-[0.04em]"
+              >
+                Open {country.name} dashboard&nbsp;→
+              </Link>
+            )}
+          </div>
+        </div>
+      </section>
+
+      {/* ── Body — view depends on mode ───────────────────────────────────── */}
+      <section className="mx-auto max-w-[88rem] px-8 pb-24">
+        {!country ? (
+          <div className="border border-brand-amber/40 bg-brand-sand p-8 font-serif text-[15px] text-brand-ink">
+            No live data for this country yet.
+          </div>
+        ) : view === "country" ? (
+          <Matrix country={country} onCellOpen={setPanelTarget} />
+        ) : view === "compare" ? (
+          <CompareView
+            primary={country}
+            secondary={compareCountry}
+            secondaryMeta={compareMeta}
+            secondaryCode={compareCode}
+            onCellOpen={setPanelTarget}
+          />
+        ) : view === "by-subsector" ? (
+          <BySubsectorView />
         ) : (
-          <button
-            onClick={() => update("compare", liveCountries.find((c) => c.code !== code)?.code ?? WSIP_COUNTRIES.find((c) => c.code !== code)?.code ?? "")}
-            className="rounded-md border border-slate-300 bg-white px-2.5 py-1 text-xs font-semibold text-slate-700 hover:border-slate-400"
-          >
-            ⇄ Compare with another country
-          </button>
+          <ByDimensionView />
         )}
-        {country && (
-          <Link
-            to={`/country/${country.code}`}
-            className="ml-auto rounded-md border border-slate-300 bg-white px-2.5 py-1 text-xs font-semibold text-slate-700 hover:border-slate-400"
-          >
-            Open {country.name} dashboard →
-          </Link>
-        )}
+
+        <p className="mt-10 max-w-[44rem] font-serif text-[14px] leading-[1.55] text-brand-ink/65">
+          <strong className="font-semibold text-brand-ink">
+            How to read this matrix.
+          </strong>{" "}
+          Each cell summarises the highest-coverage sub-sector for that
+          WSIP&nbsp;×&nbsp;PIR intersection. Click any cell to open its full
+          mandate, legal instruments, responsible institutions, and the
+          de&#8209;jure / de&#8209;facto note. An outline or dotted droplet
+          flags a gap — exactly the priority areas for reform.
+        </p>
       </section>
 
-      {!country ? (
-        <div className="rounded-lg border border-amber-200 bg-amber-50 p-6 text-amber-900">
-          No live data for this country yet.
-        </div>
-      ) : compareCode ? (
-        <div className="grid grid-cols-1 gap-4 xl:grid-cols-2">
-          <MatrixPanel country={country} />
-          {compareCountry ? (
-            <MatrixPanel country={compareCountry} />
-          ) : (
-            <PipelineMatrixPlaceholder meta={compareMeta} code={compareCode} />
-          )}
-        </div>
-      ) : (
-        <MatrixPanel country={country} />
-      )}
-
-      <section className="rounded-lg border border-slate-200 bg-slate-50 p-4 text-xs text-slate-600">
-        <strong className="text-slate-900">How to read this matrix:</strong>{" "}
-        the cell summarises the highest-coverage sub-sector for that WSIP × PIR
-        intersection. Empty / grey cells reveal where neither the law nor a
-        regulator has yet been mapped — these are the priority areas for reform
-        or further desk-research.
-      </section>
+      <MatrixCellPanel
+        target={panelTarget}
+        onClose={() => setPanelTarget(null)}
+      />
     </div>
   );
 }
 
-function CountrySelect({
+/* ── Masthead bits ────────────────────────────────────────────────────────── */
+
+function MastheadField({
   label,
+  children,
+}: {
+  label: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <span className="inline-flex items-baseline gap-2">
+      <span className="eyebrow text-brand-ink/60">{label}</span>
+      <span className="inline-flex items-baseline">{children}</span>
+    </span>
+  );
+}
+
+function CountrySelect({
   value,
   onChange,
   live,
   allowPipeline,
 }: {
-  label: string;
   value: string;
   onChange: (code: string) => void;
   live: CountryProfile[];
   allowPipeline?: boolean;
 }) {
   return (
-    <div className="flex items-center gap-2">
-      <label className="text-xs font-semibold uppercase tracking-wide text-slate-500">
-        {label}
-      </label>
+    <span className="relative">
       <select
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="rounded-md border border-slate-300 bg-white px-3 py-1.5 text-sm font-medium shadow-sm focus:border-slate-500 focus:outline-none"
+        className="appearance-none bg-transparent pr-5 font-display text-[17px] font-semibold tracking-[0.02em] text-brand-ink underline decoration-brand-rule decoration-1 underline-offset-[6px] hover:decoration-brand-deep focus:outline-none"
       >
         <optgroup label="Live data">
           {live.map((c) => (
             <option key={c.code} value={c.code}>
-              {c.flag_emoji} {c.name}
+              {c.name}
             </option>
           ))}
         </optgroup>
         <optgroup label={allowPipeline ? "Pipeline (no data yet)" : "Pipeline (coming soon)"}>
-          {WSIP_COUNTRIES.filter((c) => c.status !== "live" && !live.some((l) => l.code === c.code)).map((c) => (
+          {WSIP_COUNTRIES.filter(
+            (c) => c.status !== "live" && !live.some((l) => l.code === c.code)
+          ).map((c) => (
             <option key={c.code} value={c.code} disabled={!allowPipeline}>
-              {c.flag} {c.name} {allowPipeline ? "" : "— coming soon"}
+              {c.name}
+              {allowPipeline ? "" : " — coming soon"}
             </option>
           ))}
         </optgroup>
       </select>
+      <span className="pointer-events-none absolute right-0 top-1/2 -translate-y-1/2 text-brand-ink/45">
+        ▾
+      </span>
+    </span>
+  );
+}
+
+function ViewToggle({
+  value,
+  onChange,
+}: {
+  value: View;
+  onChange: (v: View) => void;
+}) {
+  return (
+    <span className="relative">
+      <select
+        value={value}
+        onChange={(e) => onChange(e.target.value as View)}
+        className="appearance-none bg-transparent pr-5 font-display text-[17px] font-semibold tracking-[0.02em] text-brand-ink underline decoration-brand-rule decoration-1 underline-offset-[6px] hover:decoration-brand-deep focus:outline-none"
+      >
+        {(Object.keys(VIEW_LABELS) as View[]).map((v) => (
+          <option key={v} value={v}>
+            {VIEW_LABELS[v]}
+          </option>
+        ))}
+      </select>
+      <span className="pointer-events-none absolute right-0 top-1/2 -translate-y-1/2 text-brand-ink/45">
+        ▾
+      </span>
+    </span>
+  );
+}
+
+/* ── Compare view ────────────────────────────────────────────────────────── */
+
+function CompareView({
+  primary,
+  secondary,
+  secondaryMeta,
+  secondaryCode,
+  onCellOpen,
+}: {
+  primary: CountryProfile;
+  secondary: CountryProfile | undefined;
+  secondaryMeta: { name: string; flag: string; region: string; status: string; blurb?: string } | undefined;
+  secondaryCode: string | undefined;
+  onCellOpen: (t: MatrixCellTarget) => void;
+}) {
+  return (
+    <div className="grid grid-cols-1 gap-10 xl:grid-cols-2">
+      <CompareColumn country={primary}>
+        <Matrix country={primary} onCellOpen={onCellOpen} />
+      </CompareColumn>
+
+      {secondary ? (
+        <CompareColumn country={secondary}>
+          <Matrix country={secondary} onCellOpen={onCellOpen} />
+        </CompareColumn>
+      ) : (
+        <PipelinePlaceholder meta={secondaryMeta} code={secondaryCode ?? ""} />
+      )}
     </div>
   );
 }
 
-function MatrixPanel({ country }: { country: CountryProfile }) {
+function CompareColumn({
+  country,
+  children,
+}: {
+  country: CountryProfile;
+  children: React.ReactNode;
+}) {
   return (
-    <div className="overflow-x-auto rounded-lg border border-slate-200 bg-white shadow-sm">
-      <div className="flex items-center justify-between border-b border-slate-200 bg-slate-50 px-4 py-2">
-        <div className="text-sm font-semibold text-slate-900">
+    <div>
+      <div className="mb-3 flex items-baseline justify-between gap-3">
+        <h2 className="font-display text-[22px] font-extrabold tracking-tightest text-brand-ink">
           {country.flag_emoji} {country.name}
-        </div>
-        <div className="text-[11px] text-slate-500">
-          Last updated {country.last_updated}
+        </h2>
+        <div className="eyebrow-ink text-brand-ink/55 text-[10px]">
+          Updated <span className="tabular-nums">{country.last_updated}</span>
         </div>
       </div>
-      <table className="w-full min-w-[760px] border-collapse text-sm">
-        <thead>
-          <tr>
-            <th className="sticky left-0 z-10 bg-slate-100 px-3 py-2 text-left text-xs font-semibold uppercase tracking-wide text-slate-600">
-              WSIP Solution
-            </th>
-            {PIR_DIMENSIONS.map((d) => (
-              <th
-                key={d.key}
-                className="border-l border-slate-200 bg-slate-50 px-2 py-2 text-left text-xs font-semibold uppercase tracking-wide text-slate-700"
-                title={d.blurb}
-              >
-                {d.label}
-              </th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {WSIP_SOLUTIONS.map((sol) => {
-            const subs = country.subsectors.filter((s) =>
-              s.wsip_solutions.includes(sol.id as WsipSolutionId)
-            );
-            return (
-              <tr key={sol.id} className="border-t border-slate-200">
-                <th className="sticky left-0 z-10 max-w-[200px] bg-white px-3 py-3 text-left align-top">
-                  <div className="flex items-start gap-2">
-                    <span
-                      className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-xs font-bold text-white ${
-                        sol.pillar === "people"
-                          ? "bg-pillar-people"
-                          : sol.pillar === "food"
-                          ? "bg-pillar-food"
-                          : "bg-pillar-planet"
-                      }`}
-                    >
-                      {sol.id}
-                    </span>
-                    <div className="leading-tight">
-                      <div className="text-xs font-semibold text-slate-900">
-                        {sol.shortName}
-                      </div>
-                    </div>
-                  </div>
-                </th>
-                {PIR_DIMENSIONS.map((d) => {
-                  const best = bestCellAcross(subs, d.key);
-                  const targetSub = best.subsector;
-                  const cellContent = (
-                    <div
-                      className={`h-full min-h-[88px] w-full p-2 ring-1 ring-inset ${CELL_BG[best.status]} ${
-                        targetSub ? "cursor-pointer hover:ring-slate-400" : ""
-                      }`}
-                    >
-                      <div className="mb-1 flex items-center justify-between gap-1">
-                        <span className="inline-flex items-center gap-1">
-                          <CoverageDot status={best.status} />
-                          <span className="text-[10px] font-semibold uppercase tracking-wide text-slate-700">
-                            {STATUS_LABEL[best.status]}
-                          </span>
-                        </span>
-                        <span className="text-[10px] uppercase tracking-wide text-slate-500">
-                          {targetSub
-                            ? (SUBSECTOR_LABELS[targetSub.key] ?? targetSub.label).split(" ")[0]
-                            : subs.length === 0
-                            ? "—"
-                            : "no cell"}
-                        </span>
-                      </div>
-                      {best.mandate ? (
-                        <div className="line-clamp-4 text-[11px] leading-snug text-slate-700">
-                          {best.mandate}
-                        </div>
-                      ) : (
-                        <div className="text-[11px] italic text-slate-400">
-                          {subs.length === 0
-                            ? "WSIP solution not yet mapped to a sub-sector"
-                            : "Dimension not yet assessed"}
-                        </div>
-                      )}
-                    </div>
-                  );
-                  return (
-                    <td
-                      key={d.key}
-                      className="border-l border-slate-200 p-0 align-top"
-                    >
-                      {targetSub ? (
-                        <Link
-                          to={`/country/${country.code}/subsector/${targetSub.key}#pir-${d.key}`}
-                          className="block h-full"
-                        >
-                          {cellContent}
-                        </Link>
-                      ) : (
-                        cellContent
-                      )}
-                    </td>
-                  );
-                })}
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
+      {children}
     </div>
   );
 }
 
-function PipelineMatrixPlaceholder({
+function PipelinePlaceholder({
   meta,
   code,
 }: {
@@ -324,31 +329,266 @@ function PipelineMatrixPlaceholder({
   code: string;
 }) {
   return (
-    <div className="rounded-lg border border-dashed border-slate-300 bg-slate-50 p-6 text-sm text-slate-600">
-      <div className="flex items-start gap-3">
-        <div className="text-3xl">{meta?.flag ?? "🏳️"}</div>
-        <div className="flex-1">
-          <div className="text-base font-semibold text-slate-900">
-            {meta?.name ?? code}
-          </div>
-          <div className="text-[11px] uppercase tracking-wider text-slate-500">
-            {meta?.region ?? "—"} · {meta?.status ?? "pipeline"}
-          </div>
-          {meta?.blurb && (
-            <p className="mt-2 text-xs text-slate-600">{meta.blurb}</p>
-          )}
-          <div className="mt-4 rounded-md bg-white p-3 ring-1 ring-slate-200">
-            <div className="text-[10px] font-bold uppercase tracking-wider text-slate-500">
-              Side-by-side comparison
-            </div>
-            <p className="mt-1 text-xs text-slate-600">
-              The matrix for {meta?.name ?? code} will populate once the country
-              dataset is curated. Until then, the comparison view shows the
-              live country alone — the framework grid above is the same one the
-              second country's data will fill into.
-            </p>
-          </div>
-        </div>
+    <div className="border border-dashed border-brand-rule bg-brand-sand/40 p-8">
+      <div className="text-4xl">{meta?.flag ?? "🏳️"}</div>
+      <h2 className="mt-4 font-display text-[22px] font-extrabold tracking-tightest text-brand-ink">
+        {meta?.name ?? code}
+      </h2>
+      <div className="mt-1 eyebrow-ink text-brand-ink/55">
+        {meta?.region ?? "—"}&nbsp;·&nbsp;{meta?.status ?? "pipeline"}
+      </div>
+      {meta?.blurb && (
+        <p className="mt-4 max-w-[28rem] font-serif text-[14px] leading-[1.55] text-brand-ink/75">
+          {meta.blurb}
+        </p>
+      )}
+      <p className="mt-6 border-t border-brand-rule pt-4 font-serif italic text-[13px] leading-[1.55] text-brand-ink/55 max-w-[28rem]">
+        Country data is curated under the WSIP Water Compact roadmap; the
+        matrix above will populate once the country profile is added.
+      </p>
+    </div>
+  );
+}
+
+/* ── Cross-country views (folded in from former PirComparator) ──────────── */
+
+function BySubsectorView() {
+  const countries = listCountries();
+  const allSubsectorKeys = useMemo(
+    () =>
+      Array.from(
+        new Set(countries.flatMap((c) => c.subsectors.map((s) => s.key)))
+      ),
+    [countries]
+  );
+  const [subsectorKey, setSubsectorKey] = useState<string>(
+    allSubsectorKeys[0] ?? ""
+  );
+  const rows = countries
+    .map((c) => ({
+      country: c,
+      subsector: c.subsectors.find((s) => s.key === subsectorKey),
+    }))
+    .filter((r) => r.subsector);
+  const pipelinePlaceholders = WSIP_COUNTRIES.filter(
+    (c) => c.status !== "live"
+  ).slice(0, 5);
+
+  return (
+    <div className="space-y-6">
+      <div className="flex items-baseline gap-3">
+        <span className="eyebrow text-brand-ink/60">Sub-sector</span>
+        <span className="relative">
+          <select
+            value={subsectorKey}
+            onChange={(e) => setSubsectorKey(e.target.value)}
+            className="appearance-none bg-transparent pr-5 font-display text-[17px] font-semibold tracking-[0.02em] text-brand-ink underline decoration-brand-rule decoration-1 underline-offset-[6px] hover:decoration-brand-deep focus:outline-none"
+          >
+            {allSubsectorKeys.map((k) => (
+              <option key={k} value={k}>
+                {SUBSECTOR_LABELS[k] ?? k}
+              </option>
+            ))}
+          </select>
+          <span className="pointer-events-none absolute right-0 top-1/2 -translate-y-1/2 text-brand-ink/45">
+            ▾
+          </span>
+        </span>
+      </div>
+
+      <div className="overflow-x-auto border-y border-brand-rule">
+        <table className="w-full min-w-[860px] border-collapse">
+          <thead>
+            <tr className="border-b border-brand-rule">
+              <th className="px-4 py-4 text-left">
+                <span className="eyebrow-ink text-brand-ink/55">Country</span>
+              </th>
+              {PIR_DIMENSIONS.map((d) => (
+                <th
+                  key={d.key}
+                  className="border-l border-brand-rule px-4 py-4 text-left"
+                >
+                  <span className="font-display text-[11px] font-extrabold uppercase tracking-[0.18em] text-brand-deep">
+                    {d.label}
+                  </span>
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {rows.map(({ country, subsector }) => (
+              <tr key={country.code} className="border-t border-brand-rule">
+                <th className="px-4 py-5 text-left align-top">
+                  <div className="font-display text-[18px] font-extrabold tracking-tightest text-brand-ink">
+                    {country.flag_emoji} {country.name}
+                  </div>
+                  {subsector?.headline && (
+                    <p className="mt-2 max-w-[18rem] font-serif text-[13px] leading-[1.45] text-brand-ink/65 line-clamp-3">
+                      {subsector.headline}
+                    </p>
+                  )}
+                </th>
+                {PIR_DIMENSIONS.map((d) => {
+                  const cell = subsector?.cells.find(
+                    (c) => c.pir_dimension === d.key
+                  );
+                  const status: CoverageStatus =
+                    cell?.coverage_status ?? "gray";
+                  return (
+                    <td
+                      key={d.key}
+                      className="border-l border-brand-rule px-4 py-5 align-top"
+                    >
+                      <div className="flex items-start gap-3">
+                        <Droplet
+                          variant={DROPLET_VARIANT[status]}
+                          size={22}
+                        />
+                        <p className="font-serif text-[13px] leading-[1.45] text-brand-ink/85 line-clamp-5">
+                          {cell?.mandate_text ?? (
+                            <span className="italic text-brand-ink/40">
+                              Not yet assessed
+                            </span>
+                          )}
+                        </p>
+                      </div>
+                    </td>
+                  );
+                })}
+              </tr>
+            ))}
+            {pipelinePlaceholders.map((p) => (
+              <tr
+                key={p.code}
+                className="border-t border-brand-rule opacity-55"
+                title="Pending data ingestion"
+              >
+                <th className="px-4 py-5 text-left align-top">
+                  <div className="font-display text-[18px] font-extrabold tracking-tightest text-brand-ink/65">
+                    {p.flag} {p.name}
+                  </div>
+                  <div className="mt-1 eyebrow-ink text-brand-ink/40">
+                    {p.status === "pipeline" ? "WSIP pipeline" : "Planned"}
+                  </div>
+                </th>
+                {PIR_DIMENSIONS.map((d) => (
+                  <td
+                    key={d.key}
+                    className="border-l border-brand-rule px-4 py-5 align-top"
+                  >
+                    <Droplet variant="dotted" size={22} />
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+}
+
+function ByDimensionView() {
+  const countries = listCountries();
+  const allSubsectorKeys = useMemo(
+    () =>
+      Array.from(
+        new Set(countries.flatMap((c) => c.subsectors.map((s) => s.key)))
+      ),
+    [countries]
+  );
+  const [pirKey, setPirKey] = useState<PirDimension>("regulation");
+  const pirDef = PIR_DIMENSIONS.find((d) => d.key === pirKey);
+
+  return (
+    <div className="space-y-6">
+      <div className="flex items-baseline gap-3">
+        <span className="eyebrow text-brand-ink/60">PIR dimension</span>
+        <span className="relative">
+          <select
+            value={pirKey}
+            onChange={(e) => setPirKey(e.target.value as PirDimension)}
+            className="appearance-none bg-transparent pr-5 font-display text-[17px] font-semibold tracking-[0.02em] text-brand-ink underline decoration-brand-rule decoration-1 underline-offset-[6px] hover:decoration-brand-deep focus:outline-none"
+          >
+            {PIR_DIMENSIONS.map((d) => (
+              <option key={d.key} value={d.key}>
+                {d.label}
+              </option>
+            ))}
+          </select>
+          <span className="pointer-events-none absolute right-0 top-1/2 -translate-y-1/2 text-brand-ink/45">
+            ▾
+          </span>
+        </span>
+      </div>
+
+      {pirDef && (
+        <p className="font-serif italic text-[15px] leading-[1.55] text-brand-ink/70 border-l-2 border-brand-rule pl-5 max-w-[40rem]">
+          {pirDef.blurb}
+        </p>
+      )}
+
+      <div className="overflow-x-auto border-y border-brand-rule">
+        <table className="w-full min-w-[860px] border-collapse">
+          <thead>
+            <tr className="border-b border-brand-rule">
+              <th className="px-4 py-4 text-left">
+                <span className="eyebrow-ink text-brand-ink/55">Country</span>
+              </th>
+              {allSubsectorKeys.map((k) => (
+                <th
+                  key={k}
+                  className="border-l border-brand-rule px-4 py-4 text-left"
+                >
+                  <span className="font-display text-[11px] font-extrabold uppercase tracking-[0.18em] text-brand-deep">
+                    {SUBSECTOR_LABELS[k] ?? k}
+                  </span>
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {countries.map((country) => (
+              <tr key={country.code} className="border-t border-brand-rule">
+                <th className="px-4 py-5 text-left align-top">
+                  <div className="font-display text-[18px] font-extrabold tracking-tightest text-brand-ink">
+                    {country.flag_emoji} {country.name}
+                  </div>
+                </th>
+                {allSubsectorKeys.map((k) => {
+                  const sub = country.subsectors.find((s) => s.key === k);
+                  const cell = sub?.cells.find(
+                    (c) => c.pir_dimension === pirKey
+                  );
+                  const status: CoverageStatus =
+                    cell?.coverage_status ?? "gray";
+                  return (
+                    <td
+                      key={k}
+                      className="border-l border-brand-rule px-4 py-5 align-top"
+                    >
+                      <div className="flex items-start gap-3">
+                        <Droplet
+                          variant={DROPLET_VARIANT[status]}
+                          size={22}
+                        />
+                        <p className="font-serif text-[13px] leading-[1.45] text-brand-ink/85 line-clamp-5">
+                          {cell?.mandate_text ?? (
+                            <span className="italic text-brand-ink/40">
+                              {sub
+                                ? "Dimension not assessed"
+                                : "Sub-sector not mapped"}
+                            </span>
+                          )}
+                        </p>
+                      </div>
+                    </td>
+                  );
+                })}
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
     </div>
   );
