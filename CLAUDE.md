@@ -17,7 +17,7 @@ The two source PDFs live in `documents/`. Don't move them.
 
 | Route | View | Purpose |
 |---|---|---|
-| `/` | `views/HomePage.tsx` | Search, featured insight, how-to, world map, schematics, lessons |
+| `/` | `views/HomePage.tsx` | Magazine cover (Spread 1) + thesis/Brazil-at-a-glance chart (2) + three numbered findings (3) + world map + featured insight (4) + Wizard CTA band (5). Rendered with `<Layout fullBleed>` so spreads can break out of the default container. |
 | `/wsip-matrix` | `views/WsipMatrixTab.tsx` | Country-selectable WSIP × PIR matrix. Supports `?country=BRA` and `?compare=KEN`. |
 | `/pir-comparator` | `views/PirComparator.tsx` | Dual-mode: sub-sector × countries × dimensions, or dimension × countries × sub-sectors. |
 | `/countries` | `views/CountriesPage.tsx` | Cards grid with filters; each Live card has "Open dashboard" + "Matrix" deep-link buttons. |
@@ -86,16 +86,48 @@ Edit `data/project-types.ts`. Each entry maps to `subsector_keys[]` and `critica
 ## Stack and conventions
 
 - React 18 + TypeScript + Vite. Strict mode on.
-- Tailwind 3 with semantic colours: `pillar-people` (sky), `pillar-food` (emerald), `pillar-planet` (amber); plus `coverage-{green,yellow,red,gray}` for dots.
+- Tailwind 3 with these palettes:
+  - `brand.{ink, teal, deep, sand, amber, olive, rule}` — visual identity tokens, pulled from the BOSIB PIR PDF (Circle Graphics, 2022). Used for chrome, hero, eyebrows, editorial pull-quotes.
+  - `pillar-{people, food, planet}` — semantic, for WSIP solution rows in the matrix.
+  - `pir-{policy, institutions, igc, financing, regulation, resilience}` — semantic, for PIR dimension columns/arcs.
+  - `coverage-{green, yellow, red, gray}` — semantic, for matrix cell status. **Single source of truth: `CELL_BG` in `src/components/CoverageDot.tsx`.** Don't duplicate elsewhere.
+- Typography pairing: **Inter** (`font-display`, `font-sans`) at weights 400–900 + **Source Serif 4** (`font-serif`) regular/italic at 400/600. Loaded via Google Fonts in `index.html`. Use `font-display font-black` for cover-style headlines, `font-serif` for body voice and pull-quotes.
 - React Router v6, `BrowserRouter`. Future-flag warnings are noise; ignore.
 - World map: `react-simple-maps` + `world-atlas/countries-110m.json` (served from `public/`).
 - No backend, no database, no API calls. Everything is bundled JSON-ish TypeScript modules.
+
+## Design language (editorial, not SaaS)
+
+The visual reference is the BOSIB PIR Synthesis Report PDF (Circle Graphics / Chris Phillips, Aug 2022). The tool should read as a designed publication — Bloomberg country brief / FT data essay / Apple environmental report — **not** a Tailwind SaaS landing page. Discipline at the detail level is what makes it feel professional.
+
+**Do:**
+- Pair Inter (utility, nav, captions) with Source Serif 4 (body, pull-quotes, "voice").
+- 12-column grid (`grid-cols-12 gap-8/12`) with asymmetric breaks (cols 1-7 / 8-12, etc.). Default width is `max-w-[88rem]` (~1408px) for magazine-spread feel.
+- Use horizontal rules (`.rule`, `border-brand-rule`) and white space as default structural devices. Cards only when content fundamentally differs from neighbours.
+- Use the editorial utility classes in `src/index.css`: `.eyebrow`, `.eyebrow-ink`, `.eyebrow-white`, `.display-hero`, `.chapter-numeral`, `.prose-editorial`, `.pull-quote` (with auto amber drop-cap), `.figure-caption`, `.marginalia`, `.link-editorial`.
+- Write copy with a thesis / POV, not generic "explore" / "see at a glance" CTAs.
+
+**Don't:**
+- `rounded-2xl shadow-lg` as default container.
+- Identical 3-card rows ("title + body + chevron").
+- Gradient hero blocks. Bento grids.
+- Lucide/Heroicon ornaments. Icons are reserved for `Droplet` (coverage marks + wordmark) and the pipework illustration.
+- "How it works in 3 steps" sections. "Trusted by these institutions" logo bars.
+- Pill-shaped status badges as decoration.
+
+**Brand SVGs** (in `src/components/brand/`):
+- `Droplet` — 4-variant water-droplet glyph (`filled` / `half` / `outline` / `dotted`). Doubles as the coverage data mark in Phase 2.
+- `DropletO` — inline droplet sized to cap-height for use inside display headlines and the header wordmark.
+- `PipeNetwork` — cover artwork. Used **once**, prominently, on the Home hero. Not a tileable background.
+- `PipeDivider` — thin pipe-line section divider with mid-line elbow. Use **sparingly** (≤ once per page).
+
+**Layout wrapper**: `<Layout>` adds the teal stripe, header (5-tab underline nav, droplet wordmark), and navy footer. Pages get a default `max-w-7xl px-6 py-8` content container; pass `<Layout fullBleed>` to opt out (HomePage uses this for magazine spreads).
 
 ## Code style
 
 - Functional components. No class components.
 - One component per file unless tiny helpers (`CoverageDot` + `CoverageLegend` share a file because they're tightly coupled).
-- Tailwind classes inline, not extracted into `@apply` unless the same pattern repeats across files — see `.pill`, `.coverage-dot` in `src/index.css`.
+- Tailwind classes inline, not extracted into `@apply` unless the same pattern repeats across files. Editorial utilities (`.eyebrow`, `.chapter-numeral`, `.pull-quote`, etc.) and the legacy `.pill` / `.coverage-dot` live in `src/index.css`.
 - Prefer composing existing components. Before creating a new card / pill / chip / legend variant, check `src/components/` for one that fits.
 - Don't add a dependency without checking that an existing one already covers it.
 

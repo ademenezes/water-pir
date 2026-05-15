@@ -16,7 +16,7 @@ export default function App() {
       <Route
         path="/"
         element={
-          <Layout>
+          <Layout fullBleed>
             <HomePage />
           </Layout>
         }
