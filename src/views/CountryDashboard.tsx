@@ -6,6 +6,8 @@ import { LESSONS } from "../../data/lessons";
 import { PIR_DIMENSIONS, SUBSECTOR_LABELS, WSIP_SOLUTIONS } from "../framework";
 import { Matrix, type MatrixCellTarget } from "../components/Matrix/Matrix";
 import { MatrixCellPanel } from "../components/Matrix/MatrixCellPanel";
+import { KeyInsightsSection } from "../components/KeyInsightsSection";
+import { MandateSwimLanes } from "../components/MandateSwimLanes";
 import type { CoverageStatus, PirDimension } from "../types";
 
 const STATUS_BAR_COLOR: Record<CoverageStatus, string> = {
@@ -142,6 +144,13 @@ export function CountryDashboard() {
         </div>
       </section>
 
+      {/* ── Key insights ─────────────────────────────────────────────────── */}
+      {country.key_insights && country.key_insights.length > 0 && (
+        <section className="mx-auto max-w-[88rem] px-8 pb-16">
+          <KeyInsightsSection insights={country.key_insights} />
+        </section>
+      )}
+
       {/* ── Body: matrix + marginalia ────────────────────────────────────── */}
       <section className="mx-auto max-w-[88rem] px-8 pb-16">
         <div className="grid grid-cols-12 gap-10">
@@ -208,6 +217,15 @@ export function CountryDashboard() {
           </aside>
         </div>
       </section>
+
+      {/* ── Mandate swim-lane ────────────────────────────────────────────── */}
+      {country.mandate_records && country.mandate_records.length > 0 && (
+        <section className="mx-auto max-w-[88rem] px-8 pb-16">
+          <div className="border-t border-brand-rule pt-12">
+            <MandateSwimLanes records={country.mandate_records} />
+          </div>
+        </section>
+      )}
 
       {/* ── Sub-sector drill-in ───────────────────────────────────────────── */}
       <section className="mx-auto max-w-[88rem] px-8 pb-24">

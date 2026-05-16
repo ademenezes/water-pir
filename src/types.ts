@@ -96,4 +96,43 @@ export interface CountryProfile {
   intro: string;
   last_updated: string;
   subsectors: SubsectorEntry[];
+  mandate_records?: MandateRecord[];
+  key_insights?: KeyInsight[];
+}
+
+// Distinct from InstitutionRole (which describes WHAT a body is — regulator, asset owner, etc.).
+// MandateFunction describes the FUNCTION an actor performs in the water-sector value chain,
+// for the swim-lane mandate diagram on the country dashboard.
+export type MandateFunction =
+  | "policy"
+  | "norm_setting"
+  | "regulation"
+  | "planning"
+  | "service_delivery"
+  | "financing";
+
+export interface MandateLegalBasis {
+  short: string; // e.g., "Law 14.026/2020"
+  article: string; // e.g., "Art. 4-A"
+  faolex_url?: string;
+  national_url?: string;
+  verbatim_short?: string; // <= 15-word paraphrase from the verified PDF/HTML text
+}
+
+export interface MandateRecord {
+  actor: string;
+  acronym?: string;
+  level: GovernmentLevel; // reuses existing values: national | state | local | basin
+  function: MandateFunction;
+  legal_basis: MandateLegalBasis;
+  de_facto_note?: string;
+}
+
+export interface KeyInsight {
+  title: string; // <= 12 words
+  body: string; // <= 50 words
+  legal_basis: MandateLegalBasis;
+  pir_dimension?: PirDimension;
+  wsip_solution_id?: WsipSolutionId;
+  severity: "tension" | "gap" | "strength";
 }

@@ -1,0 +1,7 @@
+# Local copies of canonical law text (Planalto HTML + stripped text) and any
+# downloaded PDFs are kept out of git. They are public government content but
+# we don't need to redistribute them — manifest.json + extracted citations are
+# what we commit.
+*.pdf
+*.html
+*.txt

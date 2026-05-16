@@ -1,0 +1,132 @@
+{
+  "_about": "Brazilian federal water-sector laws downloaded from Planalto (canonical government source). PDFs are gitignored. This manifest is the audit trail. last_verified_date is when the local copy was downloaded and read.",
+  "_last_run": "2026-05-16",
+  "instruments": [
+    {
+      "short": "CF/1988",
+      "full_title": "Constituição da República Federativa do Brasil de 1988",
+      "type": "constitution",
+      "year": 1988,
+      "planalto_url": "https://www.planalto.gov.br/ccivil_03/constituicao/constituicao.htm",
+      "local_file": "cf-1988.html",
+      "faolex_id": null,
+      "faolex_url": null,
+      "status": "not_in_faolex",
+      "note": "Constitution is not FAOLEX-indexed; Planalto is canonical.",
+      "key_articles_verified": ["20", "21", "23", "25", "26", "30", "175"]
+    },
+    {
+      "short": "Decreto 24.643/1934",
+      "full_title": "Código de Águas (Decreto nº 24.643)",
+      "type": "decree",
+      "year": 1934,
+      "planalto_url": "https://www.planalto.gov.br/ccivil_03/decreto/d24643.htm",
+      "local_file": "d24643-1934.html",
+      "faolex_id": null,
+      "faolex_url": null,
+      "status": "not_in_faolex",
+      "note": "Pre-FAOLEX historical instrument; Planalto is canonical."
+    },
+    {
+      "short": "Law 9.433/1997",
+      "full_title": "Política Nacional de Recursos Hídricos (PNRH)",
+      "type": "framework_law",
+      "year": 1997,
+      "planalto_url": "https://www.planalto.gov.br/ccivil_03/leis/l9433.htm",
+      "local_file": "l9433-1997.html",
+      "faolex_id": null,
+      "faolex_url": null,
+      "status": "not_in_faolex_confirmed",
+      "note": "Not located in FAOLEX index as of 2026-05-16; Planalto is canonical.",
+      "key_articles_verified": ["1", "5", "11", "12", "19", "20", "21", "22", "29", "30", "31", "32", "33", "35", "38", "41", "44"]
+    },
+    {
+      "short": "Law 9.984/2000",
+      "full_title": "Lei da ANA — cria a Agência Nacional de Águas e Saneamento Básico",
+      "type": "framework_law",
+      "year": 2000,
+      "planalto_url": "https://www.planalto.gov.br/ccivil_03/leis/l9984.htm",
+      "local_file": "l9984-2000.html",
+      "faolex_id": null,
+      "faolex_url": null,
+      "status": "not_in_faolex_confirmed",
+      "note": "Not located in FAOLEX index as of 2026-05-16; Planalto is canonical. Text reflects amendments by Lei 14.026/2020.",
+      "key_articles_verified": ["1", "3", "4", "4-A", "4-B", "8"]
+    },
+    {
+      "short": "Law 11.445/2007",
+      "full_title": "Lei Nacional de Saneamento Básico (LNSB)",
+      "type": "framework_law",
+      "year": 2007,
+      "planalto_url": "https://www.planalto.gov.br/ccivil_03/_ato2007-2010/2007/lei/l11445.htm",
+      "local_file": "l11445-2007.html",
+      "faolex_id": "LEX-FAOC074469",
+      "faolex_url": "https://www.fao.org/faolex/results/details/en/c/LEX-FAOC074469",
+      "status": "verified_in_faolex",
+      "note": "FAOLEX-indexed. Planalto text used for article verification; reflects amendments by Lei 14.026/2020.",
+      "key_articles_verified": ["2", "8-A", "11-B", "29"]
+    },
+    {
+      "short": "Law 12.334/2010",
+      "full_title": "Política Nacional de Segurança de Barragens (PNSB)",
+      "type": "framework_law",
+      "year": 2010,
+      "planalto_url": "https://www.planalto.gov.br/ccivil_03/_ato2007-2010/2010/lei/l12334.htm",
+      "local_file": "l12334-2010.html",
+      "faolex_id": null,
+      "faolex_url": null,
+      "status": "not_in_faolex_confirmed",
+      "note": "Not located in FAOLEX index as of 2026-05-16; Planalto is canonical. Text reflects amendments by Lei 14.066/2020."
+    },
+    {
+      "short": "Law 12.608/2012",
+      "full_title": "Política Nacional de Proteção e Defesa Civil (PNPDEC)",
+      "type": "framework_law",
+      "year": 2012,
+      "planalto_url": "https://www.planalto.gov.br/ccivil_03/_ato2011-2014/2012/lei/l12608.htm",
+      "local_file": "l12608-2012.html",
+      "faolex_id": null,
+      "faolex_url": null,
+      "status": "not_in_faolex_confirmed",
+      "note": "Not located in FAOLEX index as of 2026-05-16; Planalto is canonical."
+    },
+    {
+      "short": "Law 12.787/2013",
+      "full_title": "Política Nacional de Irrigação (PNI)",
+      "type": "framework_law",
+      "year": 2013,
+      "planalto_url": "https://www.planalto.gov.br/ccivil_03/_ato2011-2014/2013/lei/l12787.htm",
+      "local_file": "l12787-2013.html",
+      "faolex_id": null,
+      "faolex_url": null,
+      "status": "not_in_faolex_confirmed",
+      "note": "Not located in FAOLEX index as of 2026-05-16; Planalto is canonical.",
+      "key_articles_verified": ["3", "4", "5"]
+    },
+    {
+      "short": "Law 14.026/2020",
+      "full_title": "Novo Marco Legal do Saneamento Básico",
+      "type": "framework_law",
+      "year": 2020,
+      "planalto_url": "https://www.planalto.gov.br/ccivil_03/_ato2019-2022/2020/lei/l14026.htm",
+      "local_file": "l14026-2020.html",
+      "faolex_id": null,
+      "faolex_url": null,
+      "status": "not_in_faolex_confirmed",
+      "note": "Not located in FAOLEX index as of 2026-05-16; Planalto is canonical. Major amendments to Laws 9.984/2000 and 11.445/2007.",
+      "key_articles_verified": ["1", "2", "3", "7"]
+    },
+    {
+      "short": "Law 14.066/2020",
+      "full_title": "Atualização da Política Nacional de Segurança de Barragens",
+      "type": "framework_law",
+      "year": 2020,
+      "planalto_url": "https://www.planalto.gov.br/ccivil_03/_ato2019-2022/2020/lei/l14066.htm",
+      "local_file": "l14066-2020.html",
+      "faolex_id": null,
+      "faolex_url": null,
+      "status": "not_in_faolex_confirmed",
+      "note": "Not located in FAOLEX index as of 2026-05-16; Planalto is canonical. Strengthens PNSB after Mariana (2015) and Brumadinho (2019)."
+    }
+  ]
+}

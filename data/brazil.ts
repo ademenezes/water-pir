@@ -1,13 +1,18 @@
 import type { CountryProfile } from "../src/types";
+import { BRAZIL_MANDATES } from "./brazil-mandates";
+import { BRAZIL_INSIGHTS } from "./brazil-insights";
 
 // Brazil — water sector PIR snapshot
-// Sources: FAOLEX (https://www.fao.org/faolex/), AQUALEX (https://aqualex.fao.org/),
-// ANA (https://www.gov.br/ana/), Ministério das Cidades, SNIS, World Bank (WSS PIR Synthesis 2022).
+// Sources: FAOLEX (https://www.fao.org/faolex/) where indexed; Planalto
+// (https://www.planalto.gov.br/) is the canonical Brazilian government source for
+// federal law and is used where FAOLEX coverage is absent. Local copies of the
+// canonical HTML for the ~10 core federal instruments live under documents/brazil/
+// (see manifest.json); article references have been verified against those copies.
 // Coverage status legend: green = law + regulator + practice broadly aligned;
 // yellow = law exists but implementation/regulation partial; red = significant gap.
-// All entries should carry last_verified_date; reviewers should re-check FAOLEX URLs annually.
+// All entries carry last_verified_date; reviewers should re-check sources annually.
 
-const today = "2026-05-15";
+const today = "2026-05-16";
 
 export const BRAZIL: CountryProfile = {
   code: "BRA",
@@ -698,4 +703,6 @@ export const BRAZIL: CountryProfile = {
       ],
     },
   ],
+  mandate_records: BRAZIL_MANDATES,
+  key_insights: BRAZIL_INSIGHTS,
 };
