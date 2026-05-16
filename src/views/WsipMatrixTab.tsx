@@ -312,7 +312,7 @@ function CompareColumn({
         <h2 className="font-display text-[22px] font-extrabold tracking-tightest text-brand-ink">
           {country.flag_emoji} {country.name}
         </h2>
-        <div className="eyebrow-ink text-brand-ink/55 text-[10px]">
+        <div className="eyebrow-ink text-brand-ink/55 text-[11px]">
           Updated <span className="tabular-nums">{country.last_updated}</span>
         </div>
       </div>
@@ -408,7 +408,7 @@ function BySubsectorView() {
                   key={d.key}
                   className="border-l border-brand-rule px-4 py-4 text-left"
                 >
-                  <span className="font-display text-[11px] font-extrabold uppercase tracking-[0.18em] text-brand-deep">
+                  <span className="font-display text-[12px] font-extrabold uppercase tracking-[0.18em] text-brand-deep">
                     {d.label}
                   </span>
                 </th>
@@ -540,7 +540,7 @@ function ByDimensionView() {
                   key={k}
                   className="border-l border-brand-rule px-4 py-4 text-left"
                 >
-                  <span className="font-display text-[11px] font-extrabold uppercase tracking-[0.18em] text-brand-deep">
+                  <span className="font-display text-[12px] font-extrabold uppercase tracking-[0.18em] text-brand-deep">
                     {SUBSECTOR_LABELS[k] ?? k}
                   </span>
                 </th>

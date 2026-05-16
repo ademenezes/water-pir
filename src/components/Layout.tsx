@@ -107,7 +107,7 @@ export function Layout({ children, fullBleed = false }: LayoutProps) {
             </ul>
           </div>
 
-          <div className="col-span-12 mt-4 border-t border-white/10 pt-4 text-[11px] uppercase tracking-[0.18em] text-white/40">
+          <div className="col-span-12 mt-4 border-t border-white/10 pt-4 text-[12px] uppercase tracking-[0.18em] text-white/45">
             World Bank Group · GWSP · FAO FAOLEX&nbsp;·&nbsp;AQUALEX
           </div>
         </div>

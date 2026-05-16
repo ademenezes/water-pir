@@ -1,14 +1,42 @@
 import { useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import { getCountry } from "../../data";
-import {
-  PIR_DIMENSIONS,
-  WSIP_SOLUTIONS,
-  SUBSECTOR_LABELS,
-} from "../framework";
-import { CoverageDot } from "../components/CoverageDot";
-import { SourceCitation } from "../components/SourceCitation";
-import { MandateMap } from "../components/MandateMap";
+import { PIR_DIMENSIONS, SUBSECTOR_LABELS, WSIP_SOLUTIONS } from "../framework";
+import { Droplet } from "../components/brand/Droplet";
+import type {
+  CoverageStatus,
+  InstitutionRole,
+  LegalInstrument,
+  Institution,
+  SubsectorPirCell,
+  PirDimensionDef,
+} from "../types";
+
+const STATUS_LABEL: Record<CoverageStatus, string> = {
+  green: "Strong",
+  yellow: "Partial",
+  red: "Gap",
+  gray: "Not mapped",
+};
+
+const DROPLET_VARIANT: Record<
+  CoverageStatus,
+  "filled" | "half" | "outline" | "dotted"
+> = {
+  green: "filled",
+  yellow: "half",
+  red: "outline",
+  gray: "dotted",
+};
+
+const ROLE_LABEL: Record<InstitutionRole, string> = {
+  policy_maker: "Policy maker",
+  asset_owner: "Asset owner",
+  service_provider: "Service provider",
+  regulator: "Regulator",
+  user_rep: "User representation",
+  basin_org: "Basin organisation",
+};
 
 export function SubsectorDeepDive() {
   const { code, subKey } = useParams();
@@ -22,144 +50,322 @@ export function SubsectorDeepDive() {
     }
   }, [subKey]);
 
-  if (!country) return <div>Country not found.</div>;
-  if (!subsector) return <div>Sub-sector not mapped for {country.name}.</div>;
+  if (!country) {
+    return (
+      <div className="pt-12 font-serif text-[16px] text-brand-ink/75">
+        Country not found.{" "}
+        <Link to="/countries" className="link-editorial font-sans text-[13px]">
+          Browse countries&nbsp;→
+        </Link>
+      </div>
+    );
+  }
+
+  if (!subsector) {
+    return (
+      <div className="pt-12 font-serif text-[16px] text-brand-ink/75">
+        Sub-sector not mapped for {country.name}.{" "}
+        <Link
+          to={`/country/${country.code}`}
+          className="link-editorial font-sans text-[13px]"
+        >
+          Back to {country.name}&nbsp;→
+        </Link>
+      </div>
+    );
+  }
+
+  const subsectorLabel = SUBSECTOR_LABELS[subsector.key] ?? subsector.label;
 
   return (
-    <div className="space-y-8">
-      <section>
-        <div className="text-xs text-slate-500">
-          <Link to={`/country/${country.code}`} className="hover:underline">
-            ← Back to {country.name} dashboard
-          </Link>
-        </div>
-        <h1 className="mt-1 text-2xl font-bold tracking-tight text-slate-900">
-          {SUBSECTOR_LABELS[subsector.key] ?? subsector.label} · {country.name}
-        </h1>
-        <div className="mt-2 flex flex-wrap gap-1.5">
-          {subsector.wsip_solutions.map((id) => {
-            const sol = WSIP_SOLUTIONS.find((x) => x.id === id);
-            if (!sol) return null;
-            return (
-              <span
-                key={id}
-                className={`pill ${
-                  sol.pillar === "people"
-                    ? "pill-people"
-                    : sol.pillar === "food"
-                    ? "pill-food"
-                    : "pill-planet"
-                }`}
-              >
-                WSIP #{id} · {sol.fullName}
-              </span>
-            );
-          })}
-        </div>
-        {subsector.headline && (
-          <p className="mt-3 max-w-4xl rounded-lg border-l-4 border-slate-300 bg-white p-3 text-sm text-slate-700">
-            {subsector.headline}
-          </p>
-        )}
-      </section>
+    <article>
+      {/* ── Header ────────────────────────────────────────────────────────── */}
+      <header className="pt-8 pb-10 border-b border-brand-rule">
+        <Link
+          to={`/country/${country.code}`}
+          className="eyebrow text-brand-ink/55 hover:text-brand-deep"
+        >
+          ←&nbsp;Back to {country.name} dashboard
+        </Link>
 
+        <div className="mt-6 grid grid-cols-12 gap-8 items-end">
+          <div className="col-span-12 md:col-span-8">
+            <div className="eyebrow">
+              {country.flag_emoji} {country.name}&nbsp;·&nbsp;{country.code}
+              &nbsp;·&nbsp;Updated&nbsp;
+              <span className="tabular-nums">{country.last_updated}</span>
+            </div>
+            <h1 className="mt-4 font-display text-[clamp(32px,4.4vw,56px)] font-extrabold leading-[1.04] tracking-tightest text-brand-ink">
+              {subsectorLabel}.
+            </h1>
+
+            {/* WSIP solution stripes */}
+            <ul className="mt-5 flex flex-wrap gap-x-6 gap-y-3">
+              {subsector.wsip_solutions.map((id) => {
+                const sol = WSIP_SOLUTIONS.find((x) => x.id === id);
+                if (!sol) return null;
+                return (
+                  <li
+                    key={id}
+                    className="flex items-center gap-2 font-sans text-[13px] text-brand-ink"
+                  >
+                    <span
+                      className={[
+                        "h-2 w-6",
+                        sol.pillar === "people"
+                          ? "bg-pillar-people"
+                          : sol.pillar === "food"
+                          ? "bg-pillar-food"
+                          : "bg-pillar-planet",
+                      ].join(" ")}
+                      aria-hidden
+                    />
+                    <span className="font-semibold tabular-nums">
+                      WSIP&nbsp;#{id}
+                    </span>
+                    <span className="text-brand-ink/70">{sol.shortName}</span>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+
+          <div className="col-span-12 md:col-span-4">
+            {subsector.headline && (
+              <p className="pull-quote text-[20px] md:text-[22px] leading-[1.35] border-l-2 border-brand-amber pl-5">
+                {subsector.headline}
+              </p>
+            )}
+          </div>
+        </div>
+      </header>
+
+      {/* ── Reform lessons (if any) ──────────────────────────────────────── */}
       {subsector.reform_lessons && subsector.reform_lessons.length > 0 && (
-        <section>
-          <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-500">
-            Reform lessons
-          </h2>
-          <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-slate-700">
-            {subsector.reform_lessons.map((l, i) => (
-              <li key={i}>{l}</li>
-            ))}
-          </ul>
+        <section className="border-b border-brand-rule py-10">
+          <div className="grid grid-cols-12 gap-8">
+            <div className="col-span-12 md:col-span-3">
+              <div className="eyebrow">Reform lessons</div>
+            </div>
+            <ol className="col-span-12 md:col-span-9 space-y-4">
+              {subsector.reform_lessons.map((l, i) => (
+                <li key={i} className="flex gap-4">
+                  <span className="font-display text-[18px] font-extrabold tabular-nums leading-snug text-brand-deep">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <p className="font-serif text-[16px] leading-[1.55] text-brand-ink">
+                    {l}
+                  </p>
+                </li>
+              ))}
+            </ol>
+          </div>
         </section>
       )}
 
-      {PIR_DIMENSIONS.map((d) => {
-        const cell = subsector.cells.find((c) => c.pir_dimension === d.key);
-        const id = `pir-${d.key}`;
-        return (
-          <section
-            key={d.key}
-            id={id}
-            className="scroll-mt-20 rounded-lg border border-slate-200 bg-white p-5 shadow-sm"
-          >
-            <div className="flex items-start justify-between gap-3">
-              <div>
-                <h3 className="text-lg font-semibold text-slate-900">
-                  {d.label}
-                </h3>
-                <p className="text-xs text-slate-500">{d.blurb}</p>
-              </div>
-              <div className="flex items-center gap-1 text-xs text-slate-500">
-                <CoverageDot status={cell?.coverage_status ?? "gray"} size="md" />
-                <span className="font-medium uppercase tracking-wide">
-                  {cell?.coverage_status ?? "not assessed"}
-                </span>
-              </div>
+      {/* ── PIR dimension sections ───────────────────────────────────────── */}
+      <div>
+        {PIR_DIMENSIONS.map((d, i) => {
+          const cell = subsector.cells.find((c) => c.pir_dimension === d.key);
+          return (
+            <DimensionSection
+              key={d.key}
+              index={i}
+              dim={d}
+              cell={cell}
+              countryName={country.name}
+              subsectorLabel={subsectorLabel}
+            />
+          );
+        })}
+      </div>
+
+      <footer className="border-t border-brand-rule mt-12 pt-8 pb-12">
+        <Link
+          to={`/wsip-matrix?country=${country.code}`}
+          className="link-editorial font-display text-[15px] font-semibold tracking-[0.02em]"
+        >
+          Open the matrix tab for {country.name}&nbsp;→
+        </Link>
+      </footer>
+    </article>
+  );
+}
+
+/* ─────────────────────────────────────────────────────────────────────────── */
+
+function DimensionSection({
+  index,
+  dim,
+  cell,
+  countryName,
+  subsectorLabel,
+}: {
+  index: number;
+  dim: PirDimensionDef;
+  cell: SubsectorPirCell | undefined;
+  countryName: string;
+  subsectorLabel: string;
+}) {
+  const id = `pir-${dim.key}`;
+  const status = cell?.coverage_status ?? "gray";
+
+  return (
+    <section
+      id={id}
+      className="border-b border-brand-rule scroll-mt-24 py-12"
+    >
+      <div className="grid grid-cols-12 gap-8">
+        {/* Heading column */}
+        <header className="col-span-12 md:col-span-3 md:sticky md:top-8 md:self-start">
+          <div className="eyebrow">
+            Dimension&nbsp;·&nbsp;{String(index + 1).padStart(2, "0")}
+          </div>
+          <h2 className="mt-3 font-display text-[clamp(24px,2.8vw,34px)] font-extrabold leading-[1.05] tracking-tightest text-brand-ink">
+            {dim.label}.
+          </h2>
+          <p className="mt-3 font-serif italic text-[14px] leading-[1.5] text-brand-ink/65">
+            {dim.blurb}
+          </p>
+          <div className="mt-4 flex items-center gap-3">
+            <Droplet variant={DROPLET_VARIANT[status]} size={24} />
+            <span className="eyebrow-ink text-brand-ink/80">
+              {STATUS_LABEL[status]}
+            </span>
+          </div>
+        </header>
+
+        {/* Content column */}
+        <div className="col-span-12 md:col-span-9 space-y-8">
+          {!cell ? (
+            <div className="border border-dashed border-brand-rule bg-brand-sand/40 p-6">
+              <p className="font-serif italic text-[15px] leading-[1.55] text-brand-ink/55">
+                This dimension has not yet been mapped for {subsectorLabel} in&nbsp;
+                {countryName}.
+              </p>
             </div>
-
-            {!cell ? (
-              <div className="mt-3 rounded-md border border-dashed border-slate-300 bg-slate-50 p-4 text-sm italic text-slate-500">
-                This dimension has not yet been mapped for {SUBSECTOR_LABELS[subsector.key] ?? subsector.label} in {country.name}.
+          ) : (
+            <>
+              <div>
+                <div className="eyebrow">Mandate</div>
+                <p className="prose-editorial mt-3 max-w-[44rem] text-[17px]">
+                  {cell.mandate_text}
+                </p>
               </div>
-            ) : (
-              <div className="mt-4 grid grid-cols-1 gap-4 lg:grid-cols-3">
-                <div className="lg:col-span-2">
-                  <div className="text-xs font-semibold uppercase tracking-wide text-slate-500">
-                    Mandate
+
+              {cell.de_facto_note && (
+                <aside className="border-l-2 border-brand-amber bg-brand-sand px-6 py-5 max-w-[44rem]">
+                  <div className="eyebrow text-brand-amber">
+                    De&#8209;jure vs. de&#8209;facto
                   </div>
-                  <p className="mt-1 text-sm leading-relaxed text-slate-800">
-                    {cell.mandate_text}
+                  <p className="mt-3 font-serif text-[15px] leading-[1.55] text-brand-ink/85">
+                    {cell.de_facto_note}
                   </p>
-                  {cell.de_facto_note && (
-                    <div className="mt-3 rounded-md border-l-4 border-amber-300 bg-amber-50 p-3 text-sm text-amber-900">
-                      <span className="text-[10px] font-bold uppercase tracking-wider text-amber-700">
-                        De jure vs. de facto
-                      </span>
-                      <p className="mt-0.5">{cell.de_facto_note}</p>
-                    </div>
-                  )}
+                </aside>
+              )}
 
-                  <div className="mt-5">
-                    <div className="text-xs font-semibold uppercase tracking-wide text-slate-500">
-                      Legal instruments
-                    </div>
-                    {cell.legal_instruments.length === 0 ? (
-                      <div className="mt-1 text-sm italic text-slate-400">
-                        No specific legal instrument identified.
-                      </div>
-                    ) : (
-                      <div className="mt-2 space-y-2">
-                        {cell.legal_instruments.map((inst, i) => (
-                          <SourceCitation
-                            key={`${inst.short}-${i}`}
-                            instrument={inst}
-                          />
-                        ))}
-                      </div>
-                    )}
-                  </div>
-
-                  <div className="mt-4 text-[11px] text-slate-400">
-                    Last verified: {cell.last_verified_date}
-                  </div>
-                </div>
-
+              {cell.legal_instruments.length > 0 && (
                 <div>
-                  <div className="text-xs font-semibold uppercase tracking-wide text-slate-500">
-                    Institutional mandate map
-                  </div>
-                  <div className="mt-2">
-                    <MandateMap institutions={cell.responsible_institutions} />
-                  </div>
+                  <div className="eyebrow">Legal instruments</div>
+                  <ol className="mt-4 space-y-5">
+                    {cell.legal_instruments.map((inst, i) => (
+                      <InstrumentRow key={i} inst={inst} index={i} />
+                    ))}
+                  </ol>
                 </div>
+              )}
+
+              {cell.responsible_institutions.length > 0 && (
+                <div>
+                  <div className="eyebrow">Responsible institutions</div>
+                  <ul className="mt-4 divide-y divide-brand-rule">
+                    {cell.responsible_institutions.map((inst, i) => (
+                      <InstitutionRow key={i} inst={inst} />
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              <div className="eyebrow-ink text-[11px] text-brand-ink/55">
+                Last verified&nbsp;·&nbsp;
+                <span className="tabular-nums">{cell.last_verified_date}</span>
               </div>
-            )}
-          </section>
-        );
-      })}
-    </div>
+            </>
+          )}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function InstrumentRow({ inst, index }: { inst: LegalInstrument; index: number }) {
+  const href = inst.faolex_url ?? inst.national_url ?? null;
+  return (
+    <li className="flex items-start gap-5">
+      <span className="font-display text-[16px] font-bold tabular-nums leading-snug text-brand-deep">
+        {String(index + 1).padStart(2, "0")}
+      </span>
+      <div className="flex-1 border-l border-brand-rule pl-5">
+        <div className="font-serif text-[16px] leading-snug text-brand-ink">
+          {inst.title}&nbsp;
+          <span className="tabular-nums text-brand-ink/65">({inst.year})</span>
+        </div>
+        <div className="mt-1.5 eyebrow-ink text-[11px] text-brand-ink/60">
+          {inst.short}
+          {inst.articles_cited ? ` · Arts. ${inst.articles_cited}` : ""}
+        </div>
+        {inst.note && (
+          <p className="mt-2 font-serif italic text-[14px] leading-[1.5] text-brand-ink/65">
+            {inst.note}
+          </p>
+        )}
+        <div className="mt-2 flex flex-wrap items-baseline gap-x-4 gap-y-1">
+          {href && (
+            <a
+              href={href}
+              target="_blank"
+              rel="noreferrer"
+              className="link-editorial font-sans text-[12px] tracking-[0.04em]"
+            >
+              {inst.faolex_url ? "FAOLEX" : "National gazette"}&nbsp;→
+            </a>
+          )}
+          {inst.faolex_id && (
+            <span className="font-sans text-[11px] uppercase tracking-[0.14em] text-brand-ink/45 tabular-nums">
+              {inst.faolex_id}
+            </span>
+          )}
+        </div>
+      </div>
+    </li>
+  );
+}
+
+function InstitutionRow({ inst }: { inst: Institution }) {
+  return (
+    <li className="grid grid-cols-12 gap-3 py-3.5">
+      <div className="col-span-12 md:col-span-6 font-serif text-[15px] text-brand-ink">
+        <strong className="font-semibold">
+          {inst.acronym ? `${inst.acronym} — ` : ""}
+          {inst.name}
+        </strong>
+        {inst.url && (
+          <a
+            href={inst.url}
+            target="_blank"
+            rel="noreferrer"
+            className="ml-2 font-sans text-[11px] uppercase tracking-[0.18em] text-brand-deep hover:underline"
+          >
+            →
+          </a>
+        )}
+      </div>
+      <div className="col-span-6 md:col-span-3 eyebrow-ink text-brand-ink/65">
+        {ROLE_LABEL[inst.role]}
+      </div>
+      <div className="col-span-6 md:col-span-3 eyebrow-ink text-brand-ink/55">
+        {inst.level}
+      </div>
+    </li>
   );
 }

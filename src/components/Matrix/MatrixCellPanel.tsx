@@ -131,7 +131,7 @@ export function MatrixCellPanel({
                         <div className="font-serif text-[15px] leading-snug text-brand-ink">
                           {inst.title} <span className="tabular-nums">({inst.year})</span>
                         </div>
-                        <div className="mt-1 eyebrow-ink text-[10px] text-brand-ink/55">
+                        <div className="mt-1 eyebrow-ink text-[11px] text-brand-ink/60">
                           {inst.short}
                           {inst.articles_cited
                             ? ` · Arts. ${inst.articles_cited}`
@@ -214,7 +214,7 @@ export function MatrixCellPanel({
               Open full sub-sector deep-dive&nbsp;→
             </Link>
             {cell?.last_verified_date && (
-              <div className="mt-4 eyebrow-ink text-[10px] text-brand-ink/55">
+              <div className="mt-4 eyebrow-ink text-[11px] text-brand-ink/60">
                 Last verified&nbsp;·&nbsp;
                 <span className="tabular-nums">{cell.last_verified_date}</span>
               </div>

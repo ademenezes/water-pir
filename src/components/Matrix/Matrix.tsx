@@ -65,7 +65,7 @@ export function Matrix({ country, onCellOpen, highlightDimension }: MatrixProps)
                 ].join(" ")}
                 title={d.blurb}
               >
-                <div className="font-display text-[11px] font-extrabold uppercase tracking-[0.18em] text-brand-deep">
+                <div className="font-display text-[12px] font-extrabold uppercase tracking-[0.18em] text-brand-deep">
                   {d.label}
                 </div>
               </th>
@@ -99,10 +99,10 @@ export function Matrix({ country, onCellOpen, highlightDimension }: MatrixProps)
                       aria-hidden
                     />
                     <div className="flex-1 px-4 py-4">
-                      <div className="font-display text-[22px] font-extrabold leading-none tabular-nums text-brand-deep">
+                      <div className="font-display text-[24px] font-extrabold leading-none tabular-nums text-brand-deep">
                         {String(sol.id).padStart(2, "0")}
                       </div>
-                      <div className="mt-2 font-sans text-[13px] font-semibold leading-snug text-brand-ink">
+                      <div className="mt-2 font-sans text-[14px] font-semibold leading-snug text-brand-ink">
                         {sol.shortName}
                       </div>
                       <div className="mt-2 eyebrow-ink text-brand-ink/50">
@@ -151,7 +151,7 @@ export function Matrix({ country, onCellOpen, highlightDimension }: MatrixProps)
                             : `${d.label} — ${STATUS_LABEL[best.status]}`
                         }
                         className={[
-                          "group block h-full w-full p-4 text-left transition-colors min-h-[132px]",
+                          "group block h-full w-full p-4 text-left transition-colors min-h-[140px]",
                           CELL_BG[best.status],
                           isInteractive
                             ? "cursor-pointer hover:bg-white/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-deep focus-visible:ring-inset"
@@ -161,23 +161,23 @@ export function Matrix({ country, onCellOpen, highlightDimension }: MatrixProps)
                         <div className="flex items-start justify-between gap-2">
                           <Droplet
                             variant={DROPLET_VARIANT[best.status]}
-                            size={26}
+                            size={28}
                           />
                           {subsector && subsectorLabel && (
-                            <span className="eyebrow-ink text-[9px] text-brand-ink/55 max-w-[8rem] text-right leading-tight">
+                            <span className="eyebrow-ink text-[11px] text-brand-ink/55 max-w-[8rem] text-right leading-tight">
                               {subsectorLabel.split(" & ")[0]}
                             </span>
                           )}
                         </div>
-                        <div className="mt-2 eyebrow-ink text-[10px] text-brand-ink/75">
+                        <div className="mt-2 eyebrow-ink text-[11px] text-brand-ink/75">
                           {STATUS_LABEL[best.status]}
                         </div>
                         {best.mandate ? (
-                          <p className="mt-2 font-serif text-[13px] leading-[1.4] text-brand-ink/85 line-clamp-3">
+                          <p className="mt-2 font-serif text-[14px] leading-[1.45] text-brand-ink/85 line-clamp-3">
                             {best.mandate}
                           </p>
                         ) : (
-                          <p className="mt-2 font-serif italic text-[12px] leading-[1.4] text-brand-ink/45">
+                          <p className="mt-2 font-serif italic text-[13px] leading-[1.45] text-brand-ink/45">
                             {subs.length === 0
                               ? "WSIP solution not mapped to a sub-sector"
                               : "Dimension not yet assessed"}

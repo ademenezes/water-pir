@@ -309,9 +309,9 @@ function CohortGlyphs() {
                   ? "#0F2A44"
                   : "#9ca3af"
               }
-              size={18}
+              size={22}
             />
-            <span className="font-sans text-[9px] uppercase tracking-[0.14em] text-brand-ink/55">
+            <span className="font-sans text-[11px] uppercase tracking-[0.12em] text-brand-ink/65">
               {c.code}
             </span>
           </span>

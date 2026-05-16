@@ -22,15 +22,15 @@ body {
 
   /* Tracked all-caps small label, teal, like the PDF's "SYNTHESIS REPORT" */
   .eyebrow {
-    @apply font-sans text-[11px] font-semibold uppercase text-brand-deep;
+    @apply font-sans text-[12px] font-semibold uppercase text-brand-deep;
     letter-spacing: 0.18em;
   }
   .eyebrow-ink {
-    @apply font-sans text-[11px] font-semibold uppercase text-brand-ink;
+    @apply font-sans text-[12px] font-semibold uppercase text-brand-ink;
     letter-spacing: 0.18em;
   }
   .eyebrow-white {
-    @apply font-sans text-[11px] font-semibold uppercase text-white/85;
+    @apply font-sans text-[12px] font-semibold uppercase text-white/85;
     letter-spacing: 0.18em;
   }
 
@@ -69,21 +69,21 @@ body {
 
   /* Figure caption — eyebrow with sentence after. */
   .figure-caption {
-    @apply font-sans text-[12px] leading-snug text-brand-ink/70;
+    @apply font-sans text-[13px] leading-snug text-brand-ink/70;
   }
   .figure-caption strong {
-    @apply font-semibold text-brand-deep uppercase;
+    @apply text-[12px] font-semibold text-brand-deep uppercase;
     letter-spacing: 0.18em;
   }
 
   /* Marginalia — small notes in the gutter. */
   .marginalia {
-    @apply font-sans text-[12px] leading-snug text-brand-ink/65;
+    @apply font-sans text-[13px] leading-snug text-brand-ink/65;
   }
   .marginalia .label {
     @apply block font-semibold text-brand-deep uppercase mb-1;
     letter-spacing: 0.18em;
-    font-size: 10px;
+    font-size: 12px;
   }
 
   /* Editorial in-line link — underlined, ink, hover → deep teal. */
