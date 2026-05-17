@@ -1,6 +1,6 @@
 import type { KeyInsight } from "../src/types";
 
-// Brazil — key evidence-backed insights for the country dashboard.
+// Brazil, key evidence-backed insights for the country dashboard.
 // Each insight cites a specific article from a Brazilian federal instrument,
 // verified against the canonical Planalto text (see documents/brazil/manifest.json).
 
@@ -15,7 +15,7 @@ export const BRAZIL_INSIGHTS: KeyInsight[] = [
   {
     title: "Concurrent federal/municipal competence drives sanitation litigation",
     body:
-      "The Constitution lists health and housing as concurrent (Art. 23) and grants municipalities local-interest legislation (Art. 30, I). Law 11.445/2007 Art. 8-A confirms municipalities as titulares, while Law 14.026/2020 mandates regionalisation — generating ongoing STF litigation.",
+      "The Constitution lists health and housing as concurrent (Art. 23) and grants municipalities local-interest legislation (Art. 30, I). Law 11.445/2007 Art. 8-A confirms municipalities as titulares, while Law 14.026/2020 mandates regionalisation, generating ongoing STF litigation.",
     legal_basis: {
       short: "CF/1988 + Law 11.445/2007 + Law 14.026/2020",
       article: "CF Art. 23 / Art. 30; LNSB Art. 8-A",
@@ -27,7 +27,7 @@ export const BRAZIL_INSIGHTS: KeyInsight[] = [
     severity: "tension",
   },
   {
-    title: "ANA reference norms are voluntary — but federal funding is conditional",
+    title: "ANA reference norms are voluntary, but federal funding is conditional",
     body:
       "Law 9.984/2000 Art. 4-A (added by Marco Legal) gives ANA power to issue national reference norms for sanitation. Art. 4-B makes adoption visible: only regulators on ANA's public list keep access to federal funds and BNDES/Caixa financing.",
     legal_basis: {
@@ -55,7 +55,7 @@ export const BRAZIL_INSIGHTS: KeyInsight[] = [
   {
     title: "Marco Legal ended direct contracts; sanitation now requires competitive bidding",
     body:
-      "Law 14.026/2020 amends Law 11.107/2005 to bar the contrato de programa for the public services of Art. 175 of the Constitution. Combined with Law 11.445/2007 Art. 10-A, every new sanitation contract requires an open competitive process — a generation-defining shift.",
+      "Law 14.026/2020 amends Law 11.107/2005 to bar the contrato de programa for the public services of Art. 175 of the Constitution. Combined with Law 11.445/2007 Art. 10-A, every new sanitation contract requires an open competitive process, a generation-defining shift.",
     legal_basis: {
       short: "Law 14.026/2020",
       article: "Art. 16 (amends Lei 11.107/2005)",
@@ -66,9 +66,9 @@ export const BRAZIL_INSIGHTS: KeyInsight[] = [
     severity: "strength",
   },
   {
-    title: "Hydraulic-energy potentials are Union goods — siloed from WRM",
+    title: "Hydraulic-energy potentials are Union goods, siloed from WRM",
     body:
-      "CF/1988 Art. 20, VIII lists hydraulic-energy potentials as Union goods, and Art. 21, XII (b) gives the Union the energy concession. The result: ANEEL regulates hydropower while ANA regulates water resources — coordination gaps surface during droughts and reservoir disputes.",
+      "CF/1988 Art. 20, VIII lists hydraulic-energy potentials as Union goods, and Art. 21, XII (b) gives the Union the energy concession. The result: ANEEL regulates hydropower while ANA regulates water resources, coordination gaps surface during droughts and reservoir disputes.",
     legal_basis: {
       short: "CF/1988",
       article: "Art. 20, VIII; Art. 21, XII (b)",
@@ -81,7 +81,7 @@ export const BRAZIL_INSIGHTS: KeyInsight[] = [
   {
     title: "PNRH bases water management on the basin, not the political unit",
     body:
-      "Law 9.433/1997 Art. 1, V declares the river basin the territorial unit for PNRH implementation. Art. 33 lists CNRH, ANA, state councils, basin committees and water agencies as SINGREH members — a decentralised, multi-actor architecture that pre-dates global Solution 7 guidance.",
+      "Law 9.433/1997 Art. 1, V declares the river basin the territorial unit for PNRH implementation. Art. 33 lists CNRH, ANA, state councils, basin committees and water agencies as SINGREH members, a decentralised, multi-actor architecture that pre-dates global Solution 7 guidance.",
     legal_basis: {
       short: "Law 9.433/1997",
       article: "Art. 1, V; Art. 33",

@@ -1,6 +1,6 @@
 import { PIR_DIMENSIONS } from "../framework";
 
-// Circular mini-mirror of BOSIB Figure 1.2 — six PIR dimensions around a "Resilience" core.
+// Circular mini-mirror of BOSIB Figure 1.2, six PIR dimensions around a "Resilience" core.
 // Pure SVG, no dependencies.
 
 const COLORS: Record<string, string> = {
@@ -66,7 +66,7 @@ export function PirSchematic() {
           Framework axis 2
         </div>
         <div className="text-sm font-semibold text-slate-900">
-          PIR — 6 analytical dimensions
+          PIR, 6 analytical dimensions
         </div>
         <div className="text-[11px] text-slate-500">
           Source: WBG WSS PIR Synthesis, Aug 2022, Figure 1.2.

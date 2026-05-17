@@ -3,12 +3,12 @@ import type { CoverageStatus } from "../types";
 
 const TITLE: Record<CoverageStatus, string> = {
   green:
-    "Strong coverage — there is a law, an active regulator, and practice broadly matches the legal mandate.",
+    "Strong coverage, there is a law, an active regulator, and practice broadly matches the legal mandate.",
   yellow:
-    "Partial coverage — a law or policy exists but regulation, enforcement or implementation is incomplete or uneven.",
+    "Partial coverage, a law or policy exists but regulation, enforcement or implementation is incomplete or uneven.",
   red:
-    "Coverage gap — no specific law or regulator covers this intersection of WSIP solution and PIR dimension.",
-  gray: "Not yet mapped — this cell has not been assessed for the country.",
+    "Coverage gap, no specific law or regulator covers this intersection of WSIP solution and PIR dimension.",
+  gray: "Not yet mapped, this cell has not been assessed for the country.",
 };
 
 const SHORT_LABEL: Record<CoverageStatus, string> = {
@@ -45,8 +45,8 @@ export function CoverageDot({
 }
 
 /**
- * Inline legend showing a MINI MATRIX CELL for each status — same background,
- * same dot — so the visual link between the legend and the actual matrix is unmistakable.
+ * Inline legend showing a MINI MATRIX CELL for each status, same background,
+ * same dot, so the visual link between the legend and the actual matrix is unmistakable.
  */
 export function CoverageLegend() {
   const items: { status: CoverageStatus; short: string }[] = [
@@ -78,7 +78,7 @@ export function CoverageLegend() {
 }
 
 /**
- * Click-to-expand "?" affordance — shows the full sentence-level definition
+ * Click-to-expand "?" affordance, shows the full sentence-level definition
  * of every status. Use alongside CoverageLegend.
  */
 function CoverageLegendHelp() {

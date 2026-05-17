@@ -79,7 +79,7 @@ export const PIR_DIMENSIONS: PirDimensionDef[] = [
     key: "institutions",
     label: "Institutions",
     blurb:
-      "The organisations that operationalise sector functions — ministries, agencies, utilities, service providers and user representatives.",
+      "The organisations that operationalise sector functions, ministries, agencies, utilities, service providers and user representatives.",
   },
   {
     key: "igc",
@@ -91,13 +91,13 @@ export const PIR_DIMENSIONS: PirDimensionDef[] = [
     key: "financing",
     label: "Financing",
     blurb:
-      "The flow of public, private and tariff resources into the sector — the 3Ts (tariffs, taxes, transfers), subsidies and risk-sharing instruments.",
+      "The flow of public, private and tariff resources into the sector, the 3Ts (tariffs, taxes, transfers), subsidies and risk-sharing instruments.",
   },
   {
     key: "regulation",
     label: "Regulation",
     blurb:
-      "The rules governing tariffs, quality, access and performance — and the bodies empowered to monitor and enforce them.",
+      "The rules governing tariffs, quality, access and performance, and the bodies empowered to monitor and enforce them.",
   },
   {
     key: "resilience",
@@ -107,7 +107,7 @@ export const PIR_DIMENSIONS: PirDimensionDef[] = [
   },
 ];
 
-// Sub-sector taxonomy — bridges WSIP solutions to the traditional sub-sector vocabulary
+// Sub-sector taxonomy, bridges WSIP solutions to the traditional sub-sector vocabulary
 // used in FAOLEX, AQUALEX and national legislation.
 export const SUBSECTOR_LABELS: Record<string, string> = {
   wss_urban: "Urban Water Supply & Sanitation",

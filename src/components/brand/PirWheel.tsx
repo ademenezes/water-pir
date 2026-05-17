@@ -7,7 +7,7 @@ import type { PirDimension } from "../../types";
  *
  * Used:
  * - On the About page as Figure 2 (canonical PIR diagram).
- * - As a navigator inside the Matrix tab — hovering an arc filters / highlights
+ * - As a navigator inside the Matrix tab, hovering an arc filters / highlights
  *   the matching dimension column (controlled via `highlight` + `onHover`).
  */
 
@@ -26,7 +26,7 @@ interface PirWheelProps {
   highlight?: PirDimension;
   onHover?: (dim: PirDimension | null) => void;
   onClick?: (dim: PirDimension) => void;
-  /** When true, hide the label text inside arcs (use sparingly — for very small sizes). */
+  /** When true, hide the label text inside arcs (use sparingly, for very small sizes). */
   hideLabels?: boolean;
   className?: string;
 }

@@ -10,6 +10,7 @@ import type {
   CoverageStatus,
   PirDimension,
   SubsectorEntry,
+  WsipPillar,
   WsipSolutionId,
 } from "../../types";
 
@@ -30,6 +31,25 @@ const DROPLET_VARIANT: Record<
   gray: "dotted",
 };
 
+const PILLAR_LABEL: Record<WsipPillar, string> = {
+  people: "Water for People",
+  food: "Water for Food",
+  planet: "Water for Planet",
+};
+
+const PILLAR_BG: Record<WsipPillar, string> = {
+  people: "bg-pillar-people",
+  food: "bg-pillar-food",
+  planet: "bg-pillar-planet",
+};
+
+// Number of WSIP solutions in each pillar, drives the rowSpan in the pillar column.
+const PILLAR_ROW_SPAN: Record<WsipPillar, number> = {
+  people: WSIP_SOLUTIONS.filter((s) => s.pillar === "people").length,
+  food: WSIP_SOLUTIONS.filter((s) => s.pillar === "food").length,
+  planet: WSIP_SOLUTIONS.filter((s) => s.pillar === "planet").length,
+};
+
 export interface MatrixCellTarget {
   country: CountryProfile;
   solutionId: WsipSolutionId;
@@ -48,10 +68,15 @@ interface MatrixProps {
 export function Matrix({ country, onCellOpen, highlightDimension }: MatrixProps) {
   return (
     <div className="overflow-x-auto border-y border-brand-rule">
-      <table className="w-full min-w-[920px] border-collapse">
+      <table className="w-full min-w-[1080px] border-collapse">
         <thead>
           <tr className="border-b border-brand-rule">
-            <th className="sticky left-0 z-20 w-[220px] bg-white px-4 py-5 text-left">
+            <th className="sticky left-0 z-20 w-[92px] bg-brand-ink px-4 py-5 text-left">
+              <span className="font-display text-[13px] font-extrabold uppercase tracking-[0.18em] text-white">
+                Pillar
+              </span>
+            </th>
+            <th className="sticky left-[92px] z-20 w-[220px] bg-white px-4 py-5 text-left">
               <span className="eyebrow-ink text-brand-ink/55">
                 WSIP solution
               </span>
@@ -65,7 +90,7 @@ export function Matrix({ country, onCellOpen, highlightDimension }: MatrixProps)
                 ].join(" ")}
                 title={d.blurb}
               >
-                <div className="font-display text-[12px] font-extrabold uppercase tracking-[0.18em] text-brand-deep">
+                <div className="font-display text-[13px] font-extrabold uppercase tracking-[0.18em] text-brand-deep">
                   {d.label}
                 </div>
               </th>
@@ -73,41 +98,44 @@ export function Matrix({ country, onCellOpen, highlightDimension }: MatrixProps)
           </tr>
         </thead>
         <tbody>
-          {WSIP_SOLUTIONS.map((sol) => {
+          {WSIP_SOLUTIONS.map((sol, rowIdx) => {
             const subs = country.subsectors.filter((s) =>
               s.wsip_solutions.includes(sol.id as WsipSolutionId)
             );
-            const pillarStripe =
-              sol.pillar === "people"
-                ? "bg-pillar-people"
-                : sol.pillar === "food"
-                ? "bg-pillar-food"
-                : "bg-pillar-planet";
-            const pillarLabel =
-              sol.pillar === "people"
-                ? "Water · People"
-                : sol.pillar === "food"
-                ? "Water · Food"
-                : "Water · Planet";
+
+            // First row of a pillar emits the pillar <th> with rowSpan;
+            // subsequent rows skip it (rowSpan handles the layout).
+            const prev = rowIdx > 0 ? WSIP_SOLUTIONS[rowIdx - 1] : null;
+            const isFirstOfPillar = !prev || prev.pillar !== sol.pillar;
 
             return (
               <tr key={sol.id} className="border-t border-brand-rule">
-                <th className="sticky left-0 z-10 w-[220px] bg-white p-0 text-left align-top">
-                  <div className="flex h-full items-stretch">
-                    <span
-                      className={`w-1 shrink-0 ${pillarStripe}`}
-                      aria-hidden
-                    />
-                    <div className="flex-1 px-4 py-4">
-                      <div className="font-display text-[24px] font-extrabold leading-none tabular-nums text-brand-deep">
-                        {String(sol.id).padStart(2, "0")}
-                      </div>
-                      <div className="mt-2 font-sans text-[14px] font-semibold leading-snug text-brand-ink">
-                        {sol.shortName}
-                      </div>
-                      <div className="mt-2 eyebrow-ink text-brand-ink/50">
-                        {pillarLabel}
-                      </div>
+                {isFirstOfPillar && (
+                  <th
+                    rowSpan={PILLAR_ROW_SPAN[sol.pillar]}
+                    className={[
+                      "sticky left-0 z-10 w-[92px] align-middle text-center",
+                      PILLAR_BG[sol.pillar],
+                    ].join(" ")}
+                    aria-label={PILLAR_LABEL[sol.pillar]}
+                  >
+                    <div className="px-3 py-6 font-display text-[18px] font-black leading-tight tracking-tight text-brand-ink">
+                      {PILLAR_LABEL[sol.pillar].split(" ").map((w, i) => (
+                        <span key={i} className="block">
+                          {w}
+                        </span>
+                      ))}
+                    </div>
+                  </th>
+                )}
+
+                <th className="sticky left-[92px] z-10 w-[220px] bg-white p-0 text-left align-top">
+                  <div className="px-5 py-5">
+                    <div className="font-display text-[26px] font-extrabold leading-none tabular-nums text-brand-deep">
+                      {String(sol.id).padStart(2, "0")}
+                    </div>
+                    <div className="mt-2 font-sans text-[15px] font-semibold leading-snug text-brand-ink">
+                      {sol.shortName}
                     </div>
                   </div>
                 </th>
@@ -117,8 +145,7 @@ export function Matrix({ country, onCellOpen, highlightDimension }: MatrixProps)
                   const subsector = best.subsector;
                   const isInteractive = !!subsector && !!onCellOpen;
                   const subsectorLabel = subsector
-                    ? SUBSECTOR_LABELS[subsector.key] ??
-                      subsector.label
+                    ? SUBSECTOR_LABELS[subsector.key] ?? subsector.label
                     : null;
 
                   const handleClick = isInteractive
@@ -145,13 +172,11 @@ export function Matrix({ country, onCellOpen, highlightDimension }: MatrixProps)
                         disabled={!isInteractive}
                         aria-label={
                           subsector
-                            ? `${subsectorLabel} — ${d.label} — ${
-                                STATUS_LABEL[best.status]
-                              }`
-                            : `${d.label} — ${STATUS_LABEL[best.status]}`
+                            ? `${subsectorLabel}, ${d.label}, ${STATUS_LABEL[best.status]}`
+                            : `${d.label}, ${STATUS_LABEL[best.status]}`
                         }
                         className={[
-                          "group block h-full w-full p-4 text-left transition-colors min-h-[140px]",
+                          "group block h-full w-full p-4 text-left transition-colors min-h-[148px]",
                           CELL_BG[best.status],
                           isInteractive
                             ? "cursor-pointer hover:bg-white/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-deep focus-visible:ring-inset"
@@ -164,20 +189,20 @@ export function Matrix({ country, onCellOpen, highlightDimension }: MatrixProps)
                             size={28}
                           />
                           {subsector && subsectorLabel && (
-                            <span className="eyebrow-ink text-[11px] text-brand-ink/55 max-w-[8rem] text-right leading-tight">
+                            <span className="eyebrow-ink text-[12px] text-brand-ink/55 max-w-[8rem] text-right leading-tight">
                               {subsectorLabel.split(" & ")[0]}
                             </span>
                           )}
                         </div>
-                        <div className="mt-2 eyebrow-ink text-[11px] text-brand-ink/75">
+                        <div className="mt-2 eyebrow-ink text-[12px] text-brand-ink/75">
                           {STATUS_LABEL[best.status]}
                         </div>
                         {best.mandate ? (
-                          <p className="mt-2 font-serif text-[14px] leading-[1.45] text-brand-ink/85 line-clamp-3">
+                          <p className="mt-2 font-serif text-[15px] leading-[1.45] text-brand-ink/85 line-clamp-3">
                             {best.mandate}
                           </p>
                         ) : (
-                          <p className="mt-2 font-serif italic text-[13px] leading-[1.45] text-brand-ink/45">
+                          <p className="mt-2 font-serif italic text-[14px] leading-[1.45] text-brand-ink/45">
                             {subs.length === 0
                               ? "WSIP solution not mapped to a sub-sector"
                               : "Dimension not yet assessed"}

@@ -163,14 +163,12 @@ export function SubsectorDeepDive() {
         </section>
       )}
 
-      {/* ── PIR dimension sections ───────────────────────────────────────── */}
       <div>
-        {PIR_DIMENSIONS.map((d, i) => {
+        {PIR_DIMENSIONS.map((d) => {
           const cell = subsector.cells.find((c) => c.pir_dimension === d.key);
           return (
             <DimensionSection
               key={d.key}
-              index={i}
               dim={d}
               cell={cell}
               countryName={country.name}
@@ -195,13 +193,11 @@ export function SubsectorDeepDive() {
 /* ─────────────────────────────────────────────────────────────────────────── */
 
 function DimensionSection({
-  index,
   dim,
   cell,
   countryName,
   subsectorLabel,
 }: {
-  index: number;
   dim: PirDimensionDef;
   cell: SubsectorPirCell | undefined;
   countryName: string;
@@ -213,18 +209,15 @@ function DimensionSection({
   return (
     <section
       id={id}
-      className="border-b border-brand-rule scroll-mt-24 py-12"
+      className="border-b border-brand-rule scroll-mt-24 py-14"
     >
       <div className="grid grid-cols-12 gap-8">
-        {/* Heading column */}
         <header className="col-span-12 md:col-span-3 md:sticky md:top-8 md:self-start">
-          <div className="eyebrow">
-            Dimension&nbsp;·&nbsp;{String(index + 1).padStart(2, "0")}
-          </div>
-          <h2 className="mt-3 font-display text-[clamp(24px,2.8vw,34px)] font-extrabold leading-[1.05] tracking-tightest text-brand-ink">
+          <div className="eyebrow">PIR dimension</div>
+          <h2 className="mt-3 font-display text-[clamp(26px,3vw,38px)] font-extrabold leading-[1.05] tracking-tightest text-brand-ink">
             {dim.label}.
           </h2>
-          <p className="mt-3 font-serif italic text-[14px] leading-[1.5] text-brand-ink/65">
+          <p className="mt-3 font-serif italic text-[15px] leading-[1.5] text-brand-ink/65">
             {dim.blurb}
           </p>
           <div className="mt-4 flex items-center gap-3">
@@ -346,7 +339,7 @@ function InstitutionRow({ inst }: { inst: Institution }) {
     <li className="grid grid-cols-12 gap-3 py-3.5">
       <div className="col-span-12 md:col-span-6 font-serif text-[15px] text-brand-ink">
         <strong className="font-semibold">
-          {inst.acronym ? `${inst.acronym} — ` : ""}
+          {inst.acronym ? `${inst.acronym}, ` : ""}
           {inst.name}
         </strong>
         {inst.url && (

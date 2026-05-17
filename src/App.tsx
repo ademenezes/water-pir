@@ -28,7 +28,7 @@ export default function App() {
           </Layout>
         }
       />
-      {/* Legacy route — PIR Comparator is folded into the Matrix tab as views. */}
+      {/* Legacy route, PIR Comparator is folded into the Matrix tab as views. */}
       <Route
         path="/pir-comparator"
         element={<Navigate to="/wsip-matrix?view=by-subsector" replace />}

@@ -17,7 +17,7 @@ export const INSIGHTS: Insight[] = [
     title:
       "Brazil's 2020 Marco Legal expanded ANA's mandate to issue national reference norms",
     body:
-      "Law 14.026 turned the federal water agency into a sanitation reference-norm issuer. State regulators now align with ANA norms to remain eligible for federal funding — a soft-power harmonisation tool.",
+      "Law 14.026 turned the federal water agency into a sanitation reference-norm issuer. State regulators now align with ANA norms to remain eligible for federal funding, a soft-power harmonisation tool.",
     link: { href: "/country/BRA/subsector/wss_urban", label: "See Brazil's WSS urban deep-dive →" },
     source: "Brazil dashboard · Law 14.026/2020",
   },
@@ -34,7 +34,7 @@ export const INSIGHTS: Insight[] = [
     title:
       "Brazil's water-use charging is universal in law but operational in only a handful of basins",
     body:
-      "The 1997 PNRH (Law 9.433) provides for water-use charges across all river basins, but in practice it is operational mainly in PCJ, Paraíba do Sul, Doce, São Francisco — a textbook de-jure / de-facto gap.",
+      "The 1997 PNRH (Law 9.433) provides for water-use charges across all river basins, but in practice it is operational mainly in PCJ, Paraíba do Sul, Doce, São Francisco, a textbook de-jure / de-facto gap.",
     link: { href: "/country/BRA/subsector/wrm_basin", label: "See Brazil's WRM deep-dive →" },
     source: "Brazil dashboard · Law 9.433/1997 art. 19–22",
   },
@@ -51,7 +51,7 @@ export const INSIGHTS: Insight[] = [
     title:
       "Institutional fragmentation is the #1 challenge to good water management",
     body:
-      "In a 2021 survey of 86 ministers and agency heads, 'fragmented water institutions' was ranked the top challenge — ahead of inadequate data, conflicts between user groups, or weak infrastructure.",
+      "In a 2021 survey of 86 ministers and agency heads, 'fragmented water institutions' was ranked the top challenge, ahead of inadequate data, conflicts between user groups, or weak infrastructure.",
     link: { href: "/about", label: "About the frameworks →" },
     source: "BOSIB Figure 1.1 (Water Policy Group 2021)",
   },

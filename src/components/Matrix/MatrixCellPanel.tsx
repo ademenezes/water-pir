@@ -69,7 +69,7 @@ export function MatrixCellPanel({
         aria-labelledby="cell-panel-title"
         className="fixed inset-y-0 right-0 z-50 w-full max-w-[44rem] overflow-y-auto bg-white shadow-2xl"
       >
-        {/* Header — chapter mini-cover */}
+        {/* Header, chapter mini-cover */}
         <div className="border-b border-brand-rule px-10 pt-8 pb-7">
           <button
             type="button"
@@ -168,7 +168,7 @@ export function MatrixCellPanel({
                   <li key={i} className="grid grid-cols-12 gap-3 py-3">
                     <div className="col-span-7 font-serif text-[15px] text-brand-ink">
                       <strong className="font-semibold">
-                        {inst.acronym ? `${inst.acronym} — ` : ""}
+                        {inst.acronym ? `${inst.acronym}, ` : ""}
                         {inst.name}
                       </strong>
                       {inst.url && (

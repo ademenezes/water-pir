@@ -76,27 +76,16 @@ export function WsipMatrixTab() {
 
   return (
     <div>
-      {/* ── Chapter cover ─────────────────────────────────────────────────── */}
       <section className="mx-auto max-w-[88rem] px-8 pt-16 pb-12">
-        <div className="grid grid-cols-12 gap-8 items-end">
-          <div className="col-span-12 md:col-span-3">
-            <div className="eyebrow">Chapter · 01</div>
-            <div className="chapter-numeral mt-3 text-[120px] md:text-[140px]">
-              01
-            </div>
-          </div>
-          <div className="col-span-12 md:col-span-8">
-            <h1 className="font-display text-[clamp(34px,4.6vw,60px)] font-extrabold leading-[1.02] tracking-tightest text-brand-ink">
-              The matrix.
-            </h1>
-            <p className="prose-editorial mt-5 max-w-[42rem] text-[19px] italic text-brand-ink/80">
-              Seven WSIP scalable solutions, six PIR dimensions. Forty-two
-              cells per country. The colour and the droplet tell you whether
-              the law is there; the cell text tells you what it actually says.
-              Empty cells reveal where reform is still required.
-            </p>
-          </div>
-        </div>
+        <div className="eyebrow">The matrix</div>
+        <h1 className="mt-4 font-display text-[clamp(40px,5.6vw,80px)] font-extrabold leading-[1.02] tracking-tightest text-brand-ink">
+          Seven solutions, six dimensions.
+        </h1>
+        <p className="prose-editorial mt-7 max-w-[52rem] text-[21px] italic text-brand-ink/80">
+          Forty&#8209;two cells per country. The colour and the droplet tell
+          you whether the law is there. The cell text tells you what it
+          actually says. Empty cells reveal where reform is still required.
+        </p>
       </section>
 
       {/* ── Editorial masthead controls ───────────────────────────────────── */}
@@ -138,7 +127,7 @@ export function WsipMatrixTab() {
         </div>
       </section>
 
-      {/* ── Body — view depends on mode ───────────────────────────────────── */}
+      {/* ── Body, view depends on mode ───────────────────────────────────── */}
       <section className="mx-auto max-w-[88rem] px-8 pb-24">
         {!country ? (
           <div className="border border-brand-amber/40 bg-brand-sand p-8 font-serif text-[15px] text-brand-ink">
@@ -168,7 +157,7 @@ export function WsipMatrixTab() {
           WSIP&nbsp;×&nbsp;PIR intersection. Click any cell to open its full
           mandate, legal instruments, responsible institutions, and the
           de&#8209;jure / de&#8209;facto note. An outline or dotted droplet
-          flags a gap — exactly the priority areas for reform.
+          flags a gap, exactly the priority areas for reform.
         </p>
       </section>
 
@@ -228,7 +217,7 @@ function CountrySelect({
           ).map((c) => (
             <option key={c.code} value={c.code} disabled={!allowPipeline}>
               {c.name}
-              {allowPipeline ? "" : " — coming soon"}
+              {allowPipeline ? "" : ", coming soon"}
             </option>
           ))}
         </optgroup>
@@ -335,7 +324,7 @@ function PipelinePlaceholder({
         {meta?.name ?? code}
       </h2>
       <div className="mt-1 eyebrow-ink text-brand-ink/55">
-        {meta?.region ?? "—"}&nbsp;·&nbsp;{meta?.status ?? "pipeline"}
+        {meta?.region ?? "Region unknown"}&nbsp;·&nbsp;{meta?.status ?? "pipeline"}
       </div>
       {meta?.blurb && (
         <p className="mt-4 max-w-[28rem] font-serif text-[14px] leading-[1.55] text-brand-ink/75">

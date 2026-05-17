@@ -131,7 +131,7 @@ export function WorldMap() {
           {hover.status !== "live" && hover.status !== "none" && (
             <div className="mt-1 text-[10px] uppercase tracking-wider text-slate-500">
               {hover.status === "pipeline"
-                ? "WSIP Water Compact priority — data coming"
+                ? "WSIP Water Compact priority, data coming"
                 : "Planned for Phase 3"}
             </div>
           )}

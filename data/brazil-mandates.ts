@@ -43,7 +43,7 @@ export const BRAZIL_MANDATES: MandateRecord[] = [
     },
   },
   {
-    actor: "União (calamity prevention — droughts and floods)",
+    actor: "União (calamity prevention, droughts and floods)",
     acronym: "União",
     level: "national",
     function: "policy",
@@ -79,7 +79,7 @@ export const BRAZIL_MANDATES: MandateRecord[] = [
     },
   },
   {
-    actor: "ANA — Agência Nacional de Águas e Saneamento Básico",
+    actor: "ANA, Agência Nacional de Águas e Saneamento Básico",
     acronym: "ANA",
     level: "national",
     function: "norm_setting",
@@ -93,7 +93,7 @@ export const BRAZIL_MANDATES: MandateRecord[] = [
       "ANA Resoluções 76-79/2022 set tariff, quality and indicator NRs; state-regulator adherence remains uneven.",
   },
   {
-    actor: "ANA — outorga over federal waters",
+    actor: "ANA, outorga over federal waters",
     acronym: "ANA",
     level: "national",
     function: "regulation",
@@ -105,7 +105,7 @@ export const BRAZIL_MANDATES: MandateRecord[] = [
     },
   },
   {
-    actor: "ANA — dam-safety information system (SNISB)",
+    actor: "ANA, dam-safety information system (SNISB)",
     acronym: "ANA",
     level: "national",
     function: "regulation",
@@ -117,7 +117,7 @@ export const BRAZIL_MANDATES: MandateRecord[] = [
     },
   },
   {
-    actor: "ANA — federal water charging",
+    actor: "ANA, federal water charging",
     acronym: "ANA",
     level: "national",
     function: "financing",
@@ -129,7 +129,7 @@ export const BRAZIL_MANDATES: MandateRecord[] = [
     },
   },
   {
-    actor: "ANA — Plano Nacional de Recursos Hídricos support",
+    actor: "ANA, Plano Nacional de Recursos Hídricos support",
     acronym: "ANA",
     level: "national",
     function: "planning",
@@ -176,7 +176,7 @@ export const BRAZIL_MANDATES: MandateRecord[] = [
       short: "Law 12.608/2012",
       article: "Art. 6",
       national_url: PLANALTO_12608,
-      verbatim_short: "National civil protection policy — risk prevention coordination.",
+      verbatim_short: "National civil protection policy, risk prevention coordination.",
     },
   },
 
@@ -206,7 +206,7 @@ export const BRAZIL_MANDATES: MandateRecord[] = [
     },
   },
   {
-    actor: "States — outorga over state waters",
+    actor: "States, outorga over state waters",
     acronym: "Estados",
     level: "state",
     function: "regulation",
@@ -245,7 +245,7 @@ export const BRAZIL_MANDATES: MandateRecord[] = [
     },
   },
   {
-    actor: "State sanitation companies (CESBs — Sabesp, Copasa, Cedae, Sanepar, Embasa)",
+    actor: "State sanitation companies (CESBs, Sabesp, Copasa, Cedae, Sanepar, Embasa)",
     acronym: "CESBs",
     level: "state",
     function: "service_delivery",
@@ -274,7 +274,7 @@ export const BRAZIL_MANDATES: MandateRecord[] = [
     },
   },
   {
-    actor: "Municipalities — local interest legislation",
+    actor: "Municipalities, local interest legislation",
     acronym: "Municípios",
     level: "local",
     function: "policy",
@@ -364,7 +364,7 @@ export const BRAZIL_MANDATES: MandateRecord[] = [
     },
   },
   {
-    actor: "Agências de Água — basin plan elaboration",
+    actor: "Agências de Água, basin plan elaboration",
     acronym: "AdA",
     level: "basin",
     function: "planning",

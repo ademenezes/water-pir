@@ -3,7 +3,7 @@ import { PIR_DIMENSIONS } from "../framework";
 
 /**
  * Country-level key-insights section. Renders each KeyInsight as an editorial
- * mini-feature anchored to a specific law article — not a card. Severity is
+ * mini-feature anchored to a specific law article, not a card. Severity is
  * communicated by a colored top-stripe and a tracked eyebrow, both reusing the
  * coverage colour palette (strength=green, tension=yellow, gap=red) so the
  * mental model matches the rest of the dashboard.
@@ -21,7 +21,7 @@ const SEVERITY_BLURB: Record<KeyInsight["severity"], string> = {
   strength: "Law and implementation work together",
 };
 
-// Severity colour bar — picks up the coverage palette so it harmonises with
+// Severity colour bar, picks up the coverage palette so it harmonises with
 // matrix cells and droplets. (No new colour tokens.)
 const SEVERITY_STRIPE: Record<KeyInsight["severity"], string> = {
   strength: "bg-emerald-500",
@@ -46,7 +46,7 @@ export function KeyInsightsSection({ insights }: Props) {
     <section>
       <div className="eyebrow">Key insights</div>
       <h2 className="mt-3 font-display text-[clamp(24px,3vw,36px)] font-extrabold leading-[1.05] tracking-tightest text-brand-ink">
-        What the law actually says — and where reality diverges.
+        What the law actually says, and where reality diverges.
       </h2>
       <p className="prose-editorial mt-4 max-w-[44rem] text-[15px] text-brand-ink/75">
         Each entry is anchored to a specific article from a verified primary

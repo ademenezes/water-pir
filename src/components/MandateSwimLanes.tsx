@@ -26,10 +26,10 @@ const LEVEL_LABEL: Record<GovernmentLevel, string> = {
 };
 
 const LEVEL_BLURB: Record<GovernmentLevel, string> = {
-  national: "União — CF/1988 Art. 21, XIX",
-  state: "Estados — CF/1988 Art. 26, I",
-  local: "Municípios — CF/1988 Art. 30; LNSB Art. 8-A",
-  basin: "Bacia hidrográfica — PNRH Art. 1, V",
+  national: "União, CF/1988 Art. 21, XIX",
+  state: "Estados, CF/1988 Art. 26, I",
+  local: "Municípios, CF/1988 Art. 30; LNSB Art. 8-A",
+  basin: "Bacia hidrográfica, PNRH Art. 1, V",
 };
 
 // Per-level accent stripe drawn on the row header (left edge).
@@ -100,11 +100,11 @@ export function MandateSwimLanes({ records }: Props) {
     <section>
       <div className="eyebrow">Who does what</div>
       <h2 className="mt-3 font-display text-[clamp(24px,3vw,36px)] font-extrabold leading-[1.05] tracking-tightest text-brand-ink">
-        Federal, state, municipal, basin — across the value chain.
+        Federal, state, municipal, basin, across the value chain.
       </h2>
       <p className="prose-editorial mt-4 max-w-[44rem] text-[15px] text-brand-ink/75">
         Each entry cites the article that grants the mandate. Empty cells are
-        mandate gaps — no actor currently holds that function at that level.
+        mandate gaps, no actor currently holds that function at that level.
         Click any entry for the legal basis and the canonical source.
       </p>
 
@@ -197,7 +197,7 @@ export function MandateSwimLanes({ records }: Props) {
         </div>
         <p className="mt-4 font-serif italic text-[12px] text-brand-ink/55 max-w-[44rem]">
           All citations verified against the canonical text indexed in
-          documents/brazil/manifest.json. Level labels reflect display names —
+          documents/brazil/manifest.json. Level labels reflect display names;
           underlying values are national / state / local / basin.
         </p>
       </div>

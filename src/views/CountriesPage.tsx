@@ -45,25 +45,17 @@ export function CountriesPage() {
 
   return (
     <div className="space-y-12">
-      {/* ── Chapter cover ─────────────────────────────────────────────────── */}
-      <header className="grid grid-cols-12 gap-8 pt-8">
-        <div className="col-span-12 md:col-span-3">
-          <div className="eyebrow">Chapter · 02</div>
-          <div className="chapter-numeral mt-3 text-[120px] md:text-[140px]">
-            02
-          </div>
-        </div>
-        <div className="col-span-12 md:col-span-9">
-          <h1 className="font-display text-[clamp(32px,4.6vw,56px)] font-extrabold leading-[1.02] tracking-tightest text-brand-ink">
-            Countries.
-          </h1>
-          <p className="prose-editorial mt-5 max-w-[42rem] text-[19px] italic text-brand-ink/80">
-            The 27 WSIP Water Compact priority countries identified by the
-            World Bank Group. Brazil is the live pilot; the rest of the
-            cohort is pipelined. Each row links to the country's matrix and
-            dashboard when data is available.
-          </p>
-        </div>
+      <header className="pt-8">
+        <div className="eyebrow">Cohort</div>
+        <h1 className="mt-4 font-display text-[clamp(40px,5.6vw,80px)] font-extrabold leading-[1.02] tracking-tightest text-brand-ink">
+          Countries.
+        </h1>
+        <p className="prose-editorial mt-7 max-w-[52rem] text-[21px] italic text-brand-ink/80">
+          The 27 WSIP Water Compact priority countries identified by the World
+          Bank Group. Brazil is the live pilot. The rest of the cohort is
+          pipelined. Each row links to the country's matrix and dashboard when
+          data is available.
+        </p>
       </header>
 
       {/* ── Small-multiples coverage glyph row ───────────────────────────── */}
@@ -263,7 +255,7 @@ function CountryRow({
 /* ─────────────────────────────────────────────────────────────────────────── */
 
 /**
- * Tiny coverage glyph per cohort country, rendered as a strip — gives a quick
+ * Tiny coverage glyph per cohort country, rendered as a strip, gives a quick
  * sense of where the curation pipeline is. Live = filled brand-deep droplet,
  * pipeline = outline, planned = dotted.
  */

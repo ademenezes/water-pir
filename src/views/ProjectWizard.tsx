@@ -87,51 +87,41 @@ export function ProjectWizard() {
 
   return (
     <article>
-      {/* ── Chapter cover ─────────────────────────────────────────────────── */}
-      <header className="grid grid-cols-12 gap-8 pt-8 pb-12">
-        <div className="col-span-12 md:col-span-3">
-          <div className="eyebrow">Chapter · 03</div>
-          <div className="chapter-numeral mt-3 text-[120px] md:text-[140px]">
-            03
-          </div>
-        </div>
-        <div className="col-span-12 md:col-span-9">
-          <Link
-            to="/wizard"
-            className="eyebrow text-brand-ink/55 hover:text-brand-deep"
-          >
-            ←&nbsp;Change project archetype
-          </Link>
-          <h1 className="mt-4 font-display text-[clamp(32px,4.4vw,52px)] font-extrabold leading-[1.04] tracking-tightest text-brand-ink">
-            {project.label}.
-          </h1>
-          <p className="prose-editorial mt-5 max-w-[44rem] text-[18px] italic text-brand-ink/80">
-            {project.short_desc}
-          </p>
+      <header className="pt-8 pb-12">
+        <Link
+          to="/wizard"
+          className="eyebrow text-brand-ink/55 hover:text-brand-deep"
+        >
+          ←&nbsp;Change project archetype
+        </Link>
+        <h1 className="mt-5 font-display text-[clamp(36px,5vw,68px)] font-extrabold leading-[1.04] tracking-tightest text-brand-ink">
+          {project.label}.
+        </h1>
+        <p className="prose-editorial mt-6 max-w-[52rem] text-[20px] italic text-brand-ink/80">
+          {project.short_desc}
+        </p>
 
-          {/* WSIP solution stripes */}
-          <ul className="mt-6 flex flex-wrap gap-x-6 gap-y-2">
-            {project.wsip_solutions.map((id) => {
-              const sol = WSIP_SOLUTIONS.find((s) => s.id === id);
-              if (!sol) return null;
-              return (
-                <li
-                  key={id}
-                  className="flex items-center gap-2 font-sans text-[13px] text-brand-ink"
-                >
-                  <span
-                    className={`h-2 w-6 ${PILLAR_STRIPE[sol.pillar]}`}
-                    aria-hidden
-                  />
-                  <span className="font-semibold tabular-nums">
-                    WSIP&nbsp;#{id}
-                  </span>
-                  <span className="text-brand-ink/70">{sol.shortName}</span>
-                </li>
-              );
-            })}
-          </ul>
-        </div>
+        <ul className="mt-7 flex flex-wrap gap-x-7 gap-y-2">
+          {project.wsip_solutions.map((id) => {
+            const sol = WSIP_SOLUTIONS.find((s) => s.id === id);
+            if (!sol) return null;
+            return (
+              <li
+                key={id}
+                className="flex items-center gap-2 font-sans text-[14px] text-brand-ink"
+              >
+                <span
+                  className={`h-2 w-7 ${PILLAR_STRIPE[sol.pillar]}`}
+                  aria-hidden
+                />
+                <span className="font-semibold tabular-nums">
+                  WSIP&nbsp;#{id}
+                </span>
+                <span className="text-brand-ink/70">{sol.shortName}</span>
+              </li>
+            );
+          })}
+        </ul>
       </header>
 
       {/* ── Editorial masthead controls ───────────────────────────────────── */}
@@ -338,25 +328,17 @@ function CriticalCard({
 function ProjectPicker() {
   return (
     <article>
-      {/* Chapter cover */}
-      <header className="grid grid-cols-12 gap-8 pt-8 pb-12">
-        <div className="col-span-12 md:col-span-3">
-          <div className="eyebrow">Chapter · 03</div>
-          <div className="chapter-numeral mt-3 text-[120px] md:text-[140px]">
-            03
-          </div>
-        </div>
-        <div className="col-span-12 md:col-span-9">
-          <h1 className="font-display text-[clamp(34px,4.6vw,60px)] font-extrabold leading-[1.02] tracking-tightest text-brand-ink">
-            Project wizard.
-          </h1>
-          <p className="prose-editorial mt-5 max-w-[42rem] text-[19px] italic text-brand-ink/80">
-            Tell the tool what project you're preparing. It returns the
-            governing law, the responsible institutions, the critical PIR
-            dimensions and the questions your team should answer next — only
-            the relevant slice of the country framework.
-          </p>
-        </div>
+      <header className="pt-8 pb-12">
+        <div className="eyebrow">For project preparation</div>
+        <h1 className="mt-4 font-display text-[clamp(40px,5.6vw,80px)] font-extrabold leading-[1.02] tracking-tightest text-brand-ink">
+          Project wizard.
+        </h1>
+        <p className="prose-editorial mt-7 max-w-[52rem] text-[21px] italic text-brand-ink/80">
+          Tell the tool what project you are preparing. It returns the
+          governing law, the responsible institutions, the critical PIR
+          dimensions and the questions your team should answer next. Only the
+          relevant slice of the country framework.
+        </p>
       </header>
 
       {/* Project archetype list */}

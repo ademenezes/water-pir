@@ -2,7 +2,7 @@ import type { CountryProfile } from "../src/types";
 import { BRAZIL_MANDATES } from "./brazil-mandates";
 import { BRAZIL_INSIGHTS } from "./brazil-insights";
 
-// Brazil — water sector PIR snapshot
+// Brazil, water sector PIR snapshot
 // Sources: FAOLEX (https://www.fao.org/faolex/) where indexed; Planalto
 // (https://www.planalto.gov.br/) is the canonical Brazilian government source for
 // federal law and is used where FAOLEX coverage is absent. Local copies of the
@@ -33,7 +33,7 @@ export const BRAZIL: CountryProfile = {
         "The 2020 Marco Legal (Law 14.026) is the single biggest reform of Brazil's sanitation framework in a generation. It expanded ANA's mandate to issue national reference norms, mandated regionalization, set universal access targets for 2033 (99% water, 90% sanitation), and ended direct (non-bid) contracts with state sanitation companies.",
       reform_lessons: [
         "Legal reform alone is insufficient: 14.026 mandated regionalization but implementation lags in several states.",
-        "ANA's reference norms (NRs) only bind state regulators that adhere — adoption is voluntary and uneven.",
+        "ANA's reference norms (NRs) only bind state regulators that adhere, adoption is voluntary and uneven.",
         "Transparent tariff methodology under ANA NRs has improved investor confidence and crowded in private capital (cited as a Solution 1 lesson in WSIP Annex III).",
       ],
       cells: [
@@ -119,7 +119,7 @@ export const BRAZIL: CountryProfile = {
               level: "local",
             },
             {
-              name: "State Sanitation Companies (CESBs) — Sabesp, Copasa, Cedae, Sanepar, Embasa, etc.",
+              name: "State Sanitation Companies (CESBs), Sabesp, Copasa, Cedae, Sanepar, Embasa, etc.",
               role: "service_provider",
               level: "state",
             },
@@ -154,7 +154,7 @@ export const BRAZIL: CountryProfile = {
               articles_cited: "Art. 23, IX (concurrent competence for housing and sanitation)",
             },
             {
-              title: "Marco Legal — Regionalization provisions",
+              title: "Marco Legal, Regionalization provisions",
               short: "Law 14.026/2020, Art. 8-B and 11-B",
               year: 2020,
               type: "framework_law",
@@ -190,7 +190,7 @@ export const BRAZIL: CountryProfile = {
           coverage_status: "green",
           legal_instruments: [
             {
-              title: "Marco Legal — financing and capital structure",
+              title: "Marco Legal, financing and capital structure",
               short: "Law 14.026/2020",
               year: 2020,
               type: "framework_law",
@@ -199,7 +199,7 @@ export const BRAZIL: CountryProfile = {
               articles_cited: "Art. 50 (federal funding conditionalities)",
             },
             {
-              title: "Law 11.445/2007 — tariff principles",
+              title: "Law 11.445/2007, tariff principles",
               short: "Law 11.445/2007",
               year: 2007,
               type: "framework_law",
@@ -224,7 +224,7 @@ export const BRAZIL: CountryProfile = {
           coverage_status: "green",
           legal_instruments: [
             {
-              title: "Law 9.984/2000 (as amended by 14.026) — ANA mandate",
+              title: "Law 9.984/2000 (as amended by 14.026), ANA mandate",
               short: "Law 9.984/2000",
               year: 2000,
               type: "framework_law",
@@ -246,7 +246,7 @@ export const BRAZIL: CountryProfile = {
             },
           ],
           responsible_institutions: [
-            { name: "ANA — National Water and Basic Sanitation Agency", acronym: "ANA", role: "regulator", level: "national", url: "https://www.gov.br/ana/" },
+            { name: "ANA, National Water and Basic Sanitation Agency", acronym: "ANA", role: "regulator", level: "national", url: "https://www.gov.br/ana/" },
             { name: "ARSESP (São Paulo state regulator)", role: "regulator", level: "state" },
             { name: "ARSAE-MG (Minas Gerais state regulator)", role: "regulator", level: "state" },
             { name: "AGENERSA (Rio de Janeiro state regulator)", role: "regulator", level: "state" },
@@ -262,7 +262,7 @@ export const BRAZIL: CountryProfile = {
           coverage_status: "yellow",
           legal_instruments: [
             {
-              title: "Law 12.608/2012 — National Civil Protection and Defense Policy",
+              title: "Law 12.608/2012, National Civil Protection and Defense Policy",
               short: "Law 12.608/2012",
               year: 2012,
               type: "framework_law",
@@ -271,7 +271,7 @@ export const BRAZIL: CountryProfile = {
             },
             {
               title: "ANA NR on Contingency and Emergency Plans (operators)",
-              short: "ANA NR — Contingency",
+              short: "ANA NR, Contingency",
               year: 2023,
               type: "regulation",
               faolex_id: null,
@@ -298,14 +298,14 @@ export const BRAZIL: CountryProfile = {
       label: "Rural Water Supply & Sanitation",
       wsip_solutions: [3],
       headline:
-        "Rural WSS is covered by the same Law 11.445/2007 and Law 14.026/2020 framework as urban, but with specific programs (PNSR — National Rural Sanitation Program) and weaker regulatory uptake.",
+        "Rural WSS is covered by the same Law 11.445/2007 and Law 14.026/2020 framework as urban, but with specific programs (PNSR, National Rural Sanitation Program) and weaker regulatory uptake.",
       cells: [
         {
           pir_dimension: "policy",
           coverage_status: "yellow",
           legal_instruments: [
             {
-              title: "Law 11.445/2007 — Basic Sanitation (covers rural)",
+              title: "Law 11.445/2007, Basic Sanitation (covers rural)",
               short: "Law 11.445/2007",
               year: 2007,
               type: "framework_law",
@@ -325,7 +325,7 @@ export const BRAZIL: CountryProfile = {
           ],
           responsible_institutions: [
             { name: "Ministry of Cities", role: "policy_maker", level: "national" },
-            { name: "FUNASA (Fundação Nacional de Saúde — rural water historically)", role: "policy_maker", level: "national" },
+            { name: "FUNASA (Fundação Nacional de Saúde, rural water historically)", role: "policy_maker", level: "national" },
           ],
           mandate_text:
             "Federal policy includes rural WSS within the basic sanitation framework; PNSR sets specific implementation guidelines. Municipalities remain titular holders for rural areas within their jurisdiction.",
@@ -417,7 +417,7 @@ export const BRAZIL: CountryProfile = {
                 "https://www.fao.org/faolex/results/details/en/c/LEX-FAOC074469",
             },
             {
-              title: "Marco Legal — universal targets including 90% sewage treatment by 2033",
+              title: "Marco Legal, universal targets including 90% sewage treatment by 2033",
               short: "Law 14.026/2020",
               year: 2020,
               type: "framework_law",
@@ -425,7 +425,7 @@ export const BRAZIL: CountryProfile = {
               faolex_url: null,
             },
             {
-              title: "CONAMA Resolution 430/2011 — effluent discharge standards",
+              title: "CONAMA Resolution 430/2011, effluent discharge standards",
               short: "CONAMA 430/2011",
               year: 2011,
               type: "resolution",
@@ -457,7 +457,7 @@ export const BRAZIL: CountryProfile = {
               faolex_url: null,
             },
             {
-              title: "ANA NR — sewage service indicators",
+              title: "ANA NR, sewage service indicators",
               short: "ANA NR sewage",
               year: 2022,
               type: "regulation",
@@ -481,7 +481,7 @@ export const BRAZIL: CountryProfile = {
           coverage_status: "green",
           legal_instruments: [
             {
-              title: "Marco Legal — bankability provisions",
+              title: "Marco Legal, bankability provisions",
               short: "Law 14.026/2020",
               year: 2020,
               type: "framework_law",
@@ -540,7 +540,7 @@ export const BRAZIL: CountryProfile = {
           ],
           responsible_institutions: [
             { name: "Ministry of Environment and Climate Change", role: "policy_maker", level: "national" },
-            { name: "CNRH — National Water Resources Council", role: "policy_maker", level: "national" },
+            { name: "CNRH, National Water Resources Council", role: "policy_maker", level: "national" },
           ],
           mandate_text:
             "PNRH establishes a decentralized, participatory model with basin as the management unit; basin plans, water rights (outorga), water-use charging, classification, and the national water resources information system are the legal instruments.",
@@ -551,7 +551,7 @@ export const BRAZIL: CountryProfile = {
           coverage_status: "green",
           legal_instruments: [
             {
-              title: "Law 9.984/2000 — ANA",
+              title: "Law 9.984/2000, ANA",
               short: "Law 9.984/2000",
               year: 2000,
               type: "framework_law",
@@ -561,7 +561,7 @@ export const BRAZIL: CountryProfile = {
                 "https://www.planalto.gov.br/ccivil_03/leis/l9984.htm",
             },
             {
-              title: "PNRH — SINGREH structure",
+              title: "PNRH, SINGREH structure",
               short: "Law 9.433/1997",
               year: 1997,
               type: "framework_law",
@@ -571,7 +571,7 @@ export const BRAZIL: CountryProfile = {
             },
           ],
           responsible_institutions: [
-            { name: "ANA — federal waters regulator", role: "regulator", level: "national" },
+            { name: "ANA, federal waters regulator", role: "regulator", level: "national" },
             { name: "CNRH", role: "policy_maker", level: "national" },
             { name: "State Water Resources Councils", role: "policy_maker", level: "state" },
             { name: "Basin Committees (Comitês de Bacia)", role: "user_rep", level: "basin" },
@@ -587,7 +587,7 @@ export const BRAZIL: CountryProfile = {
           coverage_status: "green",
           legal_instruments: [
             {
-              title: "Federal Constitution — water domain",
+              title: "Federal Constitution, water domain",
               short: "CF/1988",
               year: 1988,
               type: "constitution",
@@ -609,7 +609,7 @@ export const BRAZIL: CountryProfile = {
           coverage_status: "yellow",
           legal_instruments: [
             {
-              title: "PNRH — water-use charging",
+              title: "PNRH, water-use charging",
               short: "Law 9.433/1997",
               year: 1997,
               type: "framework_law",
@@ -683,7 +683,7 @@ export const BRAZIL: CountryProfile = {
           coverage_status: "yellow",
           legal_instruments: [
             {
-              title: "Law 14.066/2020 — strengthens National Dam Safety Policy",
+              title: "Law 14.066/2020, strengthens National Dam Safety Policy",
               short: "Law 14.066/2020",
               year: 2020,
               type: "framework_law",
@@ -697,7 +697,7 @@ export const BRAZIL: CountryProfile = {
             { name: "ANM (mining tailings dams)", role: "regulator", level: "national" },
           ],
           mandate_text:
-            "Dam safety is regulated by sector — water resources (ANA), hydropower (ANEEL), and mining (ANM). Operators must register, classify risk, hold safety plans and emergency action plans.",
+            "Dam safety is regulated by sector, water resources (ANA), hydropower (ANEEL), and mining (ANM). Operators must register, classify risk, hold safety plans and emergency action plans.",
           last_verified_date: today,
         },
       ],

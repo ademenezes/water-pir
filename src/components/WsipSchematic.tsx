@@ -3,7 +3,7 @@ import { PILLAR_LABELS, WSIP_SOLUTIONS } from "../framework";
 /**
  * Editorial repaint of WSIP "At a Glance" (Figure 4 of P165586): three pillars
  * across, seven scalable solutions below, three enablers at the foot. No card
- * chrome — meant to be embedded inside a figure block on the About page.
+ * chrome, meant to be embedded inside a figure block on the About page.
  */
 export function WsipSchematic() {
   return (

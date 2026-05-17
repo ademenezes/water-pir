@@ -24,7 +24,7 @@ export const WSIP_COUNTRIES: CountryMeta[] = [
     status: "live",
     flag: "🇧🇷",
     blurb:
-      "2020 Marco Legal (Law 14.026) — expanded ANA mandate; universal-access targets for 2033.",
+      "2020 Marco Legal (Law 14.026), expanded ANA mandate; universal-access targets for 2033.",
   },
   {
     code: "ALB",
@@ -99,7 +99,7 @@ export const WSIP_COUNTRIES: CountryMeta[] = [
     region: "Sub-Saharan Africa",
     status: "pipeline",
     flag: "🇪🇹",
-    blurb: "ONE WASH Program — multi-donor rural sanitation platform.",
+    blurb: "ONE WASH Program, multi-donor rural sanitation platform.",
   },
   {
     code: "GIN",
@@ -168,7 +168,7 @@ export const WSIP_COUNTRIES: CountryMeta[] = [
     status: "pipeline",
     flag: "🇵🇪",
     blurb:
-      "SUNASS — independent national WSS regulator with strong tariff methodology.",
+      "SUNASS, independent national WSS regulator with strong tariff methodology.",
   },
   {
     code: "PHL",
@@ -250,7 +250,7 @@ export const WSIP_COUNTRIES: CountryMeta[] = [
     status: "planned",
     flag: "🇨🇴",
     blurb:
-      "CRA — Comisión de Regulación de Agua: 25-year regulatory evolution (BOSIB Figure 6.1).",
+      "CRA, Comisión de Regulación de Agua: 25-year regulatory evolution (BOSIB Figure 6.1).",
   },
   {
     code: "IDN",

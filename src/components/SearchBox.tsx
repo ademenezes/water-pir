@@ -38,7 +38,7 @@ function buildIndex(): SearchResult[] {
         for (const inst of cell.legal_instruments) {
           results.push({
             kind: "instrument",
-            label: `${inst.short} — ${inst.title}`,
+            label: `${inst.short}, ${inst.title}`,
             sub_label: `${country.name} · ${SUBSECTOR_LABELS[sub.key] ?? sub.label}`,
             href: `/country/${country.code}/subsector/${sub.key}#pir-${cell.pir_dimension}`,
             keywords: `${inst.short} ${inst.title} ${inst.faolex_id ?? ""} ${country.name}`,

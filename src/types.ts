@@ -100,7 +100,7 @@ export interface CountryProfile {
   key_insights?: KeyInsight[];
 }
 
-// Distinct from InstitutionRole (which describes WHAT a body is — regulator, asset owner, etc.).
+// Distinct from InstitutionRole (which describes WHAT a body is, regulator, asset owner, etc.).
 // MandateFunction describes the FUNCTION an actor performs in the water-sector value chain,
 // for the swim-lane mandate diagram on the country dashboard.
 export type MandateFunction =

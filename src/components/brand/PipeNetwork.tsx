@@ -37,7 +37,7 @@ export function PipeNetwork({ className }: { className?: string }) {
         {/* Vertical riser left of center */}
         <path d="M 240 320 L 240 470 L 280 510 L 540 510" />
 
-        {/* Left vertical down — comes up from below the bottom edge */}
+        {/* Left vertical down, comes up from below the bottom edge */}
         <path d="M 120 620 L 120 460 L 80 420 L 80 230 L 120 190 L 320 190" />
 
         {/* Short branch to the upper-right (suggests a tap stub) */}

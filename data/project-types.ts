@@ -25,7 +25,7 @@ export const PROJECT_TYPES: ProjectType[] = [
     label: "Urban water & sanitation utility reform / PPP",
     pillar: "people",
     short_desc:
-      "Reforming an urban utility's tariffs, governance and service-delivery model — often with a PPP, concession or performance-based contract.",
+      "Reforming an urban utility's tariffs, governance and service-delivery model, often with a PPP, concession or performance-based contract.",
     subsector_keys: ["wss_urban"],
     wsip_solutions: [1],
     critical_dimensions: ["policy", "institutions", "financing", "regulation"],
@@ -41,7 +41,7 @@ export const PROJECT_TYPES: ProjectType[] = [
     label: "Wastewater treatment & reuse PPP",
     pillar: "people",
     short_desc:
-      "Bankable wastewater treatment and reuse projects — often through hybrid PPP structures with viability-gap funding.",
+      "Bankable wastewater treatment and reuse projects, often through hybrid PPP structures with viability-gap funding.",
     subsector_keys: ["wastewater_reuse_desal", "wss_urban"],
     wsip_solutions: [2],
     critical_dimensions: ["policy", "regulation", "financing", "resilience"],
@@ -57,7 +57,7 @@ export const PROJECT_TYPES: ProjectType[] = [
     label: "Desalination plant (bulk water)",
     pillar: "people",
     short_desc:
-      "New bulk-water supply through desalination — typically a long-term offtake contract with a private operator under IFC / MIGA risk-cover.",
+      "New bulk-water supply through desalination, typically a long-term offtake contract with a private operator under IFC / MIGA risk-cover.",
     subsector_keys: ["wastewater_reuse_desal", "wss_urban"],
     wsip_solutions: [2],
     critical_dimensions: ["policy", "institutions", "financing", "regulation"],
@@ -103,7 +103,7 @@ export const PROJECT_TYPES: ProjectType[] = [
     label: "Centralised irrigation modernisation",
     pillar: "food",
     short_desc:
-      "Modernising a public irrigation system — performance-based O&M, technology upgrades, restored cost-recovery.",
+      "Modernising a public irrigation system, performance-based O&M, technology upgrades, restored cost-recovery.",
     subsector_keys: ["irrigation_centralized"],
     wsip_solutions: [5],
     critical_dimensions: ["institutions", "regulation", "financing"],
