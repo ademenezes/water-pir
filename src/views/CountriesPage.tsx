@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useMemo, useState } from "react";
 import { WSIP_COUNTRIES } from "../../data/countries-meta";
 import type { CountryStatus, CountryMeta } from "../../data/countries-meta";
@@ -132,6 +132,7 @@ function CountryRow({
   c: CountryMeta;
   liveProfile?: ReturnType<typeof listCountries>[number];
 }) {
+  const navigate = useNavigate();
   const clickable = c.status === "live";
   const opacity =
     c.status === "live"
@@ -206,9 +207,13 @@ function CountryRow({
       <div className="col-span-12 md:col-span-2 md:text-right">
         {clickable ? (
           <div className="flex flex-col items-start gap-1 md:items-end">
-            <span className="link-editorial font-display text-[14px] font-semibold tracking-[0.02em]">
+            <Link
+              to={`/country/${c.code}`}
+              onClick={(e) => e.stopPropagation()}
+              className="link-editorial font-display text-[14px] font-semibold tracking-[0.02em]"
+            >
               Open dashboard&nbsp;→
-            </span>
+            </Link>
             <Link
               to={`/wsip-matrix?country=${c.code}`}
               onClick={(e) => e.stopPropagation()}
@@ -233,12 +238,21 @@ function CountryRow({
           aria-hidden
           className="absolute left-0 top-0 h-full w-[3px] bg-brand-deep"
         />
-        <Link
-          to={`/country/${c.code}`}
-          className="block pl-4 transition-colors hover:bg-brand-sand/40"
+        <div
+          role="link"
+          tabIndex={0}
+          onClick={() => navigate(`/country/${c.code}`)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              navigate(`/country/${c.code}`);
+            }
+          }}
+          className="block cursor-pointer pl-4 transition-colors hover:bg-brand-sand/40 focus-visible:outline-none focus-visible:bg-brand-sand/40"
+          aria-label={`Open ${c.name} dashboard`}
         >
           {inner}
-        </Link>
+        </div>
       </li>
     );
   }
