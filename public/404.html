@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Water PIR</title>
+    <script>
+      // SPA fallback for GitHub Pages. When a user lands on a deep route like
+      // /water-pir/wsip-matrix, GH Pages returns this 404. We rewrite the path
+      // into a `?p=` query and redirect to index.html, where main.tsx restores
+      // the original URL. Based on rafgraph/spa-github-pages.
+      (function () {
+        var pathSegmentsToKeep = 1; // one path segment for the repo name
+        var l = window.location;
+        l.replace(
+          l.protocol +
+            "//" +
+            l.hostname +
+            (l.port ? ":" + l.port : "") +
+            l.pathname
+              .split("/")
+              .slice(0, 1 + pathSegmentsToKeep)
+              .join("/") +
+            "/?p=/" +
+            l.pathname
+              .slice(1)
+              .split("/")
+              .slice(pathSegmentsToKeep)
+              .join("/")
+              .replace(/&/g, "~and~") +
+            (l.search ? "&q=" + l.search.slice(1).replace(/&/g, "~and~") : "") +
+            l.hash
+        );
+      })();
+    </script>
+  </head>
+  <body></body>
+</html>

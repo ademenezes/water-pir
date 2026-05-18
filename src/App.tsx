@@ -1,5 +1,6 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 import { Layout } from "./components/Layout";
+import { PasswordGate } from "./components/PasswordGate";
 import { HomePage } from "./views/HomePage";
 import { CountryDashboard } from "./views/CountryDashboard";
 import { MatrixView } from "./views/MatrixView";
@@ -10,6 +11,14 @@ import { CountriesPage } from "./views/CountriesPage";
 import { ProjectWizard } from "./views/ProjectWizard";
 
 export default function App() {
+  return (
+    <PasswordGate>
+      <AppRoutes />
+    </PasswordGate>
+  );
+}
+
+function AppRoutes() {
   return (
     <Routes>
       <Route

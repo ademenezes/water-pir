@@ -159,7 +159,39 @@ The preview server is wired in `.claude/launch.json` (`water-pir-dev`, port 5173
 
 1. Type-check: `npx tsc --noEmit` (must be clean).
 2. Reload the preview and check console for runtime errors.
-3. Click through the affected routes — don't trust HMR alone; sometimes a hard reload is needed.
+3. Click through the affected routes; sometimes a hard reload is needed because HMR can stale.
+
+To smoke-test the production bundle locally:
+
+```
+npm run build
+npx vite preview --port 4173
+# visit http://localhost:4173/water-pir/
+```
+
+## Deployment (GitHub Pages)
+
+The site deploys to `https://ademenezes.github.io/water-pir/` via the GitHub Actions workflow at `.github/workflows/deploy.yml`. The workflow runs on every push to `main`. Key pieces:
+
+- `vite.config.ts` sets `base: "/water-pir/"`. **Don't change this without updating the deploy URL.**
+- `src/main.tsx` passes `basename={import.meta.env.BASE_URL.replace(/\/$/, "")}` to `BrowserRouter` so React Router routes live under the base path.
+- `public/404.html` is the SPA fallback. GitHub Pages serves it for any deep route (`/water-pir/wsip-matrix`); the script encodes the path as `?p=` and redirects to `/water-pir/`, where `index.html` restores it via `history.replaceState` before React Router boots.
+- `public/countries-110m.json` and any other public asset must be referenced as ``${import.meta.env.BASE_URL}filename`` (or `%BASE_URL%filename` inside `index.html`), never as `/filename`.
+
+To enable Pages on a fresh repo: settings → Pages → Source: "GitHub Actions". The workflow uses `actions/deploy-pages@v4` (no `gh-pages` branch needed).
+
+## Password gate
+
+`src/components/PasswordGate.tsx` wraps the routes in `App.tsx`. The bundle ships a SHA-256 hash of the password, not the plaintext, and stores an unlock flag in `localStorage` under `water-pir.unlocked`. This is a **soft gate**: anyone who can read the JS bundle or brute-force the hash can bypass it. Fine for a work-in-progress; not a substitute for real auth.
+
+To change the password:
+
+```
+printf 'NewPassword!' | shasum -a 256
+# paste the hex digest into PASSWORD_HASH in src/components/PasswordGate.tsx
+```
+
+To reset on a returning visitor's browser: `localStorage.removeItem("water-pir.unlocked")` from the console.
 
 ## Source rules (citation discipline)
 

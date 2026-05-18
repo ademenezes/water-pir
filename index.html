@@ -2,15 +2,41 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <link rel="icon" type="image/svg+xml" href="%BASE_URL%vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Water PIR Tool · Brazil Pilot</title>
+    <title>Water PIR</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400;1,8..60,600&display=swap"
       rel="stylesheet"
     />
+    <script>
+      // SPA fallback restore. The 404.html redirects deep links to "/?p=/path".
+      // Here we decode "p" back into history before React Router boots, so it
+      // sees the original URL.
+      (function () {
+        var l = window.location;
+        if (l.search.indexOf("?p=") === 0 || l.search.indexOf("&p=") > -1) {
+          var q = {};
+          l.search
+            .slice(1)
+            .split("&")
+            .forEach(function (kv) {
+              var idx = kv.indexOf("=");
+              if (idx > -1) q[kv.slice(0, idx)] = kv.slice(idx + 1);
+            });
+          if (q.p !== undefined) {
+            var restored =
+              l.pathname.replace(/\/$/, "") +
+              decodeURIComponent(q.p).replace(/~and~/g, "&") +
+              (q.q ? "?" + decodeURIComponent(q.q).replace(/~and~/g, "&") : "") +
+              l.hash;
+            window.history.replaceState(null, "", restored);
+          }
+        }
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>

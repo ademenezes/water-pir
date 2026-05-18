@@ -4,7 +4,7 @@ import { ComposableMap, Geographies, Geography } from "react-simple-maps";
 import { isoNumericToMeta } from "../../data/countries-meta";
 import type { CountryStatus } from "../../data/countries-meta";
 
-const TOPO_URL = "/countries-110m.json";
+const TOPO_URL = `${import.meta.env.BASE_URL}countries-110m.json`;
 
 const FILL: Record<CountryStatus | "none", string> = {
   live: "#0f766e",

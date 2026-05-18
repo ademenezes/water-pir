@@ -5,6 +5,9 @@ node_modules/
 dist/
 .vite/
 *.tsbuildinfo
+# tsc -b emits these from vite.config.ts via the project-reference build
+vite.config.js
+vite.config.d.ts
 
 # Editor / OS
 .DS_Store
