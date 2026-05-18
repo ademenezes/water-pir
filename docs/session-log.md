@@ -107,6 +107,59 @@ User asked to implement six deferred features in one round.
 - Map: clarify Colombia + Indonesia visual treatment vs the 25 WSIP pipeline countries (currently three-state legend: live / pipeline / planned).
 - Pipeline matrix placeholder could include a "Notify when ready" CTA.
 - Insight rotation could pull from a JSON feed at build time.
-- Real user-testing with one Brazilian sector specialist — confirm "who regulates wastewater reuse in Brazil" answerable in <60s.
+- Real user-testing with one Brazilian sector specialist; confirm "who regulates wastewater reuse in Brazil" answerable in <60s.
 - Phase 3: Colombia, Kenya, Peru, Indonesia data ingestion. Once two are live, the side-by-side compare mode becomes meaningfully useful.
 - Phase 4: AI-assisted FAOLEX bulk CSV ingestion into the schema.
+
+---
+
+## 2026-05-16 to 2026-05-17 · Editorial redesign (Phases 1 to 4)
+
+**User feedback that drove the rewrite.** Initial UI proposal rejected with "It needs to look like a professionally designed webpage, not generic AI design." Plan re-anchored in publication design (Bloomberg country brief, FT data essay, BOSIB PIR PDF by Circle Graphics) rather than SaaS landing pages. The full brief and the "we will / we will NOT" discipline list lives in `.claude/plans/let-s-work-on-ui-eager-narwhal.md`.
+
+**Phase 1 (foundation + Home cover).** New Tailwind palette: `brand.{ink, teal, deep, sand, amber, olive, rule}` pulled from the BOSIB cover. Inter + Source Serif 4 type pairing loaded from Google Fonts. Editorial utilities in `src/index.css` (`.eyebrow`, `.display-hero`, `.prose-editorial`, `.pull-quote`, `.figure-caption`, `.marginalia`). Brand SVGs: `Droplet` (4 variants), `PipeNetwork` (cover artwork), `PipeDivider`. Layout gained a `fullBleed` prop so the Home page can break out of the centred container. HomePage rewritten as a sequence of magazine-style spreads: cover with pipe-network artwork, thesis + Brazil-at-a-glance custom data graphic, world map, wizard CTA. Top nav: 5 tabs (Home, Matrix, Countries, Wizard, About).
+
+**Phase 2 (Matrix as protagonist).** Shared `src/components/Matrix/Matrix.tsx` extracted so `/wsip-matrix` and `/country/:code/matrix` stop duplicating cell-building logic. Coverage status rendered as the custom droplet glyph (filled / half / outline / dotted) rather than generic icons; `CELL_BG` stays the single source of truth. New `MatrixCellPanel` slide-over styled as a magazine sidebar: chapter mini-cover, numbered legal-instrument citations, responsible-institution table, amber-ruled de-jure / de-facto callout. PIR Comparator folded into the Matrix tab as two of four view modes (`country`, `compare`, `by-subsector`, `by-dimension`); the old `/pir-comparator` route now 301s to `/wsip-matrix?view=by-subsector`. `src/views/PirComparator.tsx` deleted.
+
+**Phase 3 (interior surfaces).** New `PirWheel` SVG (BOSIB Fig 1.2 palette: teal Policy, orange Regulation, olive Institutions, mid-teal IGC, light teal Financing, brand-deep Resilience core). `WsipSchematic` repainted, no card chrome. `AboutPage` rewritten with a numbered TOC and `WsipSchematic` + `PirWheel` rendered as Figure 1 / Figure 2. `CountriesPage` reframed as an editorial directory listing (cohort-glyph small-multiples strip, inline-link filters, tabular rows with a teal left-stripe for live countries). `CountryDashboard` rebuilt as a Bloomberg-style country sheet: huge country name + region eyebrow, 6-up coverage stat strip, the matrix, a marginalia gutter, sub-sector drill-in cards. `/country/:code` switched to `fullBleed`.
+
+**Merge from `claude/nifty-ellis-a781de`.** A parallel branch had added four new types (`MandateFunction`, `MandateLegalBasis`, `MandateRecord`, `KeyInsight`) and two new components (`KeyInsightsSection`, `MandateSwimLanes`) anchored to Planalto-verified Brazilian articles. Cherry-picked the additive parts (types, 30 mandate records, 6 key insights, `documents/brazil/manifest.json` audit trail) and rebuilt the two visible components in the editorial register (no card chrome, severity rendered as a coloured top-stripe + eyebrow, swim-lane chips as typographic units with a popover that matches MatrixCellPanel). Integrated into `CountryDashboard` conditionally on `country.key_insights` and `country.mandate_records`. The branch was deleted after.
+
+**Polish round (May 17).** Designed a new `Logo` (circular monogram, teal ring on navy field, droplet) replacing the small "W in slate square" wordmark. Removed the "Brazil pilot" subtitle. Dropped the "Three findings" and "Did you know" sections from Home; the map now spans the full sand band. Removed every "Chapter · 0X" eyebrow + huge numeral (pages now lead with a short eyebrow + headline + intro). About trimmed to two sections: "The two frameworks" and "Phasing". Type scale bumped (eyebrow 12 to 13, body 18 to 19, page H1s clamp 34-60 to clamp 40-80, matrix cell mandate 14 to 15). Global em-dash purge (`s/ — /, /` across all .ts / .tsx); zero em-dashes remain in `src/` or `data/`. Added the "Pillar" column on the left of the matrix with rowSpan colored blocks (Water for People, Food, Planet), label words stacking vertically. Footer simplified to logo + "Questions or comments? ademenezes1@worldbank.org".
+
+**Nested-anchor fix.** `CountriesPage` was wrapping each live row in a `Link` (whole-row click) AND embedding a second `Link` to the matrix inside, which is invalid HTML. Replaced the outer Link with a `role="link"` div using `useNavigate`; keyboard behaviour preserved via Enter / Space handlers.
+
+---
+
+## 2026-05-18 · GitHub Pages deploy + soft password gate
+
+**User request.** Deploy to GitHub Pages, with a password gate landing page.
+
+**Decisions.**
+- Repo: `ademenezes/water-pir`, public (free-plan Pages requires public; password gate is the access barrier regardless).
+- Password: `Reg-2026!`. Stored in the bundle as a SHA-256 digest (`964652200ed837e7aeacc3f6c183912e8c085245611109a5659d1295e4b583bd`), never in plaintext.
+- Acceptance: soft gate only. Anyone who reads the JS bundle or brute-forces the hash bypasses it. If real auth is needed later, move off Pages (Cloudflare Pages + Worker, Vercel password protection, Netlify basic-auth).
+
+**Build + routing.**
+- `vite.config.ts` set `base: "/water-pir/"`.
+- `main.tsx` reads `import.meta.env.BASE_URL`, trims the trailing slash, passes it as `basename` to `BrowserRouter`.
+- `WorldMap.tsx` and the favicon `<link>` in `index.html` reference assets via `import.meta.env.BASE_URL` / `%BASE_URL%`.
+- `public/404.html` is the rafgraph/spa-github-pages fallback: GH Pages serves it for any deep route, the script encodes the path as `?p=…` and redirects to `/water-pir/`, where the snippet in `index.html` restores the URL via `history.replaceState` before React Router boots.
+- `src/vite-env.d.ts` added so `import.meta.env` compiles.
+- `vite.config.js` and `vite.config.d.ts` (emitted by `tsc -b`) added to `.gitignore`.
+
+**Password gate.** `src/components/PasswordGate.tsx` wraps the routes in `App.tsx`. Editorial cover styling (teal background + pipe network + italic Enter link). Uses `crypto.subtle.digest("SHA-256", …)` to hash the user's input and compare against the bundled digest. Unlock flag stored in `localStorage` under `water-pir.unlocked`; syncs across tabs via the `storage` event.
+
+**Workflow.** `.github/workflows/deploy.yml` triggers on push to `main`. Steps: checkout, setup-node@v4 (Node 20, npm cache), `npm ci`, type-check, `npm run build`, sanity-check `dist/404.html` exists, `actions/upload-pages-artifact@v3`, `actions/deploy-pages@v4`. First push to `main` deployed cleanly after Pages was enabled via `gh api -X POST /repos/ademenezes/water-pir/pages -f build_type=workflow`.
+
+**Live.** https://ademenezes.github.io/water-pir/. Smoke-tested: root 200, topojson 200, deep-route 404 (expected, served by the SPA fallback, restored client-side).
+
+---
+
+## State at end of 2026-05-18
+
+- TypeScript clean (`npx tsc --noEmit` exits 0).
+- 6-commit deploy chain on `main` (initial + 5 redesign phases + deploy scaffolding).
+- 8 sub-sectors mapped for Brazil. 30 mandate records, 6 key insights, ~10 instruments verified against Planalto canonical text (manifest at `documents/brazil/manifest.json`).
+- Live at https://ademenezes.github.io/water-pir/ behind a soft password gate.
+- Source at https://github.com/ademenezes/water-pir (public).

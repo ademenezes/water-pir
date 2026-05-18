@@ -1,24 +1,27 @@
-# Water PIR Tool
+# Water PIR
 
-Diagrammatic explorer of a country's water-sector laws, institutions and regulators against the **WSIP × PIR framework**, with every claim linked back to its FAOLEX / AQUALEX source. Designed for government officials and sector reformers preparing or assessing water-related projects.
+Diagrammatic explorer of a country's water-sector laws, institutions and regulators against the **WSIP × PIR framework**, with every claim linked back to its primary source (FAOLEX where indexed, national gazettes otherwise). Designed for government officials and sector reformers preparing or assessing water-related projects.
 
-**Pilot country:** Brazil 🇧🇷 (5 sub-sectors mapped, ~20 legal instruments, ~30 institutions).
+**Live:** https://ademenezes.github.io/water-pir/ (password-protected preview).
+
+**Pilot country:** Brazil (8 sub-sectors mapped, 30 verified mandate records, 6 evidence-backed key insights).
 
 ## Frameworks
 
-- **WSIP — Water Strategy Implementation Plan** (World Bank Group, Dec 2025, Figure 4). Three pillars (Water for People / Food / Planet) × seven scalable solutions × three enablers.
-- **PIR — Policies, Institutions, Regulation** (World Bank Group, WSS PIR Synthesis Aug 2022, Figure 1.2). Six analytical dimensions: **Policy, Institutions, Intergovernmental Context, Financing, Regulation, Resilience.**
+- **WSIP, Water Strategy Implementation Plan** (World Bank Group, Dec 2025, Figure 4). Three pillars (Water for People / Food / Planet), seven scalable solutions, three enablers.
+- **PIR, Policies, Institutions, Regulation** (World Bank Group, WSS PIR Synthesis Aug 2022, Figure 1.2). Six analytical dimensions: Policy, Institutions, Intergovernmental Context, Financing, Regulation, Resilience.
 
 ## Tabs
 
 | Tab | What it does |
 |---|---|
-| **Home** | Hero, autocomplete search, featured "did you know?", 3-step how-to-use, clickable world map of the 27 WSIP Water Compact countries, schematics of the WSIP and PIR frameworks, lessons-from-practice grid. |
-| **WSIP Matrix** | 7 WSIP solutions × 6 PIR dimensions matrix for a selected country. Cells are colour-coded by coverage status and self-labelled (Strong / Partial / Gap / Not mapped). Supports `?country=BRA&compare=KEN` for side-by-side country comparison. |
-| **PIR Comparator** | Dual-mode: (A) sub-sector → countries × 6 PIR dimensions, or (B) PIR dimension → countries × sub-sectors. |
-| **Countries** | Card grid with status badge (Live / Pipeline / Planned), filter chips, region filter, and direct deep-link buttons to the country dashboard or its pre-filtered WSIP Matrix. |
-| **Project Wizard** | Pick a project type (e.g., "Urban WSS PPP", "Wastewater treatment & reuse PPP", "Desalination", "Rural WSS", "Farmer-led irrigation", "Centralised irrigation", "Flood & drought risk management", "River basin restoration") → tool returns the slice of the framework most relevant to that project, including critical PIR dimensions and reform-readiness questions. |
-| **Methodology** | Frameworks, legal data sources, coverage-status definitions, citation rules, phasing. |
+| **Home** | Cover hero (pipe-network artwork), thesis + Brazil-at-a-glance custom data graphic, world map of the 27 WSIP Water Compact countries, wizard CTA. |
+| **Matrix** | 7 WSIP solutions × 6 PIR dimensions matrix with a "Pillar" column on the left. Four views via `?view=` query: `country` (single matrix, default), `compare` (side-by-side), `by-subsector` (countries × dimensions), `by-dimension` (countries × sub-sectors). Cells open a slide-over panel with mandate, numbered legal-instrument citations, responsible institutions, de-jure / de-facto note. |
+| **Countries** | Editorial directory listing. Cohort-glyph small-multiples strip, inline-link filters, tabular rows (live countries have a teal left-stripe). |
+| **Wizard** | Pick a project archetype (Urban WSS PPP, Wastewater PPP, Desalination, Rural WSS, Farmer-led irrigation, Centralised irrigation, Flood & drought, River basin restoration). Returns the slice of the country framework most relevant to that project: critical PIR dimensions, coverage, responsible institutions, questions to answer. |
+| **About** | The two frameworks (with WsipSchematic + PirWheel as Figure 1 / Figure 2) and the deployment phasing. |
+
+The **country dashboard** at `/country/:code` opens a Bloomberg-style country sheet: large country name + region eyebrow, 6-up coverage stat strip, key insights section, the matrix, a mandate swim-lane (4 levels × 6 functions), and sub-sector drill-in cards.
 
 ## Run locally
 
@@ -28,94 +31,119 @@ npm run dev      # http://localhost:5173
 npm run build    # type-check + production bundle
 ```
 
+To smoke-test the production bundle locally (asset paths use the `/water-pir/` base):
+
+```bash
+npm run build
+npx vite preview --port 4173
+# open http://localhost:4173/water-pir/
+```
+
+## Deploy
+
+The site deploys to GitHub Pages on every push to `main` via `.github/workflows/deploy.yml`. The workflow type-checks, builds, and pushes `dist/` through `actions/upload-pages-artifact@v3` + `actions/deploy-pages@v4`. Pages settings → Source must be **GitHub Actions**.
+
+`vite.config.ts` sets `base: "/water-pir/"`. `public/404.html` is the SPA fallback that lets deep routes like `/water-pir/wsip-matrix` resolve client-side.
+
+## Password gate
+
+`src/components/PasswordGate.tsx` wraps the app. The bundle carries a SHA-256 hash of the password, not the plaintext. The unlock flag is stored in `localStorage` under `water-pir.unlocked`.
+
+This is a **soft gate**, not real authentication. Anyone who can read the JS bundle or brute-force the hash bypasses it. To rotate:
+
+```bash
+printf 'NewPassword!' | shasum -a 256
+# paste digest into PASSWORD_HASH in src/components/PasswordGate.tsx
+```
+
 ## Data model
 
 One TypeScript module per country in `data/<country>.ts`, typed against `src/types.ts`.
 
 ```
-Country
-  └─ Subsector
-      └─ SubsectorPirCell × 6 (one per PIR dimension)
-          ├─ legal_instruments[]   ← title, year, type, faolex_id, faolex_url, articles
-          ├─ responsible_institutions[]   ← name, role, level
-          ├─ mandate_text
-          ├─ coverage_status (green / yellow / red / gray)
-          ├─ de_facto_note (de jure–de facto gap)
-          └─ last_verified_date
+CountryProfile
+  ├─ subsectors: Subsector[]
+  │   └─ SubsectorPirCell × 6 (one per PIR dimension)
+  │       ├─ legal_instruments[]   title, year, type, faolex_id, faolex_url, articles
+  │       ├─ responsible_institutions[]   name, role, level
+  │       ├─ mandate_text
+  │       ├─ coverage_status (green / yellow / red / gray)
+  │       ├─ de_facto_note (de jure-de facto gap)
+  │       └─ last_verified_date
+  ├─ mandate_records?: MandateRecord[]   one row per (actor × level × function)
+  └─ key_insights?: KeyInsight[]          evidence-backed cards (tension / gap / strength)
 ```
 
-Sub-sector taxonomy (`src/framework.ts → SUBSECTOR_LABELS`) bridges WSIP solutions to the traditional FAOLEX/AQUALEX vocabulary (WSS urban / rural, wastewater & reuse, decentralised & centralised irrigation, WRM basin, groundwater, flood & drought).
+`MandateRecord` and `KeyInsight` are optional, article-anchored data layers introduced for the swim-lane and "key insights" sections of the country dashboard. Brazil is currently the only country with both populated (`data/brazil-mandates.ts`, `data/brazil-insights.ts`).
 
-Country-level metadata (status, region, blurb, ISO numeric for the map) lives in `data/countries-meta.ts`. Lessons-from-practice cases in `data/lessons.ts`, project archetypes in `data/project-types.ts`, rotating insights in `data/insights.ts`.
+Sub-sector taxonomy lives in `src/framework.ts` → `SUBSECTOR_LABELS`. Country metadata in `data/countries-meta.ts`. Lessons-from-practice cases in `data/lessons.ts`, project archetypes in `data/project-types.ts`, rotating insights in `data/insights.ts`.
+
+## Source discipline
+
+For instruments not indexed in FAOLEX, the convention is a per-country manifest at `documents/<code>/manifest.json` (see `documents/brazil/manifest.json`). The manifest captures instrument short name, canonical URL (e.g. Planalto for Brazilian federal law), local PDF/HTML filename, indexing status, and the date verified. Article-level citations in `mandate_records[*].legal_basis` and `key_insights[*].legal_basis` should be re-checkable against the manifest.
+
+Other rules:
+- Prefer a FAOLEX or AQUALEX record; fall back to a national gazette URL only when both are confirmed missing.
+- Every legal instrument declares a year, type, and at least one URL.
+- Cells without a verified source show coverage `gray` (not assessed); never invent a FAOLEX ID.
+- Use the `de_facto_note` field whenever the law and practice diverge; cite the source for the divergence.
+- Re-verify URLs at least annually (`last_verified_date`).
 
 ## Adding a country
 
 1. Copy `data/brazil.ts` to `data/<new-country>.ts`.
 2. Replace the seed content; keep the schema.
-3. Register the new module in `data/index.ts`.
+3. Register the module in `data/index.ts`.
 4. Flip the country's `status` to `"live"` in `data/countries-meta.ts`.
-5. Verify every FAOLEX URL resolves; set `last_verified_date`.
-6. Type-check (`npx tsc --noEmit`).
+5. Verify every source URL resolves; set `last_verified_date`.
+6. Type-check: `npx tsc --noEmit`.
 
-The Map, the Countries page, the PIR Comparator, and the Project Wizard pick up the new country automatically.
-
-## Source rules
-
-- Prefer a FAOLEX or AQUALEX record; otherwise fall back to a national gazette URL clearly tagged as "National source".
-- Every legal instrument must declare a year, type, and at least one URL.
-- Cells without a verified source must show coverage `gray` (not assessed) — never invent.
-- Use the `de_facto_note` field whenever the law and practice diverge; cite the source for the divergence.
-- Re-verify every URL at least annually (`last_verified_date` field).
-
-## Coverage status
-
-| Status | Meaning |
-|---|---|
-| 🟢 **Strong** | Law + active regulator + practice are broadly consistent. |
-| 🟡 **Partial** | Law or policy exists but regulation / enforcement / implementation is incomplete or uneven. |
-| 🔴 **Gap** | No specific law or regulator covers this intersection. |
-| ⚪ **Not mapped** | Cell has not been assessed for this country (data pending). |
-
-## Phasing
-
-1. **Phase 1 (current):** Brazil end-to-end. Six tabs live, including project wizard and comparator. Brazil pilot has 5 sub-sectors populated.
-2. **Phase 2:** Fill remaining sub-sectors for Brazil (irrigation, river/aquifer protection, rural depth).
-3. **Phase 3:** Add 4 comparator countries — Colombia, Kenya, Peru, Indonesia (referenced in BOSIB/WSIP as reform exemplars). Country comparison mode becomes meaningful.
-4. **Phase 4:** AI-assisted ingestion pipeline against FAOLEX / AQUALEX bulk-download CSV; curator review workflow.
+The map, the Countries page, the Matrix tab and the Wizard pick up the new country with no further code change.
 
 ## Stack
 
-React 18 + TypeScript + Vite + Tailwind + React Router + react-simple-maps (+ world-atlas TopoJSON). No backend, no database — JSON-like TypeScript modules in `data/`.
+React 18 + TypeScript + Vite + Tailwind 3 + React Router 6 + react-simple-maps (+ world-atlas TopoJSON). Inter and Source Serif 4 from Google Fonts. No backend, no database.
 
 ## Project layout
 
 ```
 .
-├── data/                         # source-of-truth country and framework metadata
-│   ├── brazil.ts                 # full PIR snapshot for the pilot
-│   ├── countries-meta.ts         # 27 WSIP Water Compact countries (+ planned add-ons)
-│   ├── insights.ts               # "did you know?" rotation pool
-│   ├── lessons.ts                # BOSIB / WSIP curated reform cases
-│   ├── project-types.ts          # 8 project archetypes for the wizard
-│   └── index.ts                  # country registry
-├── documents/                    # the two World Bank source PDFs
+├── .github/workflows/deploy.yml    GitHub Pages CI
+├── data/
+│   ├── brazil.ts                   full PIR snapshot for the pilot
+│   ├── brazil-mandates.ts          30 article-level mandate records
+│   ├── brazil-insights.ts          6 evidence-backed key insights
+│   ├── countries-meta.ts           27 WSIP Water Compact countries
+│   ├── insights.ts                 rotating home-page insights
+│   ├── lessons.ts                  BOSIB / WSIP curated reform cases
+│   ├── project-types.ts            8 project archetypes
+│   └── index.ts                    country registry
+├── documents/
+│   ├── BOSIB-...pdf                PIR synthesis (Aug 2022)
+│   ├── P165586...pdf               WSIP / Water Forward (Dec 2025)
+│   └── brazil/manifest.json        per-country audit trail
 ├── public/
-│   └── countries-110m.json       # world atlas TopoJSON used by the map
+│   ├── 404.html                    SPA fallback for GitHub Pages
+│   └── countries-110m.json         world atlas TopoJSON
 ├── src/
-│   ├── components/               # CoverageDot, MandateMap, SearchBox, WorldMap,
-│   │                             # WsipSchematic, PirSchematic, FeaturedInsight,
-│   │                             # LessonsGrid, SourceCitation, Layout
-│   ├── views/                    # HomePage, CountryDashboard, WsipMatrixTab,
-│   │                             # MatrixView (country-scoped), PirComparator,
-│   │                             # CountriesPage, ProjectWizard, SubsectorDeepDive,
-│   │                             # AboutPage
-│   ├── framework.ts              # WSIP_SOLUTIONS, PIR_DIMENSIONS, taxonomy maps
-│   ├── types.ts                  # data-model types
-│   ├── App.tsx                   # routing
-│   ├── main.tsx                  # entry
-│   └── index.css                 # Tailwind + component classes
-├── docs/
-│   └── session-log.md            # chronological build log
-├── CLAUDE.md                     # conventions and contribution guide
-└── README.md                     # this file
+│   ├── components/
+│   │   ├── brand/                  Logo, Droplet, PipeNetwork, PipeDivider, PirWheel
+│   │   ├── Matrix/                 shared Matrix + MatrixCellPanel slide-over
+│   │   ├── KeyInsightsSection.tsx
+│   │   ├── MandateSwimLanes.tsx
+│   │   ├── PasswordGate.tsx
+│   │   ├── Layout.tsx
+│   │   ├── CoverageDot.tsx         single source of truth for CELL_BG
+│   │   ├── SearchBox.tsx, WorldMap.tsx, WsipSchematic.tsx, PirSchematic.tsx, ...
+│   ├── views/                      HomePage, WsipMatrixTab, CountriesPage, ProjectWizard,
+│   │                                AboutPage, CountryDashboard, MatrixView, SubsectorDeepDive
+│   ├── framework.ts                WSIP_SOLUTIONS, PIR_DIMENSIONS, taxonomy maps
+│   ├── types.ts                    data-model types
+│   ├── App.tsx                     routing (wrapped in PasswordGate)
+│   ├── main.tsx                    entry, BrowserRouter with basename
+│   ├── vite-env.d.ts               Vite client types
+│   └── index.css                   Tailwind + editorial utilities
+├── docs/session-log.md             chronological build log
+├── CLAUDE.md                       conventions and contribution guide
+└── README.md                       this file
 ```
