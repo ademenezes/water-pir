@@ -208,6 +208,10 @@ To reset on a returning visitor's browser: `localStorage.removeItem("water-pir.u
 - Don't add tracking/analytics scripts.
 - Don't write English speculation in lieu of a citation.
 
+## Branch hygiene
+
+A global `SessionStart` hook prints `⚠️ Branch is N commit(s) behind origin/<default>` (with an extra worktree-staleness note when relevant) when the current branch is behind upstream. If you see that warning, **stop and ask before making non-trivial edits** — the file you're about to change may have been redesigned. Either rebase the branch onto `origin/main` first or move to a worktree that's on latest. Editing on a stale branch produces work that won't merge cleanly and may target obsolete components.
+
 ## When in doubt
 
 Re-read the framework PDFs in `documents/`:
