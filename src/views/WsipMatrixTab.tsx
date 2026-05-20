@@ -32,6 +32,33 @@ const DROPLET_VARIANT: Record<
   gray: "dotted",
 };
 
+const LEGEND_ITEMS: {
+  status: CoverageStatus;
+  label: string;
+  blurb: string;
+}[] = [
+  {
+    status: "green",
+    label: "Strong",
+    blurb: "Law, regulator and practice broadly aligned.",
+  },
+  {
+    status: "yellow",
+    label: "Partial",
+    blurb: "Law exists; regulation or enforcement uneven.",
+  },
+  {
+    status: "red",
+    label: "Gap",
+    blurb: "No specific law or regulator on this intersection.",
+  },
+  {
+    status: "gray",
+    label: "Not mapped",
+    blurb: "Cell not yet assessed for this country.",
+  },
+];
+
 /* ────────────────────────────────────────────────────────────────────────── */
 
 export function WsipMatrixTab() {
@@ -124,6 +151,26 @@ export function WsipMatrixTab() {
               </Link>
             )}
           </div>
+        </div>
+      </section>
+
+      {/* ── Coverage legend ───────────────────────────────────────────────── */}
+      <section className="mx-auto max-w-[88rem] px-8 pt-6 pb-10">
+        <div className="eyebrow text-brand-ink/60">What the droplets mean</div>
+        <div className="mt-4 grid grid-cols-1 gap-x-10 gap-y-5 border-b border-brand-rule pb-6 sm:grid-cols-2 lg:grid-cols-4">
+          {LEGEND_ITEMS.map((item) => (
+            <div key={item.status} className="flex items-start gap-3">
+              <Droplet variant={DROPLET_VARIANT[item.status]} size={28} />
+              <div>
+                <div className="font-display text-[12px] font-extrabold uppercase tracking-[0.18em] text-brand-deep">
+                  {item.label}
+                </div>
+                <p className="mt-1 font-serif text-[13.5px] leading-[1.5] text-brand-ink/75">
+                  {item.blurb}
+                </p>
+              </div>
+            </div>
+          ))}
         </div>
       </section>
 
