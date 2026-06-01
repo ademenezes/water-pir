@@ -62,7 +62,7 @@ In addition to the `subsectors` matrix, a country may carry two optional, articl
 - **`mandate_records: MandateRecord[]`** — who holds which function (`policy | norm_setting | regulation | planning | service_delivery | financing`) at which level (`national | state | local | basin`). One row per (actor × level × function), anchored to a specific article via `legal_basis`. Drives the swim-lane diagram on the country dashboard.
 - **`key_insights: KeyInsight[]`** — short evidence-backed cards (<= 12-word title, <= 50-word body) tagged `strength | tension | gap` and anchored to a specific article. Each insight optionally references a `pir_dimension` and/or `wsip_solution_id`. Drives the "Key insights" section on the country dashboard.
 
-Both are optional on `CountryProfile`; the dashboard renders the corresponding sections only when the data is present. Brazil is currently the only country with both layers populated (see `data/brazil-mandates.ts` and `data/brazil-insights.ts`).
+Both are optional on `CountryProfile`; the dashboard renders the corresponding sections only when the data is present. Brazil and Georgia both populate these layers (see `data/brazil-mandates.ts` / `data/brazil-insights.ts` and `data/georgia-mandates.ts` / `data/georgia-insights.ts`).
 
 ### Coverage colours (do not invent new statuses)
 
@@ -91,6 +91,16 @@ The single source of truth for these colours is `CELL_BG` in `src/components/Cov
 5. Run `npx tsc --noEmit`.
 
 The Map, Countries page, comparator, wizard, and Brazilian comparison pick up the new country with no further code change.
+
+### Compact vs non-Compact countries
+
+`CountryMeta` carries an optional `compact?: boolean`. It is **omitted on the 27 WSIP Water Compact members** (omitted = treated as Compact) and set to `false` only for live case studies *outside* the cohort (e.g. Georgia). This keeps the "27" framing and the cohort tallies accurate while still letting a non-Compact country render as fully `live`. The flag is threaded through exactly three view spots, all gated on `compact !== false` / `compact === false`:
+
+- `CountryDashboard` — drops the "· WSIP Water Compact" header eyebrow for non-Compact countries.
+- `CountriesPage` — the cohort glyphs, status-filter counts and "27" prose count Compact members only; non-Compact live countries render in a separate "Beyond the Water Compact" block with a small "Non-compact" tag on the row.
+- `WorldMap` tooltip — the "WSIP Water Compact priority" line is gated to non-`live` status, so a live non-Compact country makes no Compact claim.
+
+Don't reintroduce the hardcoded "27" / "Water Compact" copy in those spots; keep it scoped so the cohort numbers stay true.
 
 ## Adding a new project archetype
 
@@ -141,7 +151,7 @@ The visual reference is the BOSIB PIR Synthesis Report PDF (Circle Graphics / Ch
 
 **Country-dashboard sections** (in `src/components/`):
 - `KeyInsightsSection` — renders an array of `KeyInsight` records as editorial mini-features (2 per row). Each insight is anchored to a specific law article; severity is shown as a coloured top-stripe + eyebrow (strength→emerald, tension→amber, gap→rose, picking up the coverage palette). Reads `country.key_insights` on the dashboard; conditional render.
-- `MandateSwimLanes` — 4 government levels × 6 water-sector functions diagram. Each chip is a click-to-open popover with the legal-basis citation, an optional <15-word verbatim quote, a de-jure/de-facto note (sand callout + amber rule), and the canonical source link. Empty cells render a dashed "mandate gap" placeholder so constitutional silences are visible. Mobile fallback: `<details>` accordion grouped by level. Reads `country.mandate_records`; conditional render.
+- `MandateSwimLanes` — 4 government levels × 6 water-sector functions diagram. Each chip is a click-to-open popover with the legal-basis citation, an optional <15-word verbatim quote, a de-jure/de-facto note (sand callout + amber rule), and the canonical source link. Empty cells render a dashed "mandate gap" placeholder so constitutional silences are visible. Mobile fallback: `<details>` accordion grouped by level. Reads `country.mandate_records`; conditional render. The heading, the four level labels/blurbs and the source note are **overridable per country** via the optional `labels` prop (`SwimLaneLabels`); they default to Brazil's federal labels and CF-1988 blurbs. Set overrides in `SWIMLANE_OVERRIDES` in `CountryDashboard.tsx` for countries whose government structure differs (Georgia: National / Adjara A.R. / Municipal / Basin, so a unitary state never renders "Federal"). The underlying `GovernmentLevel` values stay `national | state | local | basin`; only the display strings change.
 
 **Layout wrapper**: `<Layout>` adds the teal stripe, header (5-tab underline nav, droplet wordmark), and navy footer. Pages get a default `max-w-7xl px-6 py-8` content container; pass `<Layout fullBleed>` to opt out (HomePage and the Matrix tab use this for magazine spreads).
 

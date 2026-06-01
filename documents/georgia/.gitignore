@@ -1,0 +1,7 @@
+# Local copies of canonical law text (matsne.gov.ge HTML/PDF, FAOLEX PDFs) and any
+# other downloaded source files are kept out of git. They are public government
+# content but we don't need to redistribute them — manifest.json + the extracted,
+# article-level citations are what we commit.
+*.pdf
+*.html
+*.txt

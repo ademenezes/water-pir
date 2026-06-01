@@ -163,3 +163,58 @@ User asked to implement six deferred features in one round.
 - 8 sub-sectors mapped for Brazil. 30 mandate records, 6 key insights, ~10 instruments verified against Planalto canonical text (manifest at `documents/brazil/manifest.json`).
 - Live at https://ademenezes.github.io/water-pir/ behind a soft password gate.
 - Source at https://github.com/ademenezes/water-pir (public).
+
+---
+
+## 2026-06-01 · Georgia added as a second live country (live, non-Compact)
+
+**User goal.** Expand the tool from one fully-built country to two by building **Georgia** (the Caucasus state, ISO 268) to full Brazil parity, demonstrating the framework on a very different case: a small unitary EU-accession state whose water sector is mid-reform. The full brief lives in `.claude/plans/let-s-expand-the-work-sharded-hellman.md`.
+
+**Why Georgia.** A recent, citable reform story: the 2023 Law on Water Resources Management transposes the EU Water Framework Directive (river-basin districts, basin management plans, a restored water-use permit regime); GNERC has set water/wastewater tariffs since 2008 (a rare unified energy-and-water regulator); urban WSS is split across a private utility (Georgian Water & Power, Tbilisi), a weak public utility (UWSCG, rest of country) and the Adjara provider; irrigation is recentralised under Georgian Amelioration (World Bank GRAIL project).
+
+**Decisions locked with the user.**
+
+- Full Brazil parity: subsector matrix + mandate swim-lane + key insights + a `documents/georgia/manifest.json` audit trail.
+- All **8** sub-sectors, and the matrix is **always a complete 7×6 grid**. Gaps are shown as explicit `red`/`gray` cells (never omitted, no "Dimension not yet assessed" placeholder), so the tool flags exactly where reform action is needed.
+- Coverage is **countrywide**. Georgian water law applies de jure across the internationally recognised territory; the two Russian-occupied regions (Abkhazia, Tskhinvali Region / South Ossetia) are recorded as a **de-facto governance gap** via `de_facto_note` + one intro line, not a scope exclusion.
+- Status **`live`**, but Georgia is **explicitly NOT one of the 27 Water Compact countries**. Treatment: neutral, minimal copy (no "WSIP Water Compact" eyebrow on its dashboard; a small "Non-compact" tag in the directory; the "27" framing stays accurate).
+- Honest coverage: the 2023 WRM law's operative norms (basin districts, permits) only bind from 1 September 2026, so the matrix is mostly `yellow`, with `red`/`gray` in genuinely thin areas (farmer-led irrigation, groundwater operationalisation, basin self-finance, rural sanitation). The honesty is the point.
+
+**Data added.**
+
+- `data/georgia.ts` — 8 sub-sectors, every one carrying all 6 PIR cells. One `green` (urban WSS regulation = GNERC), the rest a mix of `yellow` / `red` / `gray`.
+- `data/georgia-mandates.ts` — 13 article-level mandate records (MEPA, NEA, GNERC, MRDI, MoF; basin districts; Adjara; UWSCG / GWP / Georgian Amelioration).
+- `data/georgia-insights.ts` — 6 evidence-backed key insights (WFD transposition, GNERC, the urban split, the restored permit regime, irrigation recentralisation, fragmented flood/drought early warning).
+- `documents/georgia/manifest.json` — 13-instrument audit trail (FAOLEX where indexed, `matsne.gov.ge` Legislative Herald as the canonical fallback). Local law-text copies are gitignored; only the manifest + extracted citations are committed.
+- Registered in `data/index.ts` (`GEO: GEORGIA`).
+
+**Sourcing.** FAOLEX first, `matsne.gov.ge` for article-level text. Two FAOLEX ids verified live: LEX-FAOC219653 (2023 WRM Law) and LEX-FAOC193147 (2019 Energy & Water Supply). Where an instrument is not indexed, `faolex_id: null` + a matsne `national_url` + a note (mirroring Brazil's Law 14.026 treatment). No fabricated ids.
+
+**UI: the "live but non-Compact" case the UI could not previously express.** Adding a Compact country would be pure data; Georgia needed one optional field threaded through three spots.
+
+- `data/countries-meta.ts` — added `compact?: boolean` (omitted = Compact; Georgia sets `compact: false`). GEO entry added (ISO 268).
+- `CountryDashboard.tsx` — header eyebrow drops "· WSIP Water Compact" when `compact === false`. Added `SWIMLANE_OVERRIDES` so Georgia's swim-lane reads National / Adjara A.R. / Municipal / Basin instead of Brazil's Federal / CF-1988 labels.
+- `MandateSwimLanes.tsx` — made country-agnostic: a new optional `labels` prop (`SwimLaneLabels`) overrides the heading, the four level labels/blurbs and the source note, defaulting to Brazil.
+- `CountriesPage.tsx` — the "27" prose, cohort glyphs and status-filter counts now scope to Compact members only (`compact !== false`); non-Compact live countries render in a separate "Beyond the Water Compact" block with a "Non-compact" row tag.
+- No change to `WorldMap` (Georgia simply appears as a second `live` teal country; its live tooltip makes no Compact claim).
+
+**Shared-component bug fixed.** `bestCellAcross` in `Matrix.tsx` initialised `best` with no sub-sector and replaced it only on a strictly higher rank, so an all-`gray` (but mapped) cell never took over and the matrix fell back to the "Dimension not yet assessed" placeholder. Now the first real cell is always assigned (`!best.subsector || …`), so a mapped gap renders its own note. The fix only ever reduces placeholders; it is shared by both Matrix surfaces.
+
+**Verification.**
+
+- `npx tsc --noEmit` clean.
+- `/country/GEO`: no Compact eyebrow, 6-up stat strip, key insights, 8 sub-sector cards, matrix slide-over with a live FAOLEX link, swim-lane with Adjara labels + visible mandate gaps + Georgia's manifest source note. No "Dimension not yet assessed" anywhere.
+- `/wsip-matrix?country=GEO`: full 42-cell grid, no placeholder. The compare view confirmed the only remaining placeholder is in Brazil's own table (pre-existing data gap, flagged for a separate pass).
+- `/countries`: "27" framing and tallies intact; Georgia in the "Beyond the Water Compact" block with a "Non-compact" tag.
+- `/wizard?project=…&country=GEO`: Georgia selectable; project slices resolve to GEO sub-sector deep-dives.
+- `/` world map: two `live` teal countries (Brazil + Georgia; was one).
+
+---
+
+## State at end of 2026-06-01
+
+- TypeScript clean (`npx tsc --noEmit` exits 0).
+- Two live countries: Brazil (Compact pilot) and Georgia (live case study, non-Compact). 8 sub-sectors each.
+- Georgia: 13 mandate records, 6 key insights, 13 instruments in `documents/georgia/manifest.json`.
+- The 27-country WSIP Water Compact framing and cohort tallies are unchanged (Georgia is not counted).
+- Live at https://ademenezes.github.io/water-pir/ behind the soft password gate.

@@ -67,12 +67,36 @@ const FUNCTION_BLURB: Record<MandateFunction, string> = {
   financing: "Who mobilises and allocates money",
 };
 
-interface Props {
-  records: MandateRecord[];
+export interface SwimLaneLabels {
+  heading?: string;
+  levelLabels?: Partial<Record<GovernmentLevel, string>>;
+  levelBlurbs?: Partial<Record<GovernmentLevel, string>>;
+  sourceNote?: string;
 }
 
-export function MandateSwimLanes({ records }: Props) {
+interface Props {
+  records: MandateRecord[];
+  labels?: SwimLaneLabels;
+}
+
+const DEFAULT_HEADING =
+  "Federal, state, municipal, basin, across the value chain.";
+const DEFAULT_SOURCE_NOTE =
+  "All citations verified against the canonical text indexed in documents/brazil/manifest.json. Level labels reflect display names; underlying values are national / state / local / basin.";
+
+export function MandateSwimLanes({ records, labels }: Props) {
   const [openChip, setOpenChip] = useState<string | null>(null);
+
+  const heading = labels?.heading ?? DEFAULT_HEADING;
+  const sourceNote = labels?.sourceNote ?? DEFAULT_SOURCE_NOTE;
+  const levelLabel: Record<GovernmentLevel, string> = {
+    ...LEVEL_LABEL,
+    ...labels?.levelLabels,
+  };
+  const levelBlurb: Record<GovernmentLevel, string> = {
+    ...LEVEL_BLURB,
+    ...labels?.levelBlurbs,
+  };
 
   // Close on Escape
   useEffect(() => {
@@ -100,7 +124,7 @@ export function MandateSwimLanes({ records }: Props) {
     <section>
       <div className="eyebrow">Who does what</div>
       <h2 className="mt-3 font-display text-[clamp(24px,3vw,36px)] font-extrabold leading-[1.05] tracking-tightest text-brand-ink">
-        Federal, state, municipal, basin, across the value chain.
+        {heading}
       </h2>
       <p className="prose-editorial mt-4 max-w-[44rem] text-[15px] text-brand-ink/75">
         Each entry cites the article that grants the mandate. Empty cells are
@@ -144,10 +168,10 @@ export function MandateSwimLanes({ records }: Props) {
                       />
                       <div className="flex-1 px-4 py-4">
                         <div className="font-display text-[18px] font-extrabold leading-tight tracking-tightest text-brand-ink">
-                          {LEVEL_LABEL[level]}
+                          {levelLabel[level]}
                         </div>
                         <div className="mt-1.5 font-serif italic text-[12px] leading-snug text-brand-ink/55">
-                          {LEVEL_BLURB[level]}
+                          {levelBlurb[level]}
                         </div>
                       </div>
                     </div>
@@ -196,9 +220,7 @@ export function MandateSwimLanes({ records }: Props) {
           </table>
         </div>
         <p className="mt-4 font-serif italic text-[12px] text-brand-ink/55 max-w-[44rem]">
-          All citations verified against the canonical text indexed in
-          documents/brazil/manifest.json. Level labels reflect display names;
-          underlying values are national / state / local / basin.
+          {sourceNote}
         </p>
       </div>
 
@@ -218,7 +240,7 @@ export function MandateSwimLanes({ records }: Props) {
                         aria-hidden
                       />
                       <span className="font-display text-[16px] font-extrabold tracking-tightest text-brand-ink">
-                        {LEVEL_LABEL[level]}
+                        {levelLabel[level]}
                       </span>
                     </div>
                     <span className="eyebrow text-brand-ink/55 group-open:hidden">

@@ -4,7 +4,7 @@ Diagrammatic explorer of a country's water-sector laws, institutions and regulat
 
 **Live:** https://ademenezes.github.io/water-pir/ (password-protected preview).
 
-**Pilot country:** Brazil (8 sub-sectors mapped, 30 verified mandate records, 6 evidence-backed key insights).
+**Live countries:** Brazil (pilot, 8 sub-sectors, 30 mandate records, 6 key insights) and Georgia (8 sub-sectors, 13 mandate records, 6 key insights). Georgia is a live case study **outside** the 27-country WSIP Water Compact cohort (`compact: false`); the "27" framing counts Compact members only.
 
 ## Frameworks
 
@@ -15,7 +15,7 @@ Diagrammatic explorer of a country's water-sector laws, institutions and regulat
 
 | Tab | What it does |
 |---|---|
-| **Home** | Cover hero (pipe-network artwork), thesis + Brazil-at-a-glance custom data graphic, world map of the 27 WSIP Water Compact countries, wizard CTA. |
+| **Home** | Cover hero (pipe-network artwork), thesis + Brazil-at-a-glance custom data graphic, world map of the 27 WSIP Water Compact countries (plus any live case studies), wizard CTA. |
 | **Matrix** | 7 WSIP solutions × 6 PIR dimensions matrix with a "Pillar" column on the left. Four views via `?view=` query: `country` (single matrix, default), `compare` (side-by-side), `by-subsector` (countries × dimensions), `by-dimension` (countries × sub-sectors). Cells open a slide-over panel with mandate, numbered legal-instrument citations, responsible institutions, de-jure / de-facto note. |
 | **Countries** | Editorial directory listing. Cohort-glyph small-multiples strip, inline-link filters, tabular rows (live countries have a teal left-stripe). |
 | **Wizard** | Pick a project archetype (Urban WSS PPP, Wastewater PPP, Desalination, Rural WSS, Farmer-led irrigation, Centralised irrigation, Flood & drought, River basin restoration). Returns the slice of the country framework most relevant to that project: critical PIR dimensions, coverage, responsible institutions, questions to answer. |
@@ -74,7 +74,7 @@ CountryProfile
   └─ key_insights?: KeyInsight[]          evidence-backed cards (tension / gap / strength)
 ```
 
-`MandateRecord` and `KeyInsight` are optional, article-anchored data layers introduced for the swim-lane and "key insights" sections of the country dashboard. Brazil is currently the only country with both populated (`data/brazil-mandates.ts`, `data/brazil-insights.ts`).
+`MandateRecord` and `KeyInsight` are optional, article-anchored data layers introduced for the swim-lane and "key insights" sections of the country dashboard. Brazil and Georgia both carry these layers (`data/brazil-mandates.ts` / `data/brazil-insights.ts`, `data/georgia-mandates.ts` / `data/georgia-insights.ts`).
 
 Sub-sector taxonomy lives in `src/framework.ts` → `SUBSECTOR_LABELS`. Country metadata in `data/countries-meta.ts`. Lessons-from-practice cases in `data/lessons.ts`, project archetypes in `data/project-types.ts`, rotating insights in `data/insights.ts`.
 
@@ -94,7 +94,7 @@ Other rules:
 1. Copy `data/brazil.ts` to `data/<new-country>.ts`.
 2. Replace the seed content; keep the schema.
 3. Register the module in `data/index.ts`.
-4. Flip the country's `status` to `"live"` in `data/countries-meta.ts`.
+4. Flip the country's `status` to `"live"` in `data/countries-meta.ts` (set `compact: false` if it is a live case study outside the 27-country Water Compact cohort, like Georgia).
 5. Verify every source URL resolves; set `last_verified_date`.
 6. Type-check: `npx tsc --noEmit`.
 
@@ -113,7 +113,10 @@ React 18 + TypeScript + Vite + Tailwind 3 + React Router 6 + react-simple-maps (
 │   ├── brazil.ts                   full PIR snapshot for the pilot
 │   ├── brazil-mandates.ts          30 article-level mandate records
 │   ├── brazil-insights.ts          6 evidence-backed key insights
-│   ├── countries-meta.ts           27 WSIP Water Compact countries
+│   ├── georgia.ts                  second live country (live, non-Compact)
+│   ├── georgia-mandates.ts         13 article-level mandate records
+│   ├── georgia-insights.ts         6 evidence-backed key insights
+│   ├── countries-meta.ts           27 WSIP Water Compact countries + live case studies
 │   ├── insights.ts                 rotating home-page insights
 │   ├── lessons.ts                  BOSIB / WSIP curated reform cases
 │   ├── project-types.ts            8 project archetypes
@@ -121,7 +124,8 @@ React 18 + TypeScript + Vite + Tailwind 3 + React Router 6 + react-simple-maps (
 ├── documents/
 │   ├── BOSIB-...pdf                PIR synthesis (Aug 2022)
 │   ├── P165586...pdf               WSIP / Water Forward (Dec 2025)
-│   └── brazil/manifest.json        per-country audit trail
+│   ├── brazil/manifest.json        per-country audit trail
+│   └── georgia/manifest.json       per-country audit trail (13 instruments)
 ├── public/
 │   ├── 404.html                    SPA fallback for GitHub Pages
 │   └── countries-110m.json         world atlas TopoJSON

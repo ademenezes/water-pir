@@ -25,22 +25,37 @@ export function CountriesPage() {
   const [filter, setFilter] = useState<Filter>("all");
   const [region, setRegion] = useState<string>("all");
 
+  // The "27" framing, status tallies, and cohort glyphs describe the WSIP Water
+  // Compact cohort only. Non-Compact live case studies (e.g. Georgia, compact:
+  // false) render in a separate block below so the cohort numbers stay true.
+  const compactCountries = useMemo(
+    () => WSIP_COUNTRIES.filter((c) => c.compact !== false),
+    []
+  );
+  const caseStudies = useMemo(
+    () => WSIP_COUNTRIES.filter((c) => c.compact === false),
+    []
+  );
+
   const regions = useMemo(
     () => Array.from(new Set(WSIP_COUNTRIES.map((c) => c.region))).sort(),
     []
   );
 
-  const filtered = WSIP_COUNTRIES.filter((c) => {
+  const matchesFilters = (c: CountryMeta) => {
     if (filter !== "all" && c.status !== filter) return false;
     if (region !== "all" && c.region !== region) return false;
     return true;
-  });
+  };
+
+  const cohortFiltered = compactCountries.filter(matchesFilters);
+  const caseStudyFiltered = caseStudies.filter(matchesFilters);
 
   const counts = {
-    all: WSIP_COUNTRIES.length,
-    live: WSIP_COUNTRIES.filter((c) => c.status === "live").length,
-    pipeline: WSIP_COUNTRIES.filter((c) => c.status === "pipeline").length,
-    planned: WSIP_COUNTRIES.filter((c) => c.status === "planned").length,
+    all: compactCountries.length,
+    live: compactCountries.filter((c) => c.status === "live").length,
+    pipeline: compactCountries.filter((c) => c.status === "pipeline").length,
+    planned: compactCountries.filter((c) => c.status === "planned").length,
   };
 
   return (
@@ -109,11 +124,29 @@ export function CountriesPage() {
       {/* ── Directory listing ─────────────────────────────────────────────── */}
       <section>
         <ul className="divide-y divide-brand-rule">
-          {filtered.map((c) => (
+          {cohortFiltered.map((c) => (
             <CountryRow key={c.code} c={c} liveProfile={live[c.code]} />
           ))}
         </ul>
-        {filtered.length === 0 && (
+
+        {/* Non-Compact live case studies, kept visually distinct from the 27. */}
+        {caseStudyFiltered.length > 0 && (
+          <div className="mt-12 border-t-2 border-brand-ink/15 pt-8">
+            <div className="flex flex-wrap items-baseline justify-between gap-3">
+              <div className="eyebrow">Beyond the Water Compact</div>
+              <div className="eyebrow-ink text-brand-ink/55">
+                Live case study, outside the 27-country cohort
+              </div>
+            </div>
+            <ul className="mt-3 divide-y divide-brand-rule">
+              {caseStudyFiltered.map((c) => (
+                <CountryRow key={c.code} c={c} liveProfile={live[c.code]} />
+              ))}
+            </ul>
+          </div>
+        )}
+
+        {cohortFiltered.length === 0 && caseStudyFiltered.length === 0 && (
           <div className="py-12 text-center font-serif italic text-brand-ink/55">
             No countries match this filter.
           </div>
@@ -148,8 +181,15 @@ function CountryRow({
       </div>
 
       <div className="col-span-12 md:col-span-5">
-        <div className="font-display text-[22px] font-extrabold leading-tight tracking-tightest text-brand-ink">
-          {c.name}
+        <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
+          <span className="font-display text-[22px] font-extrabold leading-tight tracking-tightest text-brand-ink">
+            {c.name}
+          </span>
+          {c.compact === false && (
+            <span className="border border-brand-rule px-1.5 py-0.5 font-sans text-[10px] font-semibold uppercase tracking-[0.14em] text-brand-ink/50">
+              Non-compact
+            </span>
+          )}
         </div>
         <div className="mt-1 eyebrow-ink text-brand-ink/55">
           {c.code}&nbsp;·&nbsp;{c.region}
@@ -274,27 +314,28 @@ function CountryRow({
  * pipeline = outline, planned = dotted.
  */
 function CohortGlyphs() {
+  const cohort = WSIP_COUNTRIES.filter((c) => c.compact !== false);
   return (
     <section className="border-y border-brand-rule py-5">
       <div className="flex flex-wrap items-baseline justify-between gap-3">
         <div className="eyebrow">Cohort progress · WSIP Water Compact</div>
         <div className="eyebrow-ink text-brand-ink/55">
           <span className="tabular-nums">
-            {WSIP_COUNTRIES.filter((c) => c.status === "live").length}
+            {cohort.filter((c) => c.status === "live").length}
           </span>{" "}
           live&nbsp;·&nbsp;
           <span className="tabular-nums">
-            {WSIP_COUNTRIES.filter((c) => c.status === "pipeline").length}
+            {cohort.filter((c) => c.status === "pipeline").length}
           </span>{" "}
           pipelined&nbsp;·&nbsp;
           <span className="tabular-nums">
-            {WSIP_COUNTRIES.filter((c) => c.status === "planned").length}
+            {cohort.filter((c) => c.status === "planned").length}
           </span>{" "}
           planned
         </div>
       </div>
       <div className="mt-4 flex flex-wrap gap-x-3 gap-y-2">
-        {WSIP_COUNTRIES.map((c) => (
+        {cohort.map((c) => (
           <span
             key={c.code}
             className="inline-flex flex-col items-center gap-1"

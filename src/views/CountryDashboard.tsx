@@ -7,7 +7,7 @@ import { PIR_DIMENSIONS, SUBSECTOR_LABELS, WSIP_SOLUTIONS } from "../framework";
 import { Matrix, type MatrixCellTarget } from "../components/Matrix/Matrix";
 import { MatrixCellPanel } from "../components/Matrix/MatrixCellPanel";
 import { KeyInsightsSection } from "../components/KeyInsightsSection";
-import { MandateSwimLanes } from "../components/MandateSwimLanes";
+import { MandateSwimLanes, type SwimLaneLabels } from "../components/MandateSwimLanes";
 import type { CoverageStatus, PirDimension } from "../types";
 
 const STATUS_BAR_COLOR: Record<CoverageStatus, string> = {
@@ -22,6 +22,29 @@ const STATUS_LABEL: Record<CoverageStatus, string> = {
   yellow: "Partial",
   red: "Gap",
   gray: "Not mapped",
+};
+
+// Per-country swim-lane label overrides. The component defaults to Brazil's
+// federal labels and constitutional blurbs; unitary Georgia overrides them so
+// "Federal" / CF-1988 references do not render on a country they do not apply to.
+const SWIMLANE_OVERRIDES: Record<string, SwimLaneLabels> = {
+  GEO: {
+    heading: "National, Adjara, municipal and basin, across the value chain.",
+    levelLabels: {
+      national: "National",
+      state: "Adjara A.R.",
+      local: "Municipal",
+      basin: "Basin",
+    },
+    levelBlurbs: {
+      national: "Central government: MEPA, MRDI, GNERC, EMA",
+      state: "Autonomous Republic of Adjara operators",
+      local: "Municipalities and Water Users Organisations",
+      basin: "River-basin districts (operative from 2026)",
+    },
+    sourceNote:
+      "All citations verified against the canonical text indexed in documents/georgia/manifest.json. Level labels reflect display names; underlying values are national / state / local / basin.",
+  },
 };
 
 export function CountryDashboard() {
@@ -89,7 +112,9 @@ export function CountryDashboard() {
             <div className="eyebrow text-brand-deep">
               {country.code}
               {meta?.region ? ` · ${meta.region}` : ""}
-              &nbsp;·&nbsp;WSIP Water Compact
+              {meta?.compact !== false ? (
+                <>&nbsp;·&nbsp;WSIP Water Compact</>
+              ) : null}
               &nbsp;·&nbsp;Updated&nbsp;
               <span className="tabular-nums">{country.last_updated}</span>
             </div>
@@ -222,7 +247,10 @@ export function CountryDashboard() {
       {country.mandate_records && country.mandate_records.length > 0 && (
         <section className="mx-auto max-w-[88rem] px-8 pb-16">
           <div className="border-t border-brand-rule pt-12">
-            <MandateSwimLanes records={country.mandate_records} />
+            <MandateSwimLanes
+              records={country.mandate_records}
+              labels={SWIMLANE_OVERRIDES[country.code]}
+            />
           </div>
         </section>
       )}

@@ -1,6 +1,8 @@
 // 27 WSIP Water Compact priority countries (WBG WSIP, Dec 2025, Ch. 5).
 // ISO numeric codes match the world-atlas TopoJSON used by the map.
 // Status: "live" = full data; "pipeline" = first cohort with data planned; "planned" = added later.
+// The array may also carry non-Compact `live` case studies (flagged `compact: false`),
+// e.g. Georgia, which are NOT counted in the 27-country cohort framing.
 
 export type CountryStatus = "live" | "pipeline" | "planned";
 
@@ -13,6 +15,13 @@ export interface CountryMeta {
   flag: string;
   /** Short reform-relevant note shown on cards and tooltips. */
   blurb?: string;
+  /**
+   * Whether the country belongs to the 27-member WSIP Water Compact cohort.
+   * Omitted (undefined) on the 27 Compact members = treated as Compact.
+   * Set `false` for non-Compact live case studies (e.g. Georgia) so the
+   * cohort tallies and "27" framing stay accurate.
+   */
+  compact?: boolean;
 }
 
 export const WSIP_COUNTRIES: CountryMeta[] = [
@@ -41,6 +50,17 @@ export const WSIP_COUNTRIES: CountryMeta[] = [
     region: "Europe & Central Asia",
     status: "pipeline",
     flag: "🇦🇲",
+  },
+  {
+    code: "GEO",
+    iso_numeric: "268", // present in public/countries-110m.json
+    name: "Georgia",
+    region: "Europe & Central Asia",
+    status: "live",
+    compact: false, // live data, but NOT one of the 27 Water Compact countries
+    flag: "🇬🇪",
+    blurb:
+      "2023 Law on Water Resources Management transposes the EU WFD; GNERC regulates water tariffs.",
   },
   {
     code: "BDI",

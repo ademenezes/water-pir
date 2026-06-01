@@ -239,7 +239,11 @@ export function bestCellAcross(
   for (const sub of subsectors) {
     const cell = sub.cells.find((c) => c.pir_dimension === pir);
     if (!cell) continue;
-    if (rank(cell.coverage_status) > rank(best.status)) {
+    // Assign the first real cell found (even gray) so its mandate text is
+    // carried; thereafter only a strictly higher-ranked cell replaces it. This
+    // keeps "first wins on ties" while ensuring an all-gray (mapped) cell still
+    // renders its gap note instead of the "not assessed" placeholder.
+    if (!best.subsector || rank(cell.coverage_status) > rank(best.status)) {
       best = {
         status: cell.coverage_status,
         subsector: sub,
