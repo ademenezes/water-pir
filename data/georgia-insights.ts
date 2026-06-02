@@ -18,6 +18,10 @@ const FAOLEX_WRM_2023 =
 const MRDI_WATER = "https://mrdi.gov.ge/en/agencies/water";
 const EU_ASSOC_AGREEMENT =
   "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:22014A0830(02)";
+const OECD_WATER_OUTLOOK_2021 =
+  "https://www.oecd.org/content/dam/oecd/en/publications/reports/2021/07/developing-a-water-policy-outlook-for-georgia-the-republic-of-moldova-and-ukraine_a1b2f035/512a52aa-en.pdf";
+const OECD_NPD_GEORGIA_2024 =
+  "https://www.oecd.org/content/dam/oecd/en/about/programmes/water-policy-reforms-in-eecca/georgia/overview_10th_georgia_npd_jan_2024.pdf";
 
 export const GEORGIA_INSIGHTS: KeyInsight[] = [
   {
@@ -98,5 +102,31 @@ export const GEORGIA_INSIGHTS: KeyInsight[] = [
     pir_dimension: "regulation",
     wsip_solution_id: 1,
     severity: "tension",
+  },
+  {
+    title: "WSS reform carries a roughly GEL 793 million financing gap",
+    body:
+      "An OECD and MEPA outlook puts the present value of additional finance needed to meet Georgia's 2030 water and sanitation goals at GEL 793.4 million (EUR 198.9 million), of which GEL 784 million is wastewater and water-supply capital, expected to lean heavily on donors.",
+    legal_basis: {
+      short: "OECD water-policy outlook (2021)",
+      article: "Table 2.11, full-reform scenario",
+      national_url: OECD_WATER_OUTLOOK_2021,
+    },
+    pir_dimension: "financing",
+    wsip_solution_id: 1,
+    severity: "gap",
+  },
+  {
+    title: "Few quantified water targets; ten urban WWTPs due by 2026",
+    body:
+      "Georgia has set no quantified national target for water or sanitation access, and metering goals are left 'to be determined'. GNERC caps allowed drinking-water losses (Resolution No. 45 of 2017) but sets no non-revenue-water reduction target. Its firmest sanitation milestone, ten urban wastewater plants, has slipped from 2021 to 2026.",
+    legal_basis: {
+      short: "OECD 10th National Policy Dialogue (2024)",
+      article: "UWWTD approximation milestone",
+      national_url: OECD_NPD_GEORGIA_2024,
+    },
+    pir_dimension: "policy",
+    wsip_solution_id: 2,
+    severity: "gap",
   },
 ];

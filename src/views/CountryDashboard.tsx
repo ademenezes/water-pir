@@ -7,6 +7,7 @@ import { PIR_DIMENSIONS, SUBSECTOR_LABELS, WSIP_SOLUTIONS } from "../framework";
 import { Matrix, type MatrixCellTarget } from "../components/Matrix/Matrix";
 import { MatrixCellPanel } from "../components/Matrix/MatrixCellPanel";
 import { KeyInsightsSection } from "../components/KeyInsightsSection";
+import { TargetsPanel } from "../components/TargetsPanel";
 import { MandateSwimLanes, type SwimLaneLabels } from "../components/MandateSwimLanes";
 import type { CoverageStatus, PirDimension } from "../types";
 
@@ -173,6 +174,15 @@ export function CountryDashboard() {
       {country.key_insights && country.key_insights.length > 0 && (
         <section className="mx-auto max-w-[88rem] px-8 pb-16">
           <KeyInsightsSection insights={country.key_insights} />
+        </section>
+      )}
+
+      {/* ── Targets & ambitions ──────────────────────────────────────────── */}
+      {country.targets && country.targets.length > 0 && (
+        <section className="mx-auto max-w-[88rem] px-8 pb-16">
+          <div className="border-t border-brand-rule pt-12">
+            <TargetsPanel targets={country.targets} />
+          </div>
         </section>
       )}
 

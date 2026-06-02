@@ -1,6 +1,7 @@
 import type { CountryProfile, Institution, LegalInstrument } from "../src/types";
 import { GEORGIA_MANDATES } from "./georgia-mandates";
 import { GEORGIA_INSIGHTS } from "./georgia-insights";
+import { GEORGIA_TARGETS } from "./georgia-targets";
 
 // Georgia, water sector PIR snapshot.
 // Canonical source is matsne.gov.ge (Legislative Herald of Georgia, the official
@@ -85,8 +86,8 @@ const I_WUO_2019: LegalInstrument = {
   short: "Law on Water Users Organisations (2019)",
   year: 2019,
   type: "sectoral_law",
-  faolex_id: null,
-  faolex_url: null,
+  faolex_id: "LEX-FAOC193150",
+  faolex_url: "https://www.fao.org/faolex/results/details/en/c/LEX-FAOC193150/",
   national_url: MATSNE_WUO_2019,
   articles_cited:
     "Art. 3 (irrigation infrastructure), Art. 6 (public-law entity), Art. 7 (founding by >50% of users)",
@@ -144,6 +145,201 @@ const I_EU_AA: LegalInstrument = {
   national_url: EU_ASSOC_AGREEMENT,
   articles_cited:
     "Environmental annex (Water Framework and Drinking Water Directive approximation)",
+};
+
+// ── Water-specific subsidiary instruments ──────────────────────────────────────
+// Enumerated from the FAOLEX water-area corpus for Georgia (query AREA:WA AND
+// CC:GEO, non-repealed; 59 records on 2026-06-01) and cross-checked against the
+// OECD/MEPA National Policy Dialogue review (Jan 2024). Each FAOLEX id below was
+// returned by the FAOLEX query endpoint itself, so the ids are primary-verified;
+// the detail pages are JavaScript-rendered, so pinpoint article numbers are not
+// asserted. faolexUrl() builds the canonical detail URL from a record id.
+const faolexUrl = (id: string) =>
+  `https://www.fao.org/faolex/results/details/en/c/${id}/`;
+
+const I_SUBSOIL_1996: LegalInstrument = {
+  title: "Law of Georgia on Subsoil",
+  short: "Law on Subsoil (1996)",
+  year: 1996,
+  type: "sectoral_law",
+  faolex_id: "LEX-FAOC031883",
+  faolex_url: faolexUrl("LEX-FAOC031883"),
+  note: "No. 242-IIS, adopted 17 May 1996. Treats underground water (potable, mineral, thermal, industrial, technical) as a licensed subsoil resource under the National Agency of Subsoil Resources. General and agricultural groundwater abstraction falls under the water-use regime, not the subsoil licence.",
+};
+
+const I_GROUNDWATER_RESERVES_2017: LegalInstrument = {
+  title:
+    "Order No. 42 of 2017 of the Minister of Environment and Natural Resources on Guidelines for Classification and Drafting Reports for Assessment of Reserves and Predicted Resources of Underground Water",
+  short: "Underground-water reserves order (2017)",
+  year: 2017,
+  type: "regulation",
+  faolex_id: "LEX-FAOC174852",
+  faolex_url: faolexUrl("LEX-FAOC174852"),
+  note: "Classifies and assesses reserves of potable, mineral, industrial, technical and thermal underground water; the basis for groundwater-reserve accounting.",
+};
+
+const I_GROUNDWATER_SANITARY_2019: LegalInstrument = {
+  title:
+    "Resolution No. 161 of 2019 of the Government of Georgia on Rules for Determining and Approving Sanitary Protection Zones of Groundwater Objects under Mineral Extraction Licence",
+  short: "Groundwater sanitary zones (2019)",
+  year: 2019,
+  type: "resolution",
+  faolex_id: "LEX-FAOC193838",
+  faolex_url: faolexUrl("LEX-FAOC193838"),
+  note: "Sets sanitary protection zones around groundwater objects subject to a mineral-extraction licence.",
+};
+
+const I_ENGINEERING_PROTECTION_2000: LegalInstrument = {
+  title:
+    "Law of Georgia on Regulation and Engineering Protection of Seas, Water Objects and River Coastlines",
+  short: "Engineering Protection of Water Objects Law (2000)",
+  year: 2000,
+  type: "sectoral_law",
+  faolex_id: "LEX-FAOC170449",
+  faolex_url: faolexUrl("LEX-FAOC170449"),
+  note: "No. 576-IS, adopted 27 Oct 2000. Governs engineering protection of river coastlines, water objects and the sea coast against flooding and bank erosion, and assigns flood-defence and bank-protection works.",
+};
+
+const I_GNERC_TARIFF_2017: LegalInstrument = {
+  title:
+    "Resolution No. 21 of 2017 of GNERC on the Methodology of Calculating Water Supply Tariffs",
+  short: "GNERC water-tariff methodology (2017)",
+  year: 2017,
+  type: "resolution",
+  faolex_id: "LEX-FAOC187453",
+  faolex_url: faolexUrl("LEX-FAOC187453"),
+  note: "Methodology for calculating drinking-water-supply tariffs; the basis for per-licensee water tariffs (GWP, UWSCG, Adjara operators).",
+};
+
+const I_GNERC_LOSSES_2017: LegalInstrument = {
+  title:
+    "Resolution No. 45 of 2017 of GNERC on Calculating Normative Losses of Potable Water",
+  short: "GNERC normative water-loss rule (2017)",
+  year: 2017,
+  type: "resolution",
+  faolex_id: "LEX-FAOC187451",
+  faolex_url: faolexUrl("LEX-FAOC187451"),
+  note: "Rule for calculating the normative (allowed) losses of potable water, an input to the tariff methodology.",
+};
+
+const I_GNERC_AMELIORATION_2011: LegalInstrument = {
+  title: "Resolution No. 2 of 2011 of GNERC on Tariffs for Amelioration Services",
+  short: "GNERC amelioration-tariff rule (2011)",
+  year: 2011,
+  type: "resolution",
+  faolex_id: "LEX-FAOC187452",
+  faolex_url: faolexUrl("LEX-FAOC187452"),
+  note: "Standing tariff instrument for amelioration (irrigation and drainage) services, predating the revised irrigation tariffs that apply from 1 April 2026.",
+};
+
+const I_SEWERAGE_DISCHARGE_2018: LegalInstrument = {
+  title:
+    "Resolution No. 431 of 2018 of the Government of Georgia on Rules for Discharging and Receiving Water Flowing into the Sewerage System and Permitted Limits of Pollutants",
+  short: "Sewerage discharge-limits rule (2018)",
+  year: 2018,
+  type: "resolution",
+  faolex_id: "LEX-FAOC181491",
+  faolex_url: faolexUrl("LEX-FAOC181491"),
+  note: "Rules for discharging into and receiving water from the sewerage system, with permitted pollutant limits; the operative urban-wastewater discharge standard.",
+};
+
+const I_SURFACE_CONTAMINANT_2013: LegalInstrument = {
+  title:
+    "Resolution No. 414 of 2013 of the Government of Georgia on Calculation of Permitted Limits of Contaminants in Waters Flowing into Surface Water Objects",
+  short: "Surface-water contaminant-limits rule (2013)",
+  year: 2013,
+  type: "resolution",
+  faolex_id: "LEX-FAOC167616",
+  faolex_url: faolexUrl("LEX-FAOC167616"),
+  note: "Method for calculating permitted limits of contaminants in waters discharged to surface water objects.",
+};
+
+const I_PERMIT_2005: LegalInstrument = {
+  title:
+    "Resolution No. 137 of 2005 of the Government of Georgia on Rules for Issuance of Permits for Extracting Water from and Releasing Water into Surface Water Objects",
+  short: "Surface-water permit rule (2005)",
+  year: 2005,
+  type: "resolution",
+  faolex_id: "LEX-FAOC167937",
+  faolex_url: faolexUrl("LEX-FAOC167937"),
+  note: "Legacy rules for issuing permits to extract water from, and release water into, surface water objects; predates the 2008 deregulation of special water use and the 2023 restored permit regime.",
+};
+
+const I_SURFACE_POLLUTION_2013: LegalInstrument = {
+  title:
+    "Resolution No. 425 of 2013 of the Government of Georgia on Protection of Surface Waters of Georgia from Pollution",
+  short: "Surface-water pollution-protection rule (2013)",
+  year: 2013,
+  type: "resolution",
+  faolex_id: "LEX-FAOC167680",
+  faolex_url: faolexUrl("LEX-FAOC167680"),
+  note: "Measures for protecting Georgia's surface waters from pollution.",
+};
+
+const I_WATER_PROTECTION_ZONES_2013: LegalInstrument = {
+  title:
+    "Resolution No. 440 of 2013 of the Government of Georgia on Water Protection Zones",
+  short: "Water-protection-zones rule (2013)",
+  year: 2013,
+  type: "resolution",
+  faolex_id: "LEX-FAOC167673",
+  faolex_url: faolexUrl("LEX-FAOC167673"),
+  note: "Establishes water-protection zones along water bodies.",
+};
+
+const I_IRRIGATION_REGIME_2023: LegalInstrument = {
+  title:
+    "Order No. 2-686 of 2023 of the Minister of Environmental Protection and Agriculture on Rules for the Water-Supply Regime and Irrigation Regulations",
+  short: "Irrigation-regime order (2023)",
+  year: 2023,
+  type: "regulation",
+  faolex_id: "LEX-FAOC219649",
+  faolex_url: faolexUrl("LEX-FAOC219649"),
+  note: "Rules for the water-supply regime and irrigation regulations operated by Georgian Amelioration.",
+};
+
+const I_AMELIORATION_SYSTEMS_2013: LegalInstrument = {
+  title:
+    "Resolution No. 409 of 2013 of the Government of Georgia on Technical Use of Amelioration Systems",
+  short: "Amelioration-systems use rule (2013)",
+  year: 2013,
+  type: "resolution",
+  faolex_id: "LEX-FAOC167725",
+  faolex_url: faolexUrl("LEX-FAOC167725"),
+  note: "Rules for the technical use of amelioration (irrigation and drainage) systems.",
+};
+
+const I_IRRIGATION_SERVICE_2021: LegalInstrument = {
+  title:
+    "Order No. 2-268 of 2021 of the Minister of Environmental Protection and Agriculture on Terms of Irrigation Service Agreements with Primary Water Users and Water User Organisations",
+  short: "Irrigation-service-agreement order (2021)",
+  year: 2021,
+  type: "regulation",
+  faolex_id: "LEX-FAOC202261",
+  faolex_url: faolexUrl("LEX-FAOC202261"),
+  note: "Terms of irrigation-service agreements between Georgian Amelioration and primary water users / Water Users Organisations.",
+};
+
+const I_WUO_CHARTER_2020: LegalInstrument = {
+  title:
+    "Order No. 2-531 of 2020 of the Minister of Environmental Protection and Agriculture on the Template Charter for a Water User Organisation",
+  short: "WUO charter-template order (2020)",
+  year: 2020,
+  type: "regulation",
+  faolex_id: "LEX-FAOC196555",
+  faolex_url: faolexUrl("LEX-FAOC196555"),
+  note: "Template charter for Water Users Organisations, an implementing order under the 2019 WUO Law.",
+};
+
+const I_WUO_REGISTRY_2020: LegalInstrument = {
+  title:
+    "Order No. 2-569 of 2020 of the Minister of Environmental Protection and Agriculture on Rules for Maintaining the Water User Organisations' Registry",
+  short: "WUO registry order (2020)",
+  year: 2020,
+  type: "regulation",
+  faolex_id: "LEX-FAOC205316",
+  faolex_url: faolexUrl("LEX-FAOC205316"),
+  note: "Rules for maintaining the Water Users Organisations registry, an implementing order under the 2019 WUO Law.",
 };
 
 // ── Institutions (defined once, referenced by cells) ───────────────────────────
@@ -215,6 +411,12 @@ const INST_NFA: Institution = {
   role: "regulator",
   level: "national",
 };
+const INST_SUBSOIL: Institution = {
+  name: "National Agency of Subsoil Resources",
+  acronym: "NASR",
+  role: "regulator",
+  level: "national",
+};
 const INST_MUNICIPALITIES: Institution = {
   name: "Self-governing municipalities",
   role: "asset_owner",
@@ -279,21 +481,21 @@ export const GEORGIA: CountryProfile = {
         {
           pir_dimension: "financing",
           coverage_status: "yellow",
-          legal_instruments: [I_ENERGY_WATER_2019],
+          legal_instruments: [I_ENERGY_WATER_2019, I_GNERC_TARIFF_2017, I_GNERC_LOSSES_2017],
           responsible_institutions: [INST_GNERC, INST_UWSCG, INST_MRDI],
           mandate_text:
-            "GNERC sets tariffs intended to support cost recovery, but urban WSS capital is largely funded from the state budget and donors (World Bank, ADB, EIB, KfW) rather than tariff revenue.",
+            "GNERC sets tariffs to support cost recovery using a published methodology (Resolution No. 21 of 2017) and a normative water-loss rule (Resolution No. 45 of 2017), but urban WSS capital is still largely funded from the state budget and donors (World Bank, ADB, EIB, KfW) rather than tariff revenue.",
           de_facto_note:
-            "UWSCG tariffs sit below full cost recovery and the utility depends on capital transfers; GWP is closer to commercial viability in the capital.",
+            "UWSCG tariffs sit below full cost recovery and the utility depends on capital transfers; GWP is closer to commercial viability in the capital. An OECD water-policy outlook (2021) estimates the present value of additional finance needed to meet the 2030 water and sanitation goals at GEL 793.4 million (EUR 198.9 million), most of it donor-funded wastewater and water-supply capital.",
           last_verified_date: today,
         },
         {
           pir_dimension: "regulation",
           coverage_status: "green",
-          legal_instruments: [I_ENERGY_WATER_2019],
+          legal_instruments: [I_ENERGY_WATER_2019, I_GNERC_TARIFF_2017],
           responsible_institutions: [INST_GNERC, INST_NFA],
           mandate_text:
-            "GNERC licenses water-supply service and sets the tariff methodology and per-licensee tariffs (Art. 1(9), 11), giving urban economic regulation real teeth, a relatively rare unified energy-and-water regulator.",
+            "GNERC licenses water-supply service and sets the tariff methodology (Resolution No. 21 of 2017) and per-licensee tariffs (Art. 1(9), 11), giving urban economic regulation real teeth, a relatively rare unified energy-and-water regulator.",
           de_facto_note:
             "Economic regulation is robust, but drinking-water quality regulation is weaker: the government technical regulation on drinking-water quality is not yet adopted (reportedly slipping to 2030), with monitoring assigned to the National Food Agency.",
           last_verified_date: today,
@@ -367,12 +569,12 @@ export const GEORGIA: CountryProfile = {
         {
           pir_dimension: "regulation",
           coverage_status: "yellow",
-          legal_instruments: [I_WATER_1997, I_WRM_2023],
+          legal_instruments: [I_SEWERAGE_DISCHARGE_2018, I_SURFACE_CONTAMINANT_2013, I_WRM_2023],
           responsible_institutions: [INST_NEA, INST_MEPA],
           mandate_text:
-            "Effluent discharge is regulated under environmental norms administered by NEA; the 2023 Water Resources Management Law will tighten water-quality and environmental-flow protection once operative from 1 September 2026.",
+            "Effluent discharge is governed by adopted limits: permitted pollutants for water entering the sewerage system (Resolution No. 431 of 2018) and contaminant limits for discharges to surface water objects (Resolution No. 414 of 2013), administered by NEA; the 2023 Water Resources Management Law tightens water-quality and environmental-flow protection once operative from 1 September 2026.",
           de_facto_note:
-            "Monitoring and enforcement of discharge limits are weak; the strengthened 2023 regime is not yet in force.",
+            "Discharge limits exist on paper, but monitoring and enforcement are weak and most collected sewage is released with little or no treatment; the strengthened 2023 regime is not yet in force.",
           last_verified_date: today,
         },
         {
@@ -484,12 +686,12 @@ export const GEORGIA: CountryProfile = {
         {
           pir_dimension: "institutions",
           coverage_status: "yellow",
-          legal_instruments: [I_WUO_2019],
+          legal_instruments: [I_WUO_2019, I_WUO_CHARTER_2020, I_WUO_REGISTRY_2020],
           responsible_institutions: [INST_WUO, INST_AMELIORATION],
           mandate_text:
-            "Water Users Organisations may form as public-law entities when more than 50% of a service area's users join (Art. 6, 7), taking over tertiary canals from Georgian Amelioration.",
+            "Water Users Organisations may form as public-law entities when more than 50% of a service area's users join (Art. 6, 7), taking over tertiary canals from Georgian Amelioration; implementing orders supply a template charter (Order No. 2-531 of 2020) and a WUO registry (Order No. 2-569 of 2020).",
           de_facto_note:
-            "In practice few WUOs have formed and most on-farm irrigation is managed informally by individual farmers.",
+            "Despite the implementing orders being in place, few WUOs have actually formed and most on-farm irrigation is managed informally by individual farmers.",
           last_verified_date: today,
         },
         {
@@ -555,10 +757,10 @@ export const GEORGIA: CountryProfile = {
         {
           pir_dimension: "institutions",
           coverage_status: "yellow",
-          legal_instruments: [I_AMELIORATION],
+          legal_instruments: [I_AMELIORATION, I_IRRIGATION_REGIME_2023],
           responsible_institutions: [INST_AMELIORATION, INST_MEPA],
           mandate_text:
-            "State-owned Georgian Amelioration operates the main irrigation and drainage systems nationwide as the single provider, under MEPA's oversight.",
+            "State-owned Georgian Amelioration operates the main irrigation and drainage systems nationwide as the single provider, under MEPA's oversight; a 2023 MEPA order (Order No. 2-686 of 2023) sets the water-supply regime and irrigation rules it follows.",
           de_facto_note:
             "Much of the network is ageing and operating below design command area; rehabilitation is ongoing under the World Bank GRAIL project.",
           last_verified_date: today,
@@ -566,10 +768,10 @@ export const GEORGIA: CountryProfile = {
         {
           pir_dimension: "igc",
           coverage_status: "yellow",
-          legal_instruments: [I_WUO_2019],
+          legal_instruments: [I_WUO_2019, I_IRRIGATION_SERVICE_2021],
           responsible_institutions: [INST_AMELIORATION, INST_WUO],
           mandate_text:
-            "Main systems sit with national Georgian Amelioration; tertiary distribution is meant to pass to local Water Users Organisations under the 2019 law.",
+            "Main systems sit with national Georgian Amelioration; tertiary distribution is meant to pass to local Water Users Organisations under the 2019 law, with a 2021 MEPA order (Order No. 2-268 of 2021) setting the terms of irrigation-service agreements between the company and primary water users.",
           de_facto_note:
             "The handover of tertiary canals to user organisations is largely unrealised, so the national company effectively runs the chain end to end.",
           last_verified_date: today,
@@ -577,10 +779,10 @@ export const GEORGIA: CountryProfile = {
         {
           pir_dimension: "financing",
           coverage_status: "yellow",
-          legal_instruments: [I_IRRIGATION_STRATEGY, I_ENERGY_WATER_2019],
+          legal_instruments: [I_IRRIGATION_STRATEGY, I_ENERGY_WATER_2019, I_GNERC_AMELIORATION_2011],
           responsible_institutions: [INST_AMELIORATION, INST_GNERC],
           mandate_text:
-            "Rehabilitation is funded from the state budget and the World Bank (GRAIL project); GNERC sets an irrigation service tariff that applies from 1 April 2026, a first step toward cost recovery.",
+            "Rehabilitation is funded from the state budget and the World Bank (GRAIL project). GNERC has set amelioration-service tariffs since 2011 (Resolution No. 2 of 2011) and sets a revised irrigation service tariff that applies from 1 April 2026, a first step toward fuller cost recovery.",
           de_facto_note:
             "Irrigation service charges have historically covered only a fraction of operating cost, leaving the system reliant on budget transfers.",
           last_verified_date: today,
@@ -588,12 +790,12 @@ export const GEORGIA: CountryProfile = {
         {
           pir_dimension: "regulation",
           coverage_status: "yellow",
-          legal_instruments: [I_ENERGY_WATER_2019, I_WRM_2023],
+          legal_instruments: [I_ENERGY_WATER_2019, I_GNERC_AMELIORATION_2011, I_AMELIORATION_SYSTEMS_2013, I_WRM_2023],
           responsible_institutions: [INST_GNERC, INST_NEA],
           mandate_text:
-            "Economic regulation arrives in 2026 through the GNERC irrigation tariff; bulk abstraction for irrigation will fall under the 2023 special water-use permit regime once it is operative.",
+            "GNERC has regulated amelioration-service tariffs since 2011 (Resolution No. 2 of 2011), and technical-use rules govern the systems (Resolution No. 409 of 2013); a revised irrigation tariff applies from 1 April 2026 and bulk abstraction for irrigation will fall under the 2023 special water-use permit regime once it is operative.",
           de_facto_note:
-            "Neither the irrigation tariff nor the abstraction-permit regime is in force yet, so regulation of the main system is still prospective.",
+            "Tariff and technical regulation exist, but the revised cost-recovery tariff and the abstraction-permit regime both bite only from 2026, so economic regulation of the main system is still being built up.",
           last_verified_date: today,
         },
         {
@@ -621,10 +823,10 @@ export const GEORGIA: CountryProfile = {
         {
           pir_dimension: "policy",
           coverage_status: "yellow",
-          legal_instruments: [I_PUBLIC_SAFETY_2014, I_CLIMATE_2030],
+          legal_instruments: [I_PUBLIC_SAFETY_2014, I_ENGINEERING_PROTECTION_2000, I_CLIMATE_2030],
           responsible_institutions: [INST_EMA, INST_MEPA],
           mandate_text:
-            "Disaster risk including floods and drought is framed by the 2014 Law on Public Safety, with climate-adaptation priorities for water set out in the 2030 Climate Strategy.",
+            "Disaster risk including floods and drought is framed by the 2014 Law on Public Safety; the 2000 Law on Engineering Protection of water objects and river coastlines underpins flood-defence and bank-protection works, with climate-adaptation priorities for water set out in the 2030 Climate Strategy.",
           de_facto_note:
             "There is no standalone water-related disaster-risk-reduction strategy; flood and drought sit within generic civil-protection and climate policy.",
           last_verified_date: today,
@@ -663,10 +865,10 @@ export const GEORGIA: CountryProfile = {
         {
           pir_dimension: "regulation",
           coverage_status: "yellow",
-          legal_instruments: [I_PUBLIC_SAFETY_2014],
+          legal_instruments: [I_PUBLIC_SAFETY_2014, I_ENGINEERING_PROTECTION_2000],
           responsible_institutions: [INST_EMA, INST_NEA],
           mandate_text:
-            "Emergency prevention through forecasting and monitoring (Art. 28) and population warning (Art. 32) are mandated, but monitoring-network density and early-warning coverage remain limited.",
+            "Emergency prevention through forecasting and monitoring (Art. 28) and population warning (Art. 32) are mandated, and the 2000 Engineering Protection Law governs flood-defence and bank-protection works on rivers and coastlines, but monitoring-network density and early-warning coverage remain limited.",
           de_facto_note:
             "Flood-hazard mapping and basin-scale early-warning systems are incomplete; EU-funded hydromet modernisation is ongoing.",
           last_verified_date: today,
@@ -674,10 +876,10 @@ export const GEORGIA: CountryProfile = {
         {
           pir_dimension: "resilience",
           coverage_status: "yellow",
-          legal_instruments: [I_PUBLIC_SAFETY_2014, I_CLIMATE_2030],
+          legal_instruments: [I_PUBLIC_SAFETY_2014, I_ENGINEERING_PROTECTION_2000, I_CLIMATE_2030],
           responsible_institutions: [INST_EMA, INST_MEPA],
           mandate_text:
-            "Resilience rests on the civil-protection system plus climate-adaptation planning; structural flood defences and drought-preparedness measures are being strengthened with donor support.",
+            "Resilience rests on the civil-protection system, the 2000 Engineering Protection Law's flood-defence and bank-protection works, and climate-adaptation planning; structural defences and drought-preparedness measures are being strengthened with donor support.",
           last_verified_date: today,
         },
       ],
@@ -742,10 +944,10 @@ export const GEORGIA: CountryProfile = {
         {
           pir_dimension: "regulation",
           coverage_status: "yellow",
-          legal_instruments: [I_WRM_2023, I_WATER_1997],
+          legal_instruments: [I_WRM_2023, I_PERMIT_2005, I_WATER_1997],
           responsible_institutions: [INST_NEA],
           mandate_text:
-            "Surface-water abstraction was largely uncontrolled after special water-use permits were abolished in 2008; the 2023 law restores a special water-use permit regime administered by the National Environmental Agency, operative from 1 September 2026.",
+            "Surface-water abstraction and discharge were governed by a 2005 permit rule (Resolution No. 137 of 2005) until special water-use permits were abolished in 2008; the 2023 law restores a special water-use permit regime administered by the National Environmental Agency, operative from 1 September 2026.",
           de_facto_note:
             "Between 2008 and the 2026 commencement, abstraction is effectively unlicensed, so the regulatory mandate exists in law but not yet in practice.",
           last_verified_date: today,
@@ -753,10 +955,10 @@ export const GEORGIA: CountryProfile = {
         {
           pir_dimension: "resilience",
           coverage_status: "yellow",
-          legal_instruments: [I_WRM_2023, I_CLIMATE_2030],
+          legal_instruments: [I_WRM_2023, I_SURFACE_POLLUTION_2013, I_WATER_PROTECTION_ZONES_2013, I_CLIMATE_2030],
           responsible_institutions: [INST_MEPA, INST_NEA],
           mandate_text:
-            "Environmental-flow protection and basin planning under the 2023 law are the main resilience tools, reinforced by the 2030 Climate Strategy; neither is operational yet.",
+            "Standing rules protect surface waters from pollution (Resolution No. 425 of 2013) and establish water-protection zones along water bodies (Resolution No. 440 of 2013); the 2023 law adds environmental-flow protection and basin planning, reinforced by the 2030 Climate Strategy, but those newer tools are not operational until 2026.",
           last_verified_date: today,
         },
       ],
@@ -775,21 +977,23 @@ export const GEORGIA: CountryProfile = {
         {
           pir_dimension: "policy",
           coverage_status: "yellow",
-          legal_instruments: [I_WRM_2023, I_WATER_1997],
+          legal_instruments: [I_WRM_2023, I_SUBSOIL_1996, I_WATER_1997],
           responsible_institutions: [INST_MEPA],
           mandate_text:
-            "Groundwater falls under the same state-ownership and water-use framework as surface water; the 2023 law brings it into the basin-management and special water-use permit regime, but not before 1 September 2026.",
+            "Groundwater is split across two frameworks: mineral, thermal and industrial underground waters are licensed subsoil resources under the 1996 Law on Subsoil, while general and agricultural groundwater falls under the water-use regime. The 2023 law brings the latter into basin management and the special water-use permit regime, but not before 1 September 2026.",
           de_facto_note:
-            "There is no groundwater-specific policy or aquifer-protection strategy; it is treated as part of general water resources.",
+            "There is no integrated groundwater or aquifer-protection strategy; the resource is treated partly as subsoil and partly as general water, with no unified management.",
           last_verified_date: today,
         },
         {
           pir_dimension: "institutions",
-          coverage_status: "red",
-          legal_instruments: [I_WRM_2023],
-          responsible_institutions: [INST_NEA],
+          coverage_status: "yellow",
+          legal_instruments: [I_SUBSOIL_1996, I_GROUNDWATER_RESERVES_2017, I_WRM_2023],
+          responsible_institutions: [INST_SUBSOIL, INST_NEA],
           mandate_text:
-            "No institution actively manages groundwater as a distinct resource. The National Environmental Agency will license abstraction once the 2023 regime is operative, but groundwater monitoring and assessment capacity is minimal.",
+            "Mineral, thermal and industrial groundwater is managed as a licensed subsoil resource by the National Agency of Subsoil Resources, with a 2017 order setting how underground-water reserves are classified and assessed; the National Environmental Agency will license general abstraction once the 2023 regime is operative.",
+          de_facto_note:
+            "Institutional coverage is split and partial: the subsoil agency handles licensed mineral and thermal waters, but no body actively manages general aquifers, and groundwater monitoring capacity is minimal.",
           last_verified_date: today,
         },
         {
@@ -812,13 +1016,13 @@ export const GEORGIA: CountryProfile = {
         },
         {
           pir_dimension: "regulation",
-          coverage_status: "red",
-          legal_instruments: [I_WRM_2023],
-          responsible_institutions: [INST_NEA],
+          coverage_status: "yellow",
+          legal_instruments: [I_SUBSOIL_1996, I_GROUNDWATER_SANITARY_2019, I_WRM_2023],
+          responsible_institutions: [INST_SUBSOIL, INST_NEA],
           mandate_text:
-            "Groundwater abstraction has been effectively unregulated since special water-use permits were abolished in 2008; the restored permit regime does not bite until 1 September 2026.",
+            "Mineral and thermal groundwater abstraction is licensed under the 1996 Subsoil Law, with sanitary protection zones set around licensed groundwater objects (Resolution No. 161 of 2019); general groundwater abstraction has been effectively unregulated since special water-use permits were abolished in 2008, and the restored permit regime does not bite until 1 September 2026.",
           de_facto_note:
-            "Unlicensed wells are common and abstraction volumes are not systematically recorded.",
+            "Regulation is bifurcated: licensed mineral and thermal waters are controlled, but general aquifer abstraction is not, unlicensed wells are common and volumes are not systematically recorded.",
           last_verified_date: today,
         },
         {
@@ -835,4 +1039,5 @@ export const GEORGIA: CountryProfile = {
   ],
   mandate_records: GEORGIA_MANDATES,
   key_insights: GEORGIA_INSIGHTS,
+  targets: GEORGIA_TARGETS,
 };

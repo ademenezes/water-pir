@@ -98,6 +98,7 @@ export interface CountryProfile {
   subsectors: SubsectorEntry[];
   mandate_records?: MandateRecord[];
   key_insights?: KeyInsight[];
+  targets?: SectorTarget[];
 }
 
 // Distinct from InstitutionRole (which describes WHAT a body is, regulator, asset owner, etc.).
@@ -135,4 +136,38 @@ export interface KeyInsight {
   pir_dimension?: PirDimension;
   wsip_solution_id?: WsipSolutionId;
   severity: "tension" | "gap" | "strength";
+}
+
+// Sector targets & ambitions: a typed KPI layer, distinct from the de-jure
+// mandate map. Captures what a country (or its regulator, a ministry, or an
+// endorsed assessment) has committed to, including the honest cases where no
+// quantified target exists. Drives the "Targets & ambitions" panel on the
+// country dashboard. Optional on CountryProfile.
+export type TargetDomain =
+  | "water_access"
+  | "sanitation"
+  | "performance"
+  | "financing"
+  | "wrm";
+
+// How real the target is. Picks up the coverage mental model: a firm quantified
+// target reads like a strength, an absent one like a gap.
+export type TargetStatus =
+  | "set" // quantified target with a horizon
+  | "slipping" // target exists but the deadline has been pushed back
+  | "qualitative" // stated ambition, no number
+  | "to_be_determined" // placeholder, value not yet fixed
+  | "not_set"; // no national target exists
+
+export interface SectorTarget {
+  domain: TargetDomain;
+  level?: GovernmentLevel; // national | state | local | basin; omitted reads as national
+  indicator: string; // what is measured, e.g. "Urban wastewater treatment plants"
+  baseline?: string; // baseline value (+ year) where known
+  target_value: string; // the target, or "No quantified target" / "To be determined"
+  target_year?: string; // e.g. "2026", "2030"
+  status: TargetStatus;
+  issuing_body: string; // who set it (or "No national target")
+  source: MandateLegalBasis; // reuses short + article + faolex_url / national_url
+  note?: string;
 }
