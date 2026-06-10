@@ -215,6 +215,7 @@ To reset on a returning visitor's browser: `localStorage.removeItem("water-pir.u
 - Every fact in a country file should be traceable to a primary source (FAOLEX, national gazette, ANA resolution, etc.).
 - WBG analysis (BOSIB Box X.Y, WSIP Figure Z) is acceptable as a *secondary* source for things like coverage assessments and lessons — but the underlying law/regulation must always be linked.
 - The "de jure–de facto" note is where to record where law and practice diverge. Be specific and cite the source for the divergence (e.g., "SNIS 2024 data shows ~50% sewage treatment").
+- **Institutional currency:** ministries and agencies get reorganised, renamed and merged. Re-verify the responsible body against its live site, cite the current successor, and date historical attributions rather than rewriting them. Worked example: Georgia's Ministry of Regional Development and Infrastructure (MRDI) was reorganised in 2025 and its WSS / UWSCG functions passed to the new **Ministry of Infrastructure of Georgia** (`moi.gov.ge`); the dataset names the Ministry of Infrastructure as the present-day actor but keeps "MRDI, 2021" on the WSS Vision it actually issued. When a cited URL dies (the old `mrdi.gov.ge` page 404s), replace it with the live authoritative page, don't just drop the citation. If the exact instrument/effective date can't be pinned to a resolvable primary source, assert only what's verified (the year + the live successor) and flag the gap.
 
 ## What not to do
 

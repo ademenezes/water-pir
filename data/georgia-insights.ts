@@ -16,7 +16,6 @@ const MATSNE_WUO_2019 = "https://matsne.gov.ge/en/document/view/4736322";
 const MATSNE_PUBLIC_SAFETY_2014 = "https://matsne.gov.ge/en/document/view/2363013";
 const FAOLEX_WRM_2023 =
   "https://www.fao.org/faolex/results/details/en/c/LEX-FAOC219653/";
-const MRDI_WATER = "https://mrdi.gov.ge/en/agencies/water";
 const WSS_VISION_2021 =
   "https://moi.gov.ge/files/1/%E1%83%A1%E1%83%94%E1%83%A5%E1%83%A2%E1%83%9D%E1%83%A0%E1%83%98%E1%83%A1%20%E1%83%92%E1%83%90%E1%83%9C%E1%83%95%E1%83%98%E1%83%97%E1%83%90%E1%83%A0%E1%83%94%E1%83%91%E1%83%90/Vision%20and%20Policy.pdf";
 const MATSNE_DRINKING_N58 = "https://matsne.gov.ge/ka/document/view/2196792";

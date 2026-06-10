@@ -35,6 +35,14 @@
       "old_text": "water_access: qualitative aim only / no quantified access target; sanitation: No quantified national target (not_set).",
       "new_text": "Both rows now carry the 2030 WSS Vision goal (universal safe water; adequate sanitation) against the GEOSTAT-2020 baseline (77.6% / 79.2%), status 'set', with the explicit caveat that the baseline is a one-off 2020 survey and no quantified intermediate target exists.",
       "source": "WSS Vision & Policy Statement (MRDI, Nov 2021), Vision section + para 50, fn 7 (GEOSTAT-2020 baseline)"
+    },
+    {
+      "date": "2026-06-10",
+      "claim": "mrdi-reorganised-into-ministry-of-infrastructure-2025",
+      "location": "data/georgia-mandates.ts (national policy actor + MOI_WATER const + UWSCG/State-budget national_url); data/georgia.ts (INST_MOI institution, wss_urban prose, I_WSS_VISION_2021 note); data/georgia-targets.ts (issuing_body); manifest UWSCG entry",
+      "old_text": "Present-tense actor 'Ministry of Regional Development and Infrastructure (MRDI)' owns/oversees UWSCG and leads WSS; cited to https://mrdi.gov.ge/en/agencies/water (now a dead link).",
+      "new_text": "MRDI was reorganised in 2025 and split into a Ministry of Regional Development and a Ministry of Infrastructure of Georgia; the water-supply / UWSCG / WSS functions passed to the Ministry of Infrastructure (moi.gov.ge). The dataset's present-tense actor and the dead mrdi.gov.ge URL are updated to the Ministry of Infrastructure and https://moi.gov.ge/en/agencies/water. The 2021 WSS Vision and the access targets keep their historical 'MRDI, 2021' attribution (correct at publication) with a 'now Ministry of Infrastructure' note. CAVEAT: the exact reorganisation decree number and effective date are not yet pinned to a resolvable primary instrument (the Parliament reorganisation page blocks automated fetch); only the year (2025) and the live successor (moi.gov.ge) are asserted.",
+      "source": "Ministry of Infrastructure of Georgia, water agency page https://moi.gov.ge/en/agencies/water (HTTP 200, lists UWSCG, confirmed 2026-06-10); Ministry homepage https://moi.gov.ge/en; Parliament of Georgia reorganisation notice https://parliament.ge/en/media/news/parlamentma-regionuli-ganvitarebisa-da-infrastrukturis-saministros-reorganizatsiis-shesakheb-tsvlilebebs-pirveli-mosmenit-mkhari-dauchira; archived MRDI site https://old.mrdi.gov.ge/en"
     }
   ],
   "_misnamed_source_files": [
@@ -400,9 +408,9 @@
       "local_file": null,
       "faolex_id": null,
       "faolex_url": null,
-      "national_url": "https://mrdi.gov.ge/en/agencies/water",
+      "national_url": "https://moi.gov.ge/en/agencies/water",
       "status": "pending_check",
-      "note": "UWSCG (100% state-owned LLC, overseen by MRDI) registered 14 Jan 2010, merging 66 local water companies; serves urban-type settlements except Tbilisi, Mtskheta, Rustavi, Gardabani and Adjara. The establishing instrument is a Minister's Order (No. 1-1/13), not a matsne-published government ordinance; no matsne id located. mrdi.gov.ge timed out on automated fetch this run; institutional facts corroborated via OECD/MEPA, Devex and the agency listing."
+      "note": "UWSCG (100% state-owned LLC) registered 14 Jan 2010, merging 66 local water companies; serves urban-type settlements except Tbilisi, Mtskheta, Rustavi, Gardabani and Adjara. The establishing instrument is a Minister's Order (No. 1-1/13), not a matsne-published government ordinance; no matsne id located. UWSCG was overseen by MRDI until the 2025 government reorganisation; its oversight now sits with the new Ministry of Infrastructure of Georgia, which lists UWSCG on its water-agency page (https://moi.gov.ge/en/agencies/water, HTTP 200, confirmed 2026-06-10). The former mrdi.gov.ge/en/agencies/water page no longer resolves. Institutional facts corroborated via the Ministry of Infrastructure agency listing, OECD/MEPA and Devex."
     },
     {
       "short": "Drinking-water technical regulation (Decree N58, 2014)",

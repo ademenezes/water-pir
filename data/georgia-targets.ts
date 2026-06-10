@@ -45,7 +45,7 @@ export const GEORGIA_TARGETS: SectorTarget[] = [
     target_value: "Universal access to safe water; 24/7 supply (cities by end-2025, rural by end-2030)",
     target_year: "2030",
     status: "set",
-    issuing_body: "MRDI (WSS Vision & Policy Statement, 2021)",
+    issuing_body: "MRDI (WSS Vision & Policy Statement, 2021); WSS lead now the Ministry of Infrastructure (2025 reorganisation)",
     source: {
       short: "Georgia WSS Vision & Policy (2021)",
       article: "Vision section; para 50, fn 7 (baseline)",
@@ -61,7 +61,7 @@ export const GEORGIA_TARGETS: SectorTarget[] = [
     target_value: "Universal access to adequate sanitation",
     target_year: "2030",
     status: "set",
-    issuing_body: "MRDI (WSS Vision & Policy Statement, 2021)",
+    issuing_body: "MRDI (WSS Vision & Policy Statement, 2021); WSS lead now the Ministry of Infrastructure (2025 reorganisation)",
     source: {
       short: "Georgia WSS Vision & Policy (2021)",
       article: "Vision section; para 50, fn 7 (baseline)",
@@ -76,7 +76,7 @@ export const GEORGIA_TARGETS: SectorTarget[] = [
     target_value: "At least 10 urban WWTPs constructed or rehabilitated",
     target_year: "2026",
     status: "slipping",
-    issuing_body: "MRDI / UWSCG (EU Urban Waste Water Directive approximation)",
+    issuing_body: "Ministry of Infrastructure (ex-MRDI) / UWSCG (EU Urban Waste Water Directive approximation)",
     source: {
       short: "OECD 10th National Policy Dialogue (2024)",
       article: "UWWTD approximation milestone",

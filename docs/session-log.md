@@ -248,9 +248,31 @@ User asked to implement six deferred features in one round.
 
 ---
 
+## 2026-06-10 · MRDI reorganised into the Ministry of Infrastructure (institutional correction)
+
+**Trigger.** User challenge: "I thought there was a restructuring of MRDI — is this really the most updated status?" They were right.
+
+**Finding (verified online).** Georgia reorganised the **Ministry of Regional Development and Infrastructure (MRDI)** in **2025**, splitting it into a Ministry of Regional Development and a **Ministry of Infrastructure of Georgia**. The water-supply functions — ownership/oversight of **UWSCG** and lead on WSS policy — sit with the **Ministry of Infrastructure** (`moi.gov.ge`), whose water-agency page lists UWSCG. The old MRDI site is archived at `old.mrdi.gov.ge`, and the URL we had cited (`mrdi.gov.ge/en/agencies/water`) **no longer resolves**. Telling detail: the WSS Vision PDF we already cite is hosted on `moi.gov.ge` — the successor's domain — so the new ministry was in our data unnamed.
+
+**Why the data was stale.** Every source the profile leaned on (2021 WSS Vision; OECD 10th NPD, Jan 2024) predates the 2025 split, so the present-tense "MRDI owns UWSCG" was correct as of its sources but overtaken by the reorganisation. The Monitoring layer tracks data freshness, not institutional change — a reminder to re-verify institutions, not just URLs.
+
+**Correction (option A — fix now with what's verified, log it).**
+
+- Present-tense actor renamed to **Ministry of Infrastructure of Georgia** (`MoI`) across `data/georgia-mandates.ts` (national policy record; `MOI_WATER` const) and `data/georgia.ts` (`INST_MOI` institution, used in ~13 cells; wss_urban prose).
+- Dead `mrdi.gov.ge/en/agencies/water` URL swapped for the live, authoritative **`https://moi.gov.ge/en/agencies/water`** (HTTP 200, lists UWSCG, confirmed 2026-06-10) on the mandate, UWSCG and state-budget records and in the manifest's UWSCG entry. Removed an unused dead-URL const from `data/georgia-insights.ts`.
+- **Historical attributions preserved:** the 2021 WSS Vision and the access targets keep "MRDI, 2021" (correct at publication) with a "now Ministry of Infrastructure (2025 reorganisation)" note.
+- Logged as a 5th `_revisions` entry in `documents/georgia/manifest.json`, citing `moi.gov.ge`, the Parliament reorganisation notice, and the archived MRDI site.
+
+**Caveat (citation discipline).** Only the **year (2025)** and the **live successor (moi.gov.ge)** are asserted. The exact reorganisation **decree number / effective date** is NOT pinned — the Parliament page returns 403 to automated fetch — so it is flagged in the data and manifest, not invented.
+
+**Verification.** `npx tsc --noEmit` clean; manifest parses (5 revisions). Residual-MRDI audit: every remaining mention is either a correct 2021 historical attribution or explicit reorganisation context; no present-tense MRDI ownership claim survives.
+
+---
+
 ## State at end of 2026-06-10
 
 - TypeScript + production build clean. Two live countries: Brazil and Georgia (live, non-Compact).
+- Institutional currency: Georgia's WSS lead / UWSCG oversight is the **Ministry of Infrastructure of Georgia** (the 2025 successor to MRDI); historical 2021 attributions retain "MRDI" with a transfer note.
 - Georgia now carries four optional layers: 13 mandate records, 9 key insights, 7 sector targets, 6 monitoring indicators. Manifest: instruments + `_revisions` + `_misnamed_source_files`.
 - New reusable **Monitoring & evidence base** dashboard layer (Georgia-only data so far).
 - Flags render as bundled SVGs (`public/flags/`) on every platform.

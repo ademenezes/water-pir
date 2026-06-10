@@ -30,7 +30,11 @@ const MATSNE_PUBLIC_SAFETY_2014 = "https://matsne.gov.ge/en/document/view/236301
 const FAOLEX_WRM_2023 =
   "https://www.fao.org/faolex/results/details/en/c/LEX-FAOC219653/";
 const FAOLEX_AMELIORATION = "https://faolex.fao.org/docs/pdf/geo54807.pdf";
-const MRDI_WATER = "https://mrdi.gov.ge/en/agencies/water";
+// Ministry of Infrastructure of Georgia, the water-supply agency page (lists
+// UWSCG). The Ministry of Infrastructure is the successor to MRDI after the
+// 2025 government reorganisation; the old mrdi.gov.ge/en/agencies/water page no
+// longer resolves.
+const MOI_WATER = "https://moi.gov.ge/en/agencies/water";
 
 export const GEORGIA_MANDATES: MandateRecord[] = [
   // ===================== NATIONAL =====================
@@ -101,17 +105,17 @@ export const GEORGIA_MANDATES: MandateRecord[] = [
       "EMA runs the unified civil-protection system; hydrometeorological forecasting and monitoring are provided by the National Environmental Agency under MEPA and remain thin.",
   },
   {
-    actor: "Ministry of Regional Development and Infrastructure",
-    acronym: "MRDI",
+    actor: "Ministry of Infrastructure of Georgia",
+    acronym: "MoI",
     level: "national",
     function: "policy",
     legal_basis: {
       short: "Order No. 1-1/13 (2010)",
       article: "establishment of UWSCG",
-      national_url: MRDI_WATER,
+      national_url: MOI_WATER,
     },
     de_facto_note:
-      "MRDI owns and oversees UWSCG, the state water utility established by Minister of Economy Order No. 1-1/13 (2010); that order is not published on matsne, so institutional facts are corroborated via MRDI and OECD/MEPA.",
+      "The Ministry of Regional Development and Infrastructure (MRDI) was reorganised in 2025; its infrastructure and water-supply functions, including ownership of UWSCG and lead on WSS policy, passed to the new Ministry of Infrastructure of Georgia (moi.gov.ge), which lists UWSCG among its agencies. UWSCG was established by Minister of Economy Order No. 1-1/13 (2010); that order is not published on matsne, so institutional facts are corroborated via the Ministry of Infrastructure's agency listing and OECD/MEPA. The exact reorganisation decree/effective date is not yet pinned to a resolvable primary instrument.",
   },
   {
     actor: "United Water Supply Company of Georgia",
@@ -121,7 +125,7 @@ export const GEORGIA_MANDATES: MandateRecord[] = [
     legal_basis: {
       short: "Order No. 1-1/13 (2010)",
       article: "establishment of UWSCG",
-      national_url: MRDI_WATER,
+      national_url: MOI_WATER,
     },
     de_facto_note:
       "UWSCG (100% state-owned) serves urban-type settlements except Tbilisi, Mtskheta, Rustavi, Gardabani and Adjara; it merged 66 local water companies in 2010 and is widely assessed as financially weak and grant-dependent.",
@@ -158,7 +162,7 @@ export const GEORGIA_MANDATES: MandateRecord[] = [
     legal_basis: {
       short: "Annual State Budget Law",
       article: "capital transfers",
-      national_url: MRDI_WATER,
+      national_url: MOI_WATER,
     },
     de_facto_note:
       "Urban WSS and main-system irrigation rely heavily on central-budget capital transfers and donor finance (World Bank, ADB, EIB, KfW); tariff revenue covers only part of operating cost.",

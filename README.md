@@ -92,6 +92,7 @@ Other rules:
 - Cells without a verified source show coverage `gray` (not assessed); never invent a FAOLEX ID.
 - Use the `de_facto_note` field whenever the law and practice diverge; cite the source for the divergence.
 - Re-verify URLs at least annually (`last_verified_date`).
+- Re-verify **institutions**, not just URLs — ministries get reorganised. Cite the live successor body and keep historical attributions dated (e.g. Georgia's MRDI was split into the **Ministry of Infrastructure** in 2025, which now leads WSS / owns UWSCG; the 2021 WSS Vision keeps its "MRDI, 2021" attribution with a transfer note).
 
 ## Adding a country
 

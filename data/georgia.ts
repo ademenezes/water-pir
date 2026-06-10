@@ -169,7 +169,7 @@ const I_WSS_VISION_2021: LegalInstrument = {
   national_url: WSS_VISION_2021,
   articles_cited:
     "Paras 10, 15 (2030 universal-access goals; 24/7-supply target), para 50 + fn 7 (GEOSTAT-2020 access baseline 77.6% / 79.2%)",
-  note: "MRDI, November 2021; the first national WSS policy of its kind, published as an English unofficial translation. A vision/policy statement, not a binding WSS framework law.",
+  note: "MRDI, November 2021; the first national WSS policy of its kind, published as an English unofficial translation. A vision/policy statement, not a binding WSS framework law. MRDI was reorganised in 2025 and its WSS functions passed to the Ministry of Infrastructure of Georgia (moi.gov.ge), which now hosts this document.",
 };
 
 const I_DRINKING_WATER_N58: LegalInstrument = {
@@ -414,12 +414,14 @@ const INST_GNERC: Institution = {
   level: "national",
   url: "https://gnerc.org/",
 };
-const INST_MRDI: Institution = {
-  name: "Ministry of Regional Development and Infrastructure",
-  acronym: "MRDI",
+const INST_MOI: Institution = {
+  // Successor to the Ministry of Regional Development and Infrastructure (MRDI),
+  // which was reorganised in 2025; the water-supply / UWSCG functions sit here.
+  name: "Ministry of Infrastructure of Georgia",
+  acronym: "MoI",
   role: "policy_maker",
   level: "national",
-  url: "https://mrdi.gov.ge/",
+  url: "https://moi.gov.ge/en",
 };
 const INST_UWSCG: Institution = {
   name: "United Water Supply Company of Georgia",
@@ -499,20 +501,20 @@ export const GEORGIA: CountryProfile = {
           pir_dimension: "policy",
           coverage_status: "yellow",
           legal_instruments: [I_WSS_VISION_2021, I_WATER_1997, I_EU_AA],
-          responsible_institutions: [INST_MRDI, INST_MEPA],
+          responsible_institutions: [INST_MOI, INST_MEPA],
           mandate_text:
-            "A national WSS policy now exists: the Water Supply and Sanitation Vision and Policy Statement (MRDI, November 2021) sets 2030 universal-access goals and a 24/7-supply target (cities by end-2025, rural by end-2030). It is a vision/policy statement rather than a binding WSS framework law; the 1997 Law on Water still frames water use, MRDI owns the state utility, and the EU-Georgia Association Agreement commits Georgia to approximate the EU drinking-water and urban-wastewater directives.",
+            "A national WSS policy now exists: the Water Supply and Sanitation Vision and Policy Statement (MRDI, November 2021) sets 2030 universal-access goals and a 24/7-supply target (cities by end-2025, rural by end-2030). It is a vision/policy statement rather than a binding WSS framework law; the 1997 Law on Water still frames water use, the Ministry of Infrastructure (the 2025 successor to MRDI) owns the state utility, and the EU-Georgia Association Agreement commits Georgia to approximate the EU drinking-water and urban-wastewater directives.",
           de_facto_note:
-            "The 2021 WSS Vision closes the long-noted gap of a single national WSS policy, but it is an unofficial-translation policy statement, not enforceable framework law; delivery still spans MRDI, MEPA and GNERC with no binding WSS statute.",
+            "The 2021 WSS Vision closes the long-noted gap of a single national WSS policy, but it is an unofficial-translation policy statement, not enforceable framework law; delivery still spans the Ministry of Infrastructure (ex-MRDI), MEPA and GNERC with no binding WSS statute.",
           last_verified_date: today,
         },
         {
           pir_dimension: "institutions",
           coverage_status: "yellow",
           legal_instruments: [I_ENERGY_WATER_2019, I_WSS_VISION_2021],
-          responsible_institutions: [INST_GWP, INST_UWSCG, INST_ADJARA, INST_MRDI],
+          responsible_institutions: [INST_GWP, INST_UWSCG, INST_ADJARA, INST_MOI],
           mandate_text:
-            "Urban service is delivered by three actor types: privately-owned GWP (Tbilisi and Mtskheta, the latter merged into GWP), state-owned UWSCG (most other urban-type settlements, under MRDI), and Adjara's Batumi and Kobuleti Water companies.",
+            "Urban service is delivered by three actor types: privately-owned GWP (Tbilisi and Mtskheta, the latter merged into GWP), state-owned UWSCG (most other urban-type settlements, under the Ministry of Infrastructure), and Adjara's Batumi and Kobuleti Water companies.",
           de_facto_note:
             "The WSS Vision's licensed-utility roster (Appendix 2, Table 1) lists eight licensed operators, GWP (~1.2M people, Mtskheta merged in), UWSCG (~0.8M), Rustavi Water (~125k), Batumi Water (~160k), Kobuleti Water (~16k) and the small Marneuli, Sachkhere and Soguri companies; municipalities' non-licensed utilities serve mostly rural areas. UWSCG, formed in 2010 by merging 66 local companies, is widely assessed as financially weak and grant-dependent, while GWP operates the capital on commercial terms.",
           last_verified_date: today,
@@ -521,7 +523,7 @@ export const GEORGIA: CountryProfile = {
           pir_dimension: "igc",
           coverage_status: "yellow",
           legal_instruments: [I_CONSTITUTION],
-          responsible_institutions: [INST_MRDI, INST_ADJARA, INST_MUNICIPALITIES],
+          responsible_institutions: [INST_MOI, INST_ADJARA, INST_MUNICIPALITIES],
           mandate_text:
             "Georgia is a unitary state. Urban water service is effectively centralised at national level through UWSCG rather than held by municipalities; Adjara, as an autonomous republic, runs its own operators.",
           de_facto_note:
@@ -532,7 +534,7 @@ export const GEORGIA: CountryProfile = {
           pir_dimension: "financing",
           coverage_status: "yellow",
           legal_instruments: [I_ENERGY_WATER_2019, I_GNERC_TARIFF_2017, I_GNERC_LOSSES_2017],
-          responsible_institutions: [INST_GNERC, INST_UWSCG, INST_MRDI],
+          responsible_institutions: [INST_GNERC, INST_UWSCG, INST_MOI],
           mandate_text:
             "GNERC sets tariffs to support cost recovery using a published methodology (Resolution No. 21 of 2017) and a normative water-loss rule (Resolution No. 45 of 2017), but urban WSS capital is still largely funded from the state budget and donors (World Bank, ADB, EIB, KfW) rather than tariff revenue.",
           de_facto_note:
@@ -578,7 +580,7 @@ export const GEORGIA: CountryProfile = {
           pir_dimension: "policy",
           coverage_status: "red",
           legal_instruments: [I_WATER_1997, I_EU_AA],
-          responsible_institutions: [INST_MEPA, INST_MRDI],
+          responsible_institutions: [INST_MEPA, INST_MOI],
           mandate_text:
             "There is no dedicated wastewater, reuse or desalination policy. The EU-Georgia Association Agreement commits Georgia to approximate the Urban Waste Water Treatment Directive, but no domestic policy instrument operationalises it.",
           de_facto_note:
@@ -609,7 +611,7 @@ export const GEORGIA: CountryProfile = {
           pir_dimension: "financing",
           coverage_status: "red",
           legal_instruments: [I_EU_AA],
-          responsible_institutions: [INST_MRDI],
+          responsible_institutions: [INST_MOI],
           mandate_text:
             "Wastewater-treatment capital depends almost entirely on donor finance (EU, EIB, ADB, KfW); there is no domestic financing or charging framework for treatment.",
           de_facto_note:
@@ -653,7 +655,7 @@ export const GEORGIA: CountryProfile = {
           pir_dimension: "policy",
           coverage_status: "red",
           legal_instruments: [I_WSS_VISION_2021, I_HIGH_MOUNTAIN_2015, I_WATER_1997],
-          responsible_institutions: [INST_MRDI, INST_MEPA],
+          responsible_institutions: [INST_MOI, INST_MEPA],
           mandate_text:
             "There is no dedicated rural-WSS policy. The 2021 WSS Vision sets a rural 24/7-supply target for end-2030 and the 2015 Law on the Development of High Mountainous Regions offers a high-mountain service hook, but neither is a rural-WSS-specific framework; rural water falls between UWSCG's urban-type mandate and unserved villages, with no programmatic framework for dispersed settlements.",
           de_facto_note:
@@ -684,7 +686,7 @@ export const GEORGIA: CountryProfile = {
           pir_dimension: "financing",
           coverage_status: "red",
           legal_instruments: [],
-          responsible_institutions: [INST_MRDI],
+          responsible_institutions: [INST_MOI],
           mandate_text:
             "Rural water investment is sporadic and donor or project-driven; there is no programmatic rural financing window.",
           last_verified_date: today,
@@ -757,7 +759,7 @@ export const GEORGIA: CountryProfile = {
           pir_dimension: "financing",
           coverage_status: "red",
           legal_instruments: [],
-          responsible_institutions: [INST_WUO, INST_MRDI],
+          responsible_institutions: [INST_WUO, INST_MOI],
           mandate_text:
             "There is no dedicated financing window for farmer-led irrigation. Water Users Organisations are meant to fund tertiary systems from member fees, which thin membership leaves them unable to raise.",
           last_verified_date: today,
@@ -907,7 +909,7 @@ export const GEORGIA: CountryProfile = {
           pir_dimension: "financing",
           coverage_status: "red",
           legal_instruments: [],
-          responsible_institutions: [INST_EMA, INST_MRDI],
+          responsible_institutions: [INST_EMA, INST_MOI],
           mandate_text:
             "There is no dedicated, programmatic flood-and-drought financing instrument. Flood-protection works and disaster response are funded ad hoc from the state budget and donors.",
           last_verified_date: today,
