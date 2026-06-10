@@ -218,3 +218,41 @@ User asked to implement six deferred features in one round.
 - Georgia: 13 mandate records, 6 key insights, 13 instruments in `documents/georgia/manifest.json`.
 - The 27-country WSIP Water Compact framing and cohort tallies are unchanged (Georgia is not counted).
 - Live at https://ademenezes.github.io/water-pir/ behind the soft password gate.
+
+---
+
+## 2026-06-10 · Georgia primary-source refresh + Monitoring layer + SVG flags
+
+**Trigger.** A fresh OneDrive drop of 22 primary documents for Georgia (`data/raw/georgia/OneDrive_1_6-10-2026/`, gitignored — 41 MB of offline audit copies). Read in full and cross-checked against the live Georgia dataset.
+
+**Decisions (via AskUserQuestion).** (1) Ambition = add a new structural layer, not just data; (2) contradicted claims = correct **and** log each reversal; (3) citations = full article-level upgrade where confirmable; (4) Georgian-only sources = translate with an explicit unofficial-translation caveat. **Hard requirement added mid-plan (user rejected the first plan over it):** every new or corrected fact must carry a *resolvable online URL* (FAOLEX → matsne → issuing ministry), linked on the platform the way FAOLEX links are — a local file in the drop is the offline copy, not the citation. Logged to memory.
+
+**New structural layer — Monitoring & evidence base.** Targets capture what a country *commits to*; this captures what it *can measure today*. New types in `src/types.ts` (`MonitoringDomain`, `MonitoringStatus`, `MonitoringIndicator`; `monitoring?` on `CountryProfile`), a `MonitoringPanel` cloned from `TargetsPanel`, and `data/georgia-monitoring.ts` (6 rows). Status maps onto the existing coverage palette — no new colour tokens. Renders right after Targets with a blind-spot tally ("4 of 6 are unmonitored or stale"). Conditional render, so Brazil (no `monitoring`) is unaffected.
+
+**Corrections + change log** (each logged in a new `_revisions` block in `documents/georgia/manifest.json`):
+
+- "No national WSS policy" → a national **WSS Vision & Policy Statement (MRDI, Nov 2021)** does exist; reframed as a *vision, not a binding framework law* (English unofficial translation). Anchor doc; carries the GEOSTAT-2020 access baseline (77.6% / 79.2%) and the licensed-utility roster.
+- "Drinking-water standard not yet adopted" → a standard **was** adopted (Government **Decree N58, 2014**); what slips to ~2030 is the **EU-aligned revision**, not the standard.
+- Two `not_set` access/sanitation target rows → `set`, using the WSS Vision's 2030 goals + the GEOSTAT-2020 baseline.
+- **Rustavi attribution reversed against my own approved plan.** The plan assumed "no change (GWP serves Rustavi)"; the WSS Vision's licensed-utility roster (Appendix 2, Table 1) lists **Rustavi Water as a separately-licensed utility**. Corrected to GWP = Tbilisi + Mtskheta; Rustavi separately licensed. This is exactly why the online-sourcing step mattered — it caught a wrong assumption.
+
+**Article pinning (full upgrade where confirmable).** Read the consolidated **2023 WRM Law** Georgian full text and pinned its article map once on the shared instrument const (propagates to all wrm cells) + the mandate records + the lead insight: Art. 6.2 (MEPA competence), 16–17 (special water-use permits), 21–25 (basin districts / six-year plans / consultative councils), 26–27 (status standards), 30 (discharge), 31 (control bodies). **Subsoil 1996** pinned from its English matsne text (Art. 4, 6, 7.6, 10.2(e)). Left "in words" where unconfirmed: **Land Amelioration** (full text not in the drop — flagged as a misnamed source file) and the Georgian-only **engineering-protection 2000** law.
+
+**New instruments** (each with a resolvable online URL, confirmed to load): WSS Vision (moi.gov.ge PDF, percent-encoded Georgian path), Decree N58 (matsne `/ka/`, Georgian-only + caveat), High Mountainous Regions Law 2015 (matsne `/en/`). Manifest also records two **misnamed source files** in the drop (a "Land Amelioration" `.doc` that is a 2005 contaminated-land decree; an "Irrigation Strategy" PDF that is the 2017–2020 Rural Development Strategy).
+
+**Country flags now render as SVGs, not emoji.** Bug: flags were stored as emoji (Regional Indicator pairs) which Windows cannot draw, so the deployed site showed no flags on Windows. Fix: `src/components/Flag.tsx` decodes the emoji → ISO alpha-2 and loads a bundled SVG from `public/flags/<a2>.svg` (29 public-domain lipis/flag-icons files), wired into all ~13 render sites. The data keeps its `flag_emoji` strings; only rendering changed.
+
+**Deliberate deviations (flagged to user).** Monitoring **financing** row set to `partial` not `measured` (the GEL 793.4M figure is a one-off 2021 OECD estimate, not an ongoing series); **Decree N58** attached to the urban + rural WSS *regulation* cells but **not** `wastewater_reuse_desal` (a drinking-water standard is not a wastewater standard). The IWRM 44%→80% target was **excluded** — no resolvable online source found.
+
+**Verification.** `npx tsc --noEmit` clean; `npm run build` clean (354 modules, all 29 flags copied to `dist/flags/`); `documents/georgia/manifest.json` parses (instruments + 4 revisions + 2 misnamed-file flags). Preview on `/country/GEO`: Monitoring panel renders after Targets with the blind-spot tally; every external Source → link resolves (WSS Vision 206, Decree N58 200, High Mountain 200, Subsoil/WRM FAOLEX 206); all 29 Countries-page flags load (0 broken). `/country/BRA`: no Targets/Monitoring sections (no regression).
+
+---
+
+## State at end of 2026-06-10
+
+- TypeScript + production build clean. Two live countries: Brazil and Georgia (live, non-Compact).
+- Georgia now carries four optional layers: 13 mandate records, 9 key insights, 7 sector targets, 6 monitoring indicators. Manifest: instruments + `_revisions` + `_misnamed_source_files`.
+- New reusable **Monitoring & evidence base** dashboard layer (Georgia-only data so far).
+- Flags render as bundled SVGs (`public/flags/`) on every platform.
+- Raw source drops are gitignored (`data/raw/`); the manifest + extracted online-linked citations are what's committed.
+- Live at https://ademenezes.github.io/water-pir/ behind the soft password gate.

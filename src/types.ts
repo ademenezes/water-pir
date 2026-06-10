@@ -99,6 +99,7 @@ export interface CountryProfile {
   mandate_records?: MandateRecord[];
   key_insights?: KeyInsight[];
   targets?: SectorTarget[];
+  monitoring?: MonitoringIndicator[];
 }
 
 // Distinct from InstitutionRole (which describes WHAT a body is, regulator, asset owner, etc.).
@@ -170,4 +171,40 @@ export interface SectorTarget {
   issuing_body: string; // who set it (or "No national target")
   source: MandateLegalBasis; // reuses short + article + faolex_url / national_url
   note?: string;
+}
+
+// Sector monitoring / evidence base: a typed observability layer, distinct from
+// SectorTarget (which records commitments / ambitions). Captures what a country
+// actually measures today, who measures it, the current value/baseline, and where
+// the monitoring blind spots are. Targets answer "what does it aim for?"; this
+// answers "can it even see its own sector?". Drives the "Monitoring & evidence
+// base" panel on the country dashboard. Optional on CountryProfile.
+export type MonitoringDomain =
+  | "water_access"
+  | "sanitation"
+  | "performance" // NRW, metering, service continuity
+  | "resource" // hydromet, abstraction, water quality
+  | "financing";
+
+// Monitoring quality. Mapped onto the coverage palette in the panel, no new
+// colour tokens: measured ≈ green, partial / stale ≈ yellow, not_measured ≈ red,
+// unmapped ≈ gray. Distinguished from CoverageStatus because the signal is
+// observability (is it measured, and how fresh), not legal coverage.
+export type MonitoringStatus =
+  | "measured" // regularly produced and current
+  | "partial" // measured but incomplete coverage / proxy only
+  | "stale" // exists but one-off or out of date (e.g. a 2020 survey, never refreshed)
+  | "not_measured" // acknowledged blind spot, no system in place
+  | "unmapped"; // not yet assessed here
+
+export interface MonitoringIndicator {
+  domain: MonitoringDomain;
+  level?: GovernmentLevel; // omitted reads as national
+  indicator: string; // what is measured, e.g. "Population with an improved water source"
+  current_value: string; // the value, or "Not monitored" / "No system in place"
+  as_of_year?: string; // freshness signal, e.g. "2020"
+  producer: string; // who measures it, e.g. "GEOSTAT", or "No designated producer"
+  status: MonitoringStatus;
+  source: MandateLegalBasis; // reuses short + article + faolex_url / national_url
+  gap_note?: string; // the blind-spot / divergence note
 }

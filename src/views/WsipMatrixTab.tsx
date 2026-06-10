@@ -7,6 +7,7 @@ import type { CountryProfile, PirDimension } from "../types";
 import { Matrix, type MatrixCellTarget } from "../components/Matrix/Matrix";
 import { MatrixCellPanel } from "../components/Matrix/MatrixCellPanel";
 import { Droplet } from "../components/brand/Droplet";
+import { Flag } from "../components/Flag";
 import type { CoverageStatus } from "../types";
 
 type View =
@@ -346,7 +347,7 @@ function CompareColumn({
     <div>
       <div className="mb-3 flex items-baseline justify-between gap-3">
         <h2 className="font-display text-[22px] font-extrabold tracking-tightest text-brand-ink">
-          {country.flag_emoji} {country.name}
+          <Flag emoji={country.flag_emoji} title={country.name} className="mr-2" />{country.name}
         </h2>
         <div className="eyebrow-ink text-brand-ink/55 text-[11px]">
           Updated <span className="tabular-nums">{country.last_updated}</span>
@@ -366,7 +367,7 @@ function PipelinePlaceholder({
 }) {
   return (
     <div className="border border-dashed border-brand-rule bg-brand-sand/40 p-8">
-      <div className="text-4xl">{meta?.flag ?? "🏳️"}</div>
+      <div className="text-4xl"><Flag emoji={meta?.flag ?? "🏳️"} title={meta?.name} /></div>
       <h2 className="mt-4 font-display text-[22px] font-extrabold tracking-tightest text-brand-ink">
         {meta?.name ?? code}
       </h2>
@@ -456,7 +457,7 @@ function BySubsectorView() {
               <tr key={country.code} className="border-t border-brand-rule">
                 <th className="px-4 py-5 text-left align-top">
                   <div className="font-display text-[18px] font-extrabold tracking-tightest text-brand-ink">
-                    {country.flag_emoji} {country.name}
+                    <Flag emoji={country.flag_emoji} title={country.name} className="mr-2" />{country.name}
                   </div>
                   {subsector?.headline && (
                     <p className="mt-2 max-w-[18rem] font-serif text-[13px] leading-[1.45] text-brand-ink/65 line-clamp-3">
@@ -501,7 +502,7 @@ function BySubsectorView() {
               >
                 <th className="px-4 py-5 text-left align-top">
                   <div className="font-display text-[18px] font-extrabold tracking-tightest text-brand-ink/65">
-                    {p.flag} {p.name}
+                    <Flag emoji={p.flag} title={p.name} className="mr-2" />{p.name}
                   </div>
                   <div className="mt-1 eyebrow-ink text-brand-ink/40">
                     {p.status === "pipeline" ? "WSIP pipeline" : "Planned"}
@@ -588,7 +589,7 @@ function ByDimensionView() {
               <tr key={country.code} className="border-t border-brand-rule">
                 <th className="px-4 py-5 text-left align-top">
                   <div className="font-display text-[18px] font-extrabold tracking-tightest text-brand-ink">
-                    {country.flag_emoji} {country.name}
+                    <Flag emoji={country.flag_emoji} title={country.name} className="mr-2" />{country.name}
                   </div>
                 </th>
                 {allSubsectorKeys.map((k) => {

@@ -96,7 +96,7 @@ function buildIndex(): SearchResult[] {
     results.push({
       kind: "lesson",
       label: l.title,
-      sub_label: `${l.country_flag} ${l.country_name} · lesson`,
+      sub_label: `${l.country_name} · lesson`,
       href: l.subsector_key && listCountries().some((c) => c.code === l.country_code)
         ? `/country/${l.country_code}/subsector/${l.subsector_key}`
         : `/`,

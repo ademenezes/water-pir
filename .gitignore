@@ -32,3 +32,11 @@ coverage/
 
 # Vite cache
 .cache/
+
+# Raw source-document drops (large offline audit copies; not redistributed —
+# manifest.json + extracted article-level citations are what we commit).
+data/raw/
+
+# Claude Code local state (launch.json is tracked; these are per-machine)
+.claude/settings.local.json
+.claude/worktrees/

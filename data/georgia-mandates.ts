@@ -5,9 +5,16 @@ import type { MandateRecord } from "../src/types";
 // cited where the instrument is indexed there. Article numbers are cited only
 // where confirmed against a rendered primary page (Constitution, Law on Energy
 // and Water Supply 2019, Law on Water Users Organisations 2019, Law on Public
-// Safety 2014). For the 2023 Water Resources Management Law, the Land Amelioration
-// Law and the 2010 UWSCG order, pinpoint article numbers were NOT confirmed, so
-// the legal_basis names the provision in words rather than asserting a number
+// Safety 2014) or against the full primary text. The 2023 Water Resources
+// Management Law article numbers below were read on 2026-06-10 from the
+// consolidated Georgian text in the OneDrive drop (article HEADINGS, an
+// unofficial translation): Art. 6 competent authorities (6.2 = MEPA competences),
+// Art. 16-17 special water-use permit regime, Art. 22-25 river-basin districts /
+// management plans / consultative basin councils, Art. 26-27 water-status
+// classification and target indicators, Art. 30 urban-wastewater discharge, Art.
+// 31 control bodies. For the Land Amelioration Law (full text NOT in the drop, see
+// the manifest's misnamed-file flag) and the 2010 UWSCG order, pinpoint article
+// numbers remain unconfirmed, so the legal_basis names the provision in words
 // (see documents/georgia/manifest.json). Government-level values reuse the
 // existing GovernmentLevel type; on the Georgia dashboard "national" displays as
 // "National", "state" as "Adjara A.R.", "local" as "Municipal", "basin" as
@@ -34,11 +41,11 @@ export const GEORGIA_MANDATES: MandateRecord[] = [
     function: "policy",
     legal_basis: {
       short: "Water Resources Management Law (2023)",
-      article: "river-basin management framework",
+      article: "Art. 6.2, 21–22 (MEPA competences; basin management system)",
       faolex_url: FAOLEX_WRM_2023,
     },
     de_facto_note:
-      "Operative norms bind only from 1 September 2026, when the law repeals the 1997 Law on Water; until then the river-basin regime is not yet in force.",
+      "MEPA holds the state water-policy competence (Art. 6.2) and introduces the river-basin management system (Art. 21–22); operative norms bind only from 1 September 2026, when the law repeals the 1997 Law on Water, so until then the river-basin regime is not yet in force.",
   },
   {
     actor: "MEPA, environmental-flow and water-quality norms",
@@ -47,11 +54,11 @@ export const GEORGIA_MANDATES: MandateRecord[] = [
     function: "norm_setting",
     legal_basis: {
       short: "Water Resources Management Law (2023)",
-      article: "environmental-flow and quality norms",
+      article: "Art. 26–27 (water-status standards), 30 (discharge norms)",
       faolex_url: FAOLEX_WRM_2023,
     },
     de_facto_note:
-      "Environmental-flow and water-quality norms are introduced by the 2023 law but take effect from 1 September 2026; a drinking-water quality regulation is still not adopted.",
+      "The surface-water-quality (status) standard and target indicators are set under Art. 26–27 and urban-wastewater discharge / environmental-flow norms under Art. 30; these take effect from 1 September 2026. The drinking-water-quality standard is a separate instrument, in force since 2014 (Decree N58), with its EU-aligned revision still pending.",
   },
   {
     actor: "Georgian National Energy and Water Supply Regulatory Commission",
@@ -74,11 +81,11 @@ export const GEORGIA_MANDATES: MandateRecord[] = [
     function: "regulation",
     legal_basis: {
       short: "Water Resources Management Law (2023)",
-      article: "special water-use permit regime",
+      article: "Art. 16–17 (special water-use permits)",
       faolex_url: FAOLEX_WRM_2023,
     },
     de_facto_note:
-      "The abstraction-permit regime (abolished in 2008) is restored by the 2023 law but becomes operative only from 1 September 2026; NEA is the implementing agency under MEPA.",
+      "Special (abstraction) water use over a surface water object and the permit-issuing rules sit in Art. 16–17; the issuing competence is MEPA's (Art. 6.2), implemented by NEA. The regime (abolished in 2008) is restored by the 2023 law but becomes operative only from 1 September 2026.",
   },
   {
     actor: "Emergency Management Agency (Ministry of Internal Affairs)",
@@ -165,11 +172,11 @@ export const GEORGIA_MANDATES: MandateRecord[] = [
     function: "planning",
     legal_basis: {
       short: "Water Resources Management Law (2023)",
-      article: "river-basin plans and district councils",
+      article: "Art. 22–25 (basin districts, plans, councils)",
       faolex_url: FAOLEX_WRM_2023,
     },
     de_facto_note:
-      "Seven river basins are grouped into management districts with consultative councils under MEPA; districts, councils and basin plans are not yet established and become operative from 1 September 2026.",
+      "River basins are grouped into management districts (Art. 22); each district gets a six-year management plan approved by the Government (Art. 23–24) prepared with a consultative-coordination basin council of MEPA, municipalities, water users and NGOs (Art. 25). Districts, councils and plans are not yet established and become operative from 1 September 2026.",
   },
 
   // ===================== STATE (Adjara A.R.) =====================

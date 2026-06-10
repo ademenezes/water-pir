@@ -23,7 +23,7 @@ The two source PDFs live in `documents/`. Don't move them.
 | `/countries` | `views/CountriesPage.tsx` | Editorial directory listing — chapter cover ("02 · Countries"), cohort-glyph small-multiples strip, inline link filters, tabular row directory (live rows have a teal left-stripe, pipeline/planned are dimmed). |
 | `/wizard` | `views/ProjectWizard.tsx` | Picker + per-project slice. Supports `?project=urban_wss_ppp&country=BRA`. (Editorial restyle deferred to a later phase.) |
 | `/about` | `views/AboutPage.tsx` | Editorial about — chapter cover ("04 · About"), numbered TOC, then chapters: (01) The two frameworks with `WsipSchematic` + `PirWheel` as Figure 1 + Figure 2, (02) Source discipline with FAOLEX worked-example sand callout, (03) What we did/didn't, (04) How to flag an error, (05) Phasing. |
-| `/country/:code` | `views/CountryDashboard.tsx` | Country sheet — huge name + region/status/updated eyebrow, intro on the right, 6-up coverage-by-PIR-dimension stat strip, **Key insights** section (only if `country.key_insights` is set), shared `Matrix` + slide-over panel in main col with marginalia gutter, **Mandate swim-lane** section (only if `country.mandate_records` is set), sub-sector drill-in cards below. Rendered `fullBleed`. |
+| `/country/:code` | `views/CountryDashboard.tsx` | Country sheet — huge name + region/status/updated eyebrow, intro on the right, 6-up coverage-by-PIR-dimension stat strip, **Key insights** section (only if `country.key_insights` is set), **Targets & ambitions** + **Monitoring & evidence base** panels (only if `country.targets` / `country.monitoring` are set), shared `Matrix` + slide-over panel in main col with marginalia gutter, **Mandate swim-lane** section (only if `country.mandate_records` is set), sub-sector drill-in cards below. The country name is prefixed with a `<Flag>` SVG. Rendered `fullBleed`. |
 | `/country/:code/matrix` | `views/MatrixView.tsx` | Per-country matrix (legacy backlinks). Uses the same shared `Matrix` component + slide-over panel as the Matrix tab. |
 | `/country/:code/subsector/:subKey` | `views/SubsectorDeepDive.tsx` | Full deep-dive with mandate map and PIR dimension cards. |
 
@@ -55,14 +55,16 @@ Prefer FAOLEX URLs (pattern `https://www.fao.org/faolex/results/details/en/c/LEX
 
 For instruments that aren't indexed in FAOLEX, the convention is to keep a per-country manifest at `documents/<code>/manifest.json` (see `documents/brazil/manifest.json` for the pattern). The manifest captures: instrument short name, canonical URL (e.g. Planalto for Brazilian federal law), local PDF/HTML filename for offline verification, status (`indexed_in_faolex` | `not_in_faolex_confirmed` | `pending_check`), and the date verified. Article-level citations in `mandate_records[*].legal_basis` and `key_insights[*].legal_basis` should be re-checkable against the manifest.
 
-### Mandate records and key insights
+### Optional data layers (mandates, insights, targets, monitoring)
 
-In addition to the `subsectors` matrix, a country may carry two optional, article-level data layers:
+In addition to the `subsectors` matrix, a country may carry four optional, article-level data layers:
 
 - **`mandate_records: MandateRecord[]`** — who holds which function (`policy | norm_setting | regulation | planning | service_delivery | financing`) at which level (`national | state | local | basin`). One row per (actor × level × function), anchored to a specific article via `legal_basis`. Drives the swim-lane diagram on the country dashboard.
 - **`key_insights: KeyInsight[]`** — short evidence-backed cards (<= 12-word title, <= 50-word body) tagged `strength | tension | gap` and anchored to a specific article. Each insight optionally references a `pir_dimension` and/or `wsip_solution_id`. Drives the "Key insights" section on the country dashboard.
+- **`targets: SectorTarget[]`** — sector commitments (access, sanitation, performance, financing, WRM) with a baseline, target value/year, `status`, issuing body and a cited `source`. Drives the **Targets & ambitions** panel.
+- **`monitoring: MonitoringIndicator[]`** — observability, *what a country can actually measure today* (access baselines, hydromet, non-revenue water, metering), distinct from what it commits to. Each row has a `producer`, `current_value`, optional `as_of_year`, a cited `source`, and a `MonitoringStatus` (`measured | partial | stale | not_measured | unmapped`) mapped onto the existing coverage palette (no new colour tokens). Drives the **Monitoring & evidence base** panel, placed right after Targets so the dashboard reads "ambition → can we even measure it?".
 
-Both are optional on `CountryProfile`; the dashboard renders the corresponding sections only when the data is present. Brazil and Georgia both populate these layers (see `data/brazil-mandates.ts` / `data/brazil-insights.ts` and `data/georgia-mandates.ts` / `data/georgia-insights.ts`).
+All four are optional on `CountryProfile`; the dashboard renders the corresponding sections only when the data is present (each panel returns `null` when empty). Brazil and Georgia both populate mandates + insights (`data/brazil-mandates.ts` / `data/brazil-insights.ts`, `data/georgia-mandates.ts` / `data/georgia-insights.ts`); targets + monitoring are currently Georgia-only (`data/georgia-targets.ts`, `data/georgia-monitoring.ts`).
 
 ### Coverage colours (do not invent new statuses)
 
@@ -87,8 +89,9 @@ The single source of truth for these colours is `CELL_BG` in `src/components/Cov
 1. Copy `data/brazil.ts` to `data/<code>.ts`. Replace content.
 2. Register in `data/index.ts` (`COUNTRIES[<CODE>] = <PROFILE>`).
 3. Flip status in `data/countries-meta.ts` from `pipeline` → `live`. Set the ISO numeric (3-digit) so the world map highlights it.
-4. Verify every FAOLEX URL resolves. Set `last_verified_date` to today (ISO).
-5. Run `npx tsc --noEmit`.
+4. Drop the country's flag SVG into `public/flags/<a2>.svg` (lowercase ISO alpha-2, e.g. `ke.svg`) so `<Flag>` resolves it.
+5. Verify every FAOLEX URL resolves. Set `last_verified_date` to today (ISO).
+6. Run `npx tsc --noEmit`.
 
 The Map, Countries page, comparator, wizard, and Brazilian comparison pick up the new country with no further code change.
 
@@ -145,12 +148,16 @@ The visual reference is the BOSIB PIR Synthesis Report PDF (Circle Graphics / Ch
 - `PipeDivider` — thin pipe-line section divider with mid-line elbow. Use **sparingly** (≤ once per page).
 - `PirWheel` — donut of the 6 PIR dimensions, repainted to match BOSIB Figure 1.2: teal Policy / orange Regulation / olive Institutions / mid-teal Intergovernmental Context / light teal Financing / brand-deep Resilience core. Used on the About page (Figure 2). Accepts `highlight`, `onHover`, `onClick` props for interactive use (queued for Phase 4 — hover-link inside the Matrix tab).
 
+**Country flags** — render with `<Flag emoji={country.flag_emoji} title={country.name} />` (`src/components/Flag.tsx`), **never the raw emoji in JSX**. Flag emoji are Regional Indicator pairs that don't render on Windows; `Flag` decodes the emoji to its ISO alpha-2 code and loads a bundled SVG from `public/flags/<code>.svg` (public-domain lipis/flag-icons set) so flags appear on every platform and offline. Default size is `1em` (scales with surrounding text); pass `sizeEm` to shrink next to very large display headlines. The data keeps the `flag_emoji` / `flag` / `country_flag` strings as the source of truth. When adding a country, drop its `flags/<a2>.svg` into `public/flags/`.
+
 **Matrix components** (in `src/components/Matrix/`):
 - `Matrix` — shared 7×6 grid for one country. Editorial cell design: pillar-stripe row headers with display numeral, droplet coverage mark, eyebrow status word, serif mandate snippet (3-line clamp). Takes `country` + optional `onCellOpen(target)` callback. Both `/wsip-matrix` and `/country/:code/matrix` use this — **don't duplicate the cell-building logic**.
 - `MatrixCellPanel` — slide-over (right-aligned, 44rem max-w) styled as a magazine sidebar: chapter mini-cover, mandate in serif, numbered legal-instrument citations with FAOLEX links, responsible-institution table, de-jure/de-facto callout (sand bg, amber border), "Open full deep-dive →" link. Closes on Escape and backdrop click.
 
 **Country-dashboard sections** (in `src/components/`):
 - `KeyInsightsSection` — renders an array of `KeyInsight` records as editorial mini-features (2 per row). Each insight is anchored to a specific law article; severity is shown as a coloured top-stripe + eyebrow (strength→emerald, tension→amber, gap→rose, picking up the coverage palette). Reads `country.key_insights` on the dashboard; conditional render.
+- `TargetsPanel` — renders `country.targets` (`SectorTarget[]`) as domain-grouped rows: status stripe, indicator, baseline → target value, `target_year` in the right gutter, issuing body + cited source. Conditional render.
+- `MonitoringPanel` — observability sibling of `TargetsPanel`, structurally cloned from it. Renders `country.monitoring` (`MonitoringIndicator[]`) with a blind-spot tally ("N of M are unmonitored or stale"), `as_of_year` in the right gutter, and `MonitoringStatus` stripes reusing the coverage palette (measured→emerald, partial/stale→amber, not_measured→rose, unmapped→slate). Conditional render. **Targets = what a country aims for; Monitoring = what it can measure today.**
 - `MandateSwimLanes` — 4 government levels × 6 water-sector functions diagram. Each chip is a click-to-open popover with the legal-basis citation, an optional <15-word verbatim quote, a de-jure/de-facto note (sand callout + amber rule), and the canonical source link. Empty cells render a dashed "mandate gap" placeholder so constitutional silences are visible. Mobile fallback: `<details>` accordion grouped by level. Reads `country.mandate_records`; conditional render. The heading, the four level labels/blurbs and the source note are **overridable per country** via the optional `labels` prop (`SwimLaneLabels`); they default to Brazil's federal labels and CF-1988 blurbs. Set overrides in `SWIMLANE_OVERRIDES` in `CountryDashboard.tsx` for countries whose government structure differs (Georgia: National / Adjara A.R. / Municipal / Basin, so a unitary state never renders "Federal"). The underlying `GovernmentLevel` values stay `national | state | local | basin`; only the display strings change.
 
 **Layout wrapper**: `<Layout>` adds the teal stripe, header (5-tab underline nav, droplet wordmark), and navy footer. Pages get a default `max-w-7xl px-6 py-8` content container; pass `<Layout fullBleed>` to opt out (HomePage and the Matrix tab use this for magazine spreads).

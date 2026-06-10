@@ -2,20 +2,24 @@ import type { SectorTarget } from "../src/types";
 
 // Georgia, sector targets & ambitions.
 //
-// The honest finding is that Georgia has set very few quantified national
-// water and sanitation targets: most rows below are "not set", "qualitative"
-// or "to be determined". The subnational layer is thinner still: municipalities
-// hold the legal duty to ensure water supply (Local Self-Government Code) but are
-// too resource-weak to exercise it, and the only target assigned to them is left
-// "to be determined by regional development plans"; the autonomous republic of
-// Adjara runs its own operators but sets no verified quantitative target; the
-// one place subnational targets are forming is the river-basin level, via the
-// 2023 Water Resources Management Law (basin councils due 2023 / 2025, lagging).
+// The honest finding is that Georgia's national water and sanitation targets are
+// headline aims, not tracked metrics. The 2021 WSS Vision & Policy Statement does
+// set a 2030 universal-access goal for water and adequate sanitation, but against
+// a single one-off 2020 GEOSTAT baseline (77.6% / 79.2%) and with no quantified
+// intermediate target; the remaining rows are "slipping", "to be determined" or a
+// regulatory loss cap. The subnational layer is thinner still: municipalities hold
+// the legal duty to ensure water supply (Local Self-Government Code) but are too
+// resource-weak to exercise it, and the only target assigned to them is left "to
+// be determined by regional development plans"; the autonomous republic of Adjara
+// runs its own operators but sets no verified quantitative target; the one place
+// subnational targets are forming is the river-basin level, via the 2023 Water
+// Resources Management Law (basin councils due 2023 / 2025, lagging).
 //
-// Sources are primary where a law or regulator fixes the goal (FAOLEX), and OECD
-// assessments (secondary, but endorsed via the OECD / MEPA National Policy
-// Dialogue) for the financing gap and the EU-approximation milestones. No figure
-// is asserted that was not read from the cited source on 2026-06-02; see
+// Sources are primary where a law, regulator or national policy fixes the goal
+// (the 2021 WSS Vision for the access goals + baseline; FAOLEX for the GNERC loss
+// cap), and OECD assessments (secondary, but endorsed via the OECD / MEPA National
+// Policy Dialogue) for the financing gap and the EU-approximation milestones. No
+// figure is asserted that was not read from the cited source on 2026-06-10; see
 // documents/georgia/manifest.json (_targets_and_financing).
 //
 // Cross-country caution: the "2014-2030 WSS Strategy" and "entire population by
@@ -29,34 +33,41 @@ const OECD_WATER_OUTLOOK_2021 =
   "https://www.oecd.org/content/dam/oecd/en/publications/reports/2021/07/developing-a-water-policy-outlook-for-georgia-the-republic-of-moldova-and-ukraine_a1b2f035/512a52aa-en.pdf";
 const OECD_NPD_GEORGIA_2024 =
   "https://www.oecd.org/content/dam/oecd/en/about/programmes/water-policy-reforms-in-eecca/georgia/overview_10th_georgia_npd_jan_2024.pdf";
+const WSS_VISION_2021 =
+  "https://moi.gov.ge/files/1/%E1%83%A1%E1%83%94%E1%83%A5%E1%83%A2%E1%83%9D%E1%83%A0%E1%83%98%E1%83%A1%20%E1%83%92%E1%83%90%E1%83%9C%E1%83%95%E1%83%98%E1%83%97%E1%83%90%E1%83%A0%E1%83%94%E1%83%91%E1%83%90/Vision%20and%20Policy.pdf";
 
 export const GEORGIA_TARGETS: SectorTarget[] = [
   {
     domain: "water_access",
     level: "national",
-    indicator: "Continuous, safe drinking-water supply for the population",
-    target_value: "Qualitative aim only ('24-hour supply')",
-    status: "qualitative",
-    issuing_body: "Government of Georgia (Georgia 2020 strategy)",
+    indicator: "Population with access to a safe water supply",
+    baseline: "77.6% (GEOSTAT, 2020)",
+    target_value: "Universal access to safe water; 24/7 supply (cities by end-2025, rural by end-2030)",
+    target_year: "2030",
+    status: "set",
+    issuing_body: "MRDI (WSS Vision & Policy Statement, 2021)",
     source: {
-      short: "OECD water-policy outlook (2021)",
-      article: "strategic-vision review",
-      national_url: OECD_WATER_OUTLOOK_2021,
+      short: "Georgia WSS Vision & Policy (2021)",
+      article: "Vision section; para 50, fn 7 (baseline)",
+      national_url: WSS_VISION_2021,
     },
-    note: "The OECD assessment finds Georgia's vision lacks a results-oriented, quantified access target.",
+    note: "The 2021 WSS Vision sets a 2030 universal-access goal, but the only baseline is a one-off 2020 GEOSTAT survey and there is no quantified intermediate target; the OECD outlook flags the lack of a results-oriented metric.",
   },
   {
     domain: "sanitation",
     level: "national",
-    indicator: "Population with safely managed sanitation",
-    target_value: "No quantified national target",
-    status: "not_set",
-    issuing_body: "No national target",
+    indicator: "Population with access to adequate sanitation",
+    baseline: "79.2% (GEOSTAT, 2020)",
+    target_value: "Universal access to adequate sanitation",
+    target_year: "2030",
+    status: "set",
+    issuing_body: "MRDI (WSS Vision & Policy Statement, 2021)",
     source: {
-      short: "OECD water-policy outlook (2021)",
-      article: "strategic-vision review",
-      national_url: OECD_WATER_OUTLOOK_2021,
+      short: "Georgia WSS Vision & Policy (2021)",
+      article: "Vision section; para 50, fn 7 (baseline)",
+      national_url: WSS_VISION_2021,
     },
+    note: "The 2021 WSS Vision sets a 2030 goal for 'adequate' (not 'safely managed') sanitation against a one-off 2020 GEOSTAT baseline; the Vision itself flags discharges of untreated or inadequately treated sewage.",
   },
   {
     domain: "sanitation",

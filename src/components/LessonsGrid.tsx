@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { LESSONS } from "../../data/lessons";
 import { getCountry } from "../../data";
 import { PIR_DIMENSIONS, WSIP_SOLUTIONS } from "../framework";
+import { Flag } from "./Flag";
 
 interface Props {
   /** Restrict to specific lesson keys, in order. If omitted, shows the first 3. */
@@ -33,7 +34,7 @@ export function LessonsGrid({ keys }: Props) {
           >
             <div className="flex items-center justify-between text-xs">
               <span className="flex items-center gap-1 text-slate-700">
-                <span className="text-lg">{l.country_flag}</span>
+                <span className="text-lg leading-none"><Flag emoji={l.country_flag} title={l.country_name} /></span>
                 <span className="font-semibold">{l.country_name}</span>
               </span>
               {dimDef && (

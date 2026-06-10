@@ -8,7 +8,9 @@ import { Matrix, type MatrixCellTarget } from "../components/Matrix/Matrix";
 import { MatrixCellPanel } from "../components/Matrix/MatrixCellPanel";
 import { KeyInsightsSection } from "../components/KeyInsightsSection";
 import { TargetsPanel } from "../components/TargetsPanel";
+import { MonitoringPanel } from "../components/MonitoringPanel";
 import { MandateSwimLanes, type SwimLaneLabels } from "../components/MandateSwimLanes";
+import { Flag } from "../components/Flag";
 import type { CoverageStatus, PirDimension } from "../types";
 
 const STATUS_BAR_COLOR: Record<CoverageStatus, string> = {
@@ -119,8 +121,14 @@ export function CountryDashboard() {
               &nbsp;·&nbsp;Updated&nbsp;
               <span className="tabular-nums">{country.last_updated}</span>
             </div>
-            <h1 className="mt-4 font-display text-[clamp(48px,8vw,108px)] font-black leading-[0.95] tracking-tightest text-brand-ink uppercase">
-              {country.flag_emoji}&nbsp;{country.name}
+            <h1 className="mt-4 flex items-center gap-5 font-display text-[clamp(48px,8vw,108px)] font-black leading-[0.95] tracking-tightest text-brand-ink uppercase">
+              <Flag
+                emoji={country.flag_emoji}
+                title={country.name}
+                sizeEm={0.62}
+                className="rounded-[3px]"
+              />
+              <span>{country.name}</span>
             </h1>
           </div>
 
@@ -182,6 +190,15 @@ export function CountryDashboard() {
         <section className="mx-auto max-w-[88rem] px-8 pb-16">
           <div className="border-t border-brand-rule pt-12">
             <TargetsPanel targets={country.targets} />
+          </div>
+        </section>
+      )}
+
+      {/* ── Monitoring & evidence base ───────────────────────────────────── */}
+      {country.monitoring && country.monitoring.length > 0 && (
+        <section className="mx-auto max-w-[88rem] px-8 pb-16">
+          <div className="border-t border-brand-rule pt-12">
+            <MonitoringPanel indicators={country.monitoring} />
           </div>
         </section>
       )}

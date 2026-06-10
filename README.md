@@ -4,7 +4,7 @@ Diagrammatic explorer of a country's water-sector laws, institutions and regulat
 
 **Live:** https://ademenezes.github.io/water-pir/ (password-protected preview).
 
-**Live countries:** Brazil (pilot, 8 sub-sectors, 30 mandate records, 6 key insights) and Georgia (8 sub-sectors, 13 mandate records, 6 key insights). Georgia is a live case study **outside** the 27-country WSIP Water Compact cohort (`compact: false`); the "27" framing counts Compact members only.
+**Live countries:** Brazil (pilot, 8 sub-sectors, 30 mandate records, 6 key insights) and Georgia (8 sub-sectors, 13 mandate records, 9 key insights, plus sector-target and monitoring & evidence-base layers). Georgia is a live case study **outside** the 27-country WSIP Water Compact cohort (`compact: false`); the "27" framing counts Compact members only.
 
 ## Frameworks
 
@@ -21,7 +21,7 @@ Diagrammatic explorer of a country's water-sector laws, institutions and regulat
 | **Wizard** | Pick a project archetype (Urban WSS PPP, Wastewater PPP, Desalination, Rural WSS, Farmer-led irrigation, Centralised irrigation, Flood & drought, River basin restoration). Returns the slice of the country framework most relevant to that project: critical PIR dimensions, coverage, responsible institutions, questions to answer. |
 | **About** | The two frameworks (with WsipSchematic + PirWheel as Figure 1 / Figure 2) and the deployment phasing. |
 
-The **country dashboard** at `/country/:code` opens a Bloomberg-style country sheet: large country name + region eyebrow, 6-up coverage stat strip, key insights section, the matrix, a mandate swim-lane (4 levels × 6 functions), and sub-sector drill-in cards.
+The **country dashboard** at `/country/:code` opens a Bloomberg-style country sheet: large country name + region eyebrow, 6-up coverage stat strip, key insights section, a **targets & ambitions** panel and a **monitoring & evidence base** panel (each shown only where the country carries the data), the matrix, a mandate swim-lane (4 levels × 6 functions), and sub-sector drill-in cards. Country flags render as bundled SVGs (`public/flags/`), not emoji, so they appear on every platform.
 
 ## Run locally
 
@@ -70,11 +70,15 @@ CountryProfile
   │       ├─ coverage_status (green / yellow / red / gray)
   │       ├─ de_facto_note (de jure-de facto gap)
   │       └─ last_verified_date
-  ├─ mandate_records?: MandateRecord[]   one row per (actor × level × function)
-  └─ key_insights?: KeyInsight[]          evidence-backed cards (tension / gap / strength)
+  ├─ mandate_records?: MandateRecord[]    one row per (actor × level × function)
+  ├─ key_insights?: KeyInsight[]           evidence-backed cards (tension / gap / strength)
+  ├─ targets?: SectorTarget[]              commitments — what the country aims for
+  └─ monitoring?: MonitoringIndicator[]    observability — what it can measure today
 ```
 
 `MandateRecord` and `KeyInsight` are optional, article-anchored data layers introduced for the swim-lane and "key insights" sections of the country dashboard. Brazil and Georgia both carry these layers (`data/brazil-mandates.ts` / `data/brazil-insights.ts`, `data/georgia-mandates.ts` / `data/georgia-insights.ts`).
+
+Two further optional layers are populated for Georgia so far: `SectorTarget` (`data/georgia-targets.ts`) drives the **targets & ambitions** panel, and `MonitoringIndicator` (`data/georgia-monitoring.ts`) drives the **monitoring & evidence base** panel — what a country can actually *measure* (access baselines, hydromet, non-revenue water), as distinct from what it *commits to*. `MonitoringStatus` (`measured` / `partial` / `stale` / `not_measured` / `unmapped`) maps onto the existing coverage palette; no new colour tokens. All four optional layers render conditionally, so a country without them simply omits the section.
 
 Sub-sector taxonomy lives in `src/framework.ts` → `SUBSECTOR_LABELS`. Country metadata in `data/countries-meta.ts`. Lessons-from-practice cases in `data/lessons.ts`, project archetypes in `data/project-types.ts`, rotating insights in `data/insights.ts`.
 
@@ -115,7 +119,9 @@ React 18 + TypeScript + Vite + Tailwind 3 + React Router 6 + react-simple-maps (
 │   ├── brazil-insights.ts          6 evidence-backed key insights
 │   ├── georgia.ts                  second live country (live, non-Compact)
 │   ├── georgia-mandates.ts         13 article-level mandate records
-│   ├── georgia-insights.ts         6 evidence-backed key insights
+│   ├── georgia-insights.ts         9 evidence-backed key insights
+│   ├── georgia-targets.ts          sector targets & ambitions layer
+│   ├── georgia-monitoring.ts       monitoring & evidence-base (observability) layer
 │   ├── countries-meta.ts           27 WSIP Water Compact countries + live case studies
 │   ├── insights.ts                 rotating home-page insights
 │   ├── lessons.ts                  BOSIB / WSIP curated reform cases
@@ -125,16 +131,20 @@ React 18 + TypeScript + Vite + Tailwind 3 + React Router 6 + react-simple-maps (
 │   ├── BOSIB-...pdf                PIR synthesis (Aug 2022)
 │   ├── P165586...pdf               WSIP / Water Forward (Dec 2025)
 │   ├── brazil/manifest.json        per-country audit trail
-│   └── georgia/manifest.json       per-country audit trail (13 instruments)
+│   └── georgia/manifest.json       per-country audit trail (instruments, revisions, misnamed-file flags)
 ├── public/
 │   ├── 404.html                    SPA fallback for GitHub Pages
-│   └── countries-110m.json         world atlas TopoJSON
+│   ├── countries-110m.json         world atlas TopoJSON
+│   └── flags/                      29 country flag SVGs (render everywhere; emoji don't on Windows)
 ├── src/
 │   ├── components/
 │   │   ├── brand/                  Logo, Droplet, PipeNetwork, PipeDivider, PirWheel
 │   │   ├── Matrix/                 shared Matrix + MatrixCellPanel slide-over
 │   │   ├── KeyInsightsSection.tsx
+│   │   ├── TargetsPanel.tsx        targets & ambitions (commitments)
+│   │   ├── MonitoringPanel.tsx     monitoring & evidence base (observability)
 │   │   ├── MandateSwimLanes.tsx
+│   │   ├── Flag.tsx                SVG flag (decodes emoji → public/flags/<a2>.svg)
 │   │   ├── PasswordGate.tsx
 │   │   ├── Layout.tsx
 │   │   ├── CoverageDot.tsx         single source of truth for CELL_BG

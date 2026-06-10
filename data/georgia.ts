@@ -2,6 +2,7 @@ import type { CountryProfile, Institution, LegalInstrument } from "../src/types"
 import { GEORGIA_MANDATES } from "./georgia-mandates";
 import { GEORGIA_INSIGHTS } from "./georgia-insights";
 import { GEORGIA_TARGETS } from "./georgia-targets";
+import { GEORGIA_MONITORING } from "./georgia-monitoring";
 
 // Georgia, water sector PIR snapshot.
 // Canonical source is matsne.gov.ge (Legislative Herald of Georgia, the official
@@ -18,7 +19,7 @@ import { GEORGIA_TARGETS } from "./georgia-targets";
 // Ossetia are within Georgia's recognised territory but outside effective national
 // administration, recorded as a de-facto governance gap, not a scope exclusion.
 
-const today = "2026-06-01";
+const today = "2026-06-10";
 
 const MATSNE_CONSTITUTION = "https://matsne.gov.ge/en/document/view/30346";
 const MATSNE_WATER_1997 = "https://matsne.gov.ge/en/document/view/33448";
@@ -34,6 +35,15 @@ const FAOLEX_IRRIGATION_STRATEGY = "https://faolex.fao.org/docs/pdf/geo171443.pd
 const FAOLEX_CLIMATE = "https://faolex.fao.org/docs/pdf/geo209870.pdf";
 const EU_ASSOC_AGREEMENT =
   "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:22014A0830(02)";
+// WSS Vision & Policy Statement (MRDI, Nov 2021): published as an English unofficial
+// translation on the ministry file server (Georgian-language path, percent-encoded).
+const WSS_VISION_2021 =
+  "https://moi.gov.ge/files/1/%E1%83%A1%E1%83%94%E1%83%A5%E1%83%A2%E1%83%9D%E1%83%A0%E1%83%98%E1%83%A1%20%E1%83%92%E1%83%90%E1%83%9C%E1%83%95%E1%83%98%E1%83%97%E1%83%90%E1%83%A0%E1%83%94%E1%83%91%E1%83%90/Vision%20and%20Policy.pdf";
+// Drinking-water Technical Regulation, Govt Decree N58 (15 Jan 2014): matsne is
+// canonical (Georgian-only; not FAOLEX-indexed). The WSS Vision's Appendix 3
+// independently cites this decree as the in-force drinking-water-quality standard.
+const MATSNE_DRINKING_N58 = "https://matsne.gov.ge/ka/document/view/2196792";
+const MATSNE_HIGH_MOUNTAIN_2015 = "https://matsne.gov.ge/en/document/view/2924386";
 
 // ── Legal instruments (defined once, referenced by cells) ──────────────────────
 const I_CONSTITUTION: LegalInstrument = {
@@ -66,7 +76,9 @@ const I_WRM_2023: LegalInstrument = {
   type: "framework_law",
   faolex_id: "LEX-FAOC219653",
   faolex_url: FAOLEX_WRM_2023,
-  note: "Adopted 30 June 2023; transposes the EU Water Framework Directive (river-basin districts, basin plans, environmental flows, restored special water-use permits). Operative norms bind from 1 Sept 2026 and repeal the 1997 Law on Water. Pinpoint article numbers not asserted (matsne text is JS-rendered).",
+  articles_cited:
+    "Art. 6.2 (MEPA competence), Art. 16–17 (special water-use permits), Art. 21–22 (basin districts), Art. 23–24 (six-year basin plans), Art. 25 (consultative basin councils), Art. 26–27 (water-status standards), Art. 30 (urban-wastewater discharge), Art. 31 (control bodies)",
+  note: "Adopted 30 June 2023; transposes the EU Water Framework Directive (river-basin districts, basin plans, environmental flows, restored special water-use permits). Operative norms bind from 1 Sept 2026 and repeal the 1997 Law on Water. Article numbers read 2026-06-10 from the consolidated Georgian full text (unofficial translation of article headings); see documents/georgia/manifest.json.",
 };
 
 const I_ENERGY_WATER_2019: LegalInstrument = {
@@ -147,6 +159,42 @@ const I_EU_AA: LegalInstrument = {
     "Environmental annex (Water Framework and Drinking Water Directive approximation)",
 };
 
+const I_WSS_VISION_2021: LegalInstrument = {
+  title: "Georgia: Water Supply and Sanitation — Vision and Policy Statement",
+  short: "WSS Vision & Policy (2021)",
+  year: 2021,
+  type: "policy",
+  faolex_id: null,
+  faolex_url: null,
+  national_url: WSS_VISION_2021,
+  articles_cited:
+    "Paras 10, 15 (2030 universal-access goals; 24/7-supply target), para 50 + fn 7 (GEOSTAT-2020 access baseline 77.6% / 79.2%)",
+  note: "MRDI, November 2021; the first national WSS policy of its kind, published as an English unofficial translation. A vision/policy statement, not a binding WSS framework law.",
+};
+
+const I_DRINKING_WATER_N58: LegalInstrument = {
+  title:
+    "Technical Regulation on Drinking Water (Government of Georgia Decree No. 58)",
+  short: "Drinking-water Technical Regulation (2014)",
+  year: 2014,
+  type: "regulation",
+  faolex_id: null,
+  faolex_url: null,
+  national_url: MATSNE_DRINKING_N58,
+  note: "Govt Decree N58, dated 15 Jan 2014; sets drinking-water-quality standards. matsne is canonical (Georgian only; not FAOLEX-indexed); cited as in force in the WSS Vision's Appendix 3. The EU-aligned revision of the standard is reportedly pending to ~2030.",
+};
+
+const I_HIGH_MOUNTAIN_2015: LegalInstrument = {
+  title: "Law of Georgia on the Development of High Mountainous Regions",
+  short: "High Mountainous Regions Law (2015)",
+  year: 2015,
+  type: "sectoral_law",
+  faolex_id: null,
+  faolex_url: null,
+  national_url: MATSNE_HIGH_MOUNTAIN_2015,
+  note: "No. 4036-RS, adopted 16 Jul 2015. Framework for the socio-economic development of high-mountain settlements; the legal hook for prioritising rural / high-mountain service obligations. The implementing development strategy is not separately citable online.",
+};
+
 // ── Water-specific subsidiary instruments ──────────────────────────────────────
 // Enumerated from the FAOLEX water-area corpus for Georgia (query AREA:WA AND
 // CC:GEO, non-repealed; 59 records on 2026-06-01) and cross-checked against the
@@ -164,7 +212,9 @@ const I_SUBSOIL_1996: LegalInstrument = {
   type: "sectoral_law",
   faolex_id: "LEX-FAOC031883",
   faolex_url: faolexUrl("LEX-FAOC031883"),
-  note: "No. 242-IIS, adopted 17 May 1996. Treats underground water (potable, mineral, thermal, industrial, technical) as a licensed subsoil resource under the National Agency of Subsoil Resources. General and agricultural groundwater abstraction falls under the water-use regime, not the subsoil licence.",
+  articles_cited:
+    "Art. 4 (groundwater as a mineral-resource type), Art. 6 (subsoil use needs a licence; groundwater-regime monitoring exempt, Art. 6.3), Art. 7.6 (groundwater-deposit sanitary-protection zone), Art. 10.2(e) (underground-water licence up to 25 years)",
+  note: "No. 242-IIS, adopted 17 May 1996. Treats underground water (potable, mineral, thermal, industrial, technical) as a licensed subsoil resource under the National Agency of Subsoil Resources. General and agricultural groundwater abstraction falls under the water-use regime, not the subsoil licence. Article numbers read 2026-06-10 from the matsne English full text.",
 };
 
 const I_GROUNDWATER_RESERVES_2017: LegalInstrument = {
@@ -439,7 +489,7 @@ export const GEORGIA: CountryProfile = {
       label: "Urban Water Supply & Sanitation",
       wsip_solutions: [1, 2],
       headline:
-        "Urban water is Georgia's most-developed sub-sector, but it is institutionally split: privately-owned GWP serves Tbilisi, Mtskheta and Rustavi; state-owned UWSCG serves most other towns; Adjara runs its own operators. GNERC, unusually, sets tariffs for all of them.",
+        "Urban water is Georgia's most-developed sub-sector, but it is institutionally split: privately-owned GWP serves Tbilisi and Mtskheta; the separately-licensed Rustavi Water and the weak state-owned UWSCG serve most other towns; Adjara runs its own operators. GNERC, unusually, sets tariffs for all of them.",
       reform_lessons: [
         "A single economic regulator for energy and water (GNERC) gives urban tariff-setting unusual coherence, but does not fix the financial weakness of the state utility.",
         "Private operation in the capital (GWP) coexists with a grant-dependent state utility elsewhere, so service quality and cost recovery diverge sharply by territory.",
@@ -448,23 +498,23 @@ export const GEORGIA: CountryProfile = {
         {
           pir_dimension: "policy",
           coverage_status: "yellow",
-          legal_instruments: [I_WATER_1997, I_EU_AA],
-          responsible_institutions: [INST_MEPA, INST_MRDI],
+          legal_instruments: [I_WSS_VISION_2021, I_WATER_1997, I_EU_AA],
+          responsible_institutions: [INST_MRDI, INST_MEPA],
           mandate_text:
-            "There is no consolidated urban-WSS policy law. Direction is set indirectly: the 1997 Law on Water frames water use, MRDI owns the state utility, and the EU-Georgia Association Agreement commits Georgia to approximate the EU drinking-water and urban-wastewater directives.",
+            "A national WSS policy now exists: the Water Supply and Sanitation Vision and Policy Statement (MRDI, November 2021) sets 2030 universal-access goals and a 24/7-supply target (cities by end-2025, rural by end-2030). It is a vision/policy statement rather than a binding WSS framework law; the 1997 Law on Water still frames water use, MRDI owns the state utility, and the EU-Georgia Association Agreement commits Georgia to approximate the EU drinking-water and urban-wastewater directives.",
           de_facto_note:
-            "OECD and MEPA reviews note the absence of a single national WSS strategy; policy is fragmented across MRDI, MEPA and GNERC.",
+            "The 2021 WSS Vision closes the long-noted gap of a single national WSS policy, but it is an unofficial-translation policy statement, not enforceable framework law; delivery still spans MRDI, MEPA and GNERC with no binding WSS statute.",
           last_verified_date: today,
         },
         {
           pir_dimension: "institutions",
           coverage_status: "yellow",
-          legal_instruments: [I_ENERGY_WATER_2019],
+          legal_instruments: [I_ENERGY_WATER_2019, I_WSS_VISION_2021],
           responsible_institutions: [INST_GWP, INST_UWSCG, INST_ADJARA, INST_MRDI],
           mandate_text:
-            "Urban service is delivered by three actor types: privately-owned GWP (Tbilisi, Mtskheta, Rustavi), state-owned UWSCG (most other urban-type settlements, under MRDI), and Adjara's Batumi and Kobuleti Water companies.",
+            "Urban service is delivered by three actor types: privately-owned GWP (Tbilisi and Mtskheta, the latter merged into GWP), state-owned UWSCG (most other urban-type settlements, under MRDI), and Adjara's Batumi and Kobuleti Water companies.",
           de_facto_note:
-            "UWSCG, formed in 2010 by merging 66 local companies, is widely assessed as financially weak and grant-dependent, while GWP operates the capital on commercial terms.",
+            "The WSS Vision's licensed-utility roster (Appendix 2, Table 1) lists eight licensed operators, GWP (~1.2M people, Mtskheta merged in), UWSCG (~0.8M), Rustavi Water (~125k), Batumi Water (~160k), Kobuleti Water (~16k) and the small Marneuli, Sachkhere and Soguri companies; municipalities' non-licensed utilities serve mostly rural areas. UWSCG, formed in 2010 by merging 66 local companies, is widely assessed as financially weak and grant-dependent, while GWP operates the capital on commercial terms.",
           last_verified_date: today,
         },
         {
@@ -492,12 +542,12 @@ export const GEORGIA: CountryProfile = {
         {
           pir_dimension: "regulation",
           coverage_status: "green",
-          legal_instruments: [I_ENERGY_WATER_2019, I_GNERC_TARIFF_2017],
+          legal_instruments: [I_ENERGY_WATER_2019, I_GNERC_TARIFF_2017, I_DRINKING_WATER_N58],
           responsible_institutions: [INST_GNERC, INST_NFA],
           mandate_text:
-            "GNERC licenses water-supply service and sets the tariff methodology (Resolution No. 21 of 2017) and per-licensee tariffs (Art. 1(9), 11), giving urban economic regulation real teeth, a relatively rare unified energy-and-water regulator.",
+            "GNERC licenses water-supply service and sets the tariff methodology (Resolution No. 21 of 2017) and per-licensee tariffs (Art. 1(9), 11), giving urban economic regulation real teeth, a relatively rare unified energy-and-water regulator. Drinking-water quality is governed by a technical regulation (Government Decree N58 of 2014).",
           de_facto_note:
-            "Economic regulation is robust, but drinking-water quality regulation is weaker: the government technical regulation on drinking-water quality is not yet adopted (reportedly slipping to 2030), with monitoring assigned to the National Food Agency.",
+            "Economic regulation is robust, and a drinking-water-quality standard has been in force since 2014 (Government Decree N58); what remains pending is the EU-aligned revision of that standard (reportedly to ~2030), with quality monitoring assigned to the National Food Agency.",
           last_verified_date: today,
         },
         {
@@ -602,12 +652,12 @@ export const GEORGIA: CountryProfile = {
         {
           pir_dimension: "policy",
           coverage_status: "red",
-          legal_instruments: [I_WATER_1997],
+          legal_instruments: [I_WSS_VISION_2021, I_HIGH_MOUNTAIN_2015, I_WATER_1997],
           responsible_institutions: [INST_MRDI, INST_MEPA],
           mandate_text:
-            "There is no dedicated rural-WSS policy. Rural water falls between UWSCG's urban-type mandate and unserved villages, with no programmatic framework for dispersed settlements.",
+            "There is no dedicated rural-WSS policy. The 2021 WSS Vision sets a rural 24/7-supply target for end-2030 and the 2015 Law on the Development of High Mountainous Regions offers a high-mountain service hook, but neither is a rural-WSS-specific framework; rural water falls between UWSCG's urban-type mandate and unserved villages, with no programmatic framework for dispersed settlements.",
           de_facto_note:
-            "Many rural settlements rely on self-supply (wells, springs) outside any utility.",
+            "Many rural settlements rely on self-supply (wells, springs) outside any utility; the WSS Vision's own rural target is set without a delivery programme behind it.",
           last_verified_date: today,
         },
         {
@@ -642,12 +692,12 @@ export const GEORGIA: CountryProfile = {
         {
           pir_dimension: "regulation",
           coverage_status: "red",
-          legal_instruments: [],
+          legal_instruments: [I_DRINKING_WATER_N58],
           responsible_institutions: [INST_GNERC, INST_NFA],
           mandate_text:
             "Rural and self-supply systems sit outside GNERC's licensed perimeter and outside effective drinking-water-quality oversight.",
           de_facto_note:
-            "Rural water quality is essentially unregulated; the missing drinking-water standard compounds the gap.",
+            "Rural water quality is essentially unenforced: the 2014 drinking-water standard (Government Decree N58) applies on paper, but rural and self-supply systems sit outside GNERC's licensed perimeter and outside any effective quality monitoring.",
           last_verified_date: today,
         },
         {
@@ -1040,4 +1090,5 @@ export const GEORGIA: CountryProfile = {
   mandate_records: GEORGIA_MANDATES,
   key_insights: GEORGIA_INSIGHTS,
   targets: GEORGIA_TARGETS,
+  monitoring: GEORGIA_MONITORING,
 };

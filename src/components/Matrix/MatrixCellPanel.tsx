@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Droplet } from "../brand/Droplet";
+import { Flag } from "../Flag";
 import { PIR_DIMENSIONS, SUBSECTOR_LABELS } from "../../framework";
 import type { MatrixCellTarget } from "./Matrix";
 import type { CoverageStatus, InstitutionRole } from "../../types";
@@ -81,7 +82,9 @@ export function MatrixCellPanel({
 
           <div className="mt-7">
             <div className="eyebrow">
-              {country.flag_emoji ? `${country.flag_emoji} ` : ""}
+              {country.flag_emoji ? (
+                <Flag emoji={country.flag_emoji} title={country.name} className="mr-1.5" />
+              ) : null}
               {country.name}&nbsp;·&nbsp;{dimDef?.label ?? pirDimension}
             </div>
             <h2

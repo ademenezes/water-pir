@@ -2,6 +2,7 @@ import { useState } from "react";
 import { listCountries } from "../../data";
 import { SUBSECTOR_LABELS, PIR_DIMENSIONS } from "../framework";
 import { CoverageDot } from "../components/CoverageDot";
+import { Flag } from "../components/Flag";
 
 export function Comparator() {
   const countries = listCountries();
@@ -69,7 +70,7 @@ export function Comparator() {
               <tr key={country.code} className="border-t border-slate-200">
                 <th className="px-3 py-3 text-left align-top">
                   <div className="text-base font-semibold text-slate-900">
-                    {country.flag_emoji} {country.name}
+                    <Flag emoji={country.flag_emoji} title={country.name} className="mr-2" />{country.name}
                   </div>
                   {subsector?.headline && (
                     <div className="mt-1 max-w-xs text-[11px] leading-snug text-slate-500 line-clamp-3">

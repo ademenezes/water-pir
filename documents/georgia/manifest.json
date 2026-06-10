@@ -1,8 +1,56 @@
 {
   "_about": "Georgian water-sector legal instruments. Canonical source is matsne.gov.ge (Legislative Herald of Georgia, the official gazette); FAOLEX (fao.org/faolex) is cited where the instrument is indexed there. Local copies (matsne HTML/PDF, FAOLEX PDFs) are gitignored; this manifest is the audit trail. 'status' / 'last_verified' reflect that the URL was confirmed to resolve (HTTP 200) during the build run. FAOLEX detail pages and matsne document pages are JavaScript-rendered, so article text was cross-checked via the research pass, not scraped. Items whose article numbers or record ids could NOT be confirmed against a primary rendered page are marked pending and are deliberately NOT asserted as precise citations in the dataset.",
-  "_last_run": "2026-06-01",
+  "_last_run": "2026-06-10",
   "_water_corpus": "On 2026-06-01 the in-force FAOLEX water-area corpus for Georgia was enumerated directly from the FAOLEX query endpoint (database=faolex; AREA:WA AND CC:GEO; REPEALED:N AND SUPERS:N; laws, regulations and misc, excluding policy), which returned 59 records each carrying FaolexId, Title_of_Text and Date_of_Text. Every LEX-FAOC id added in this run was returned by that endpoint, so the ids and the existence of the instruments are primary-verified against FAOLEX itself; the FAOLEX detail pages and matsne pages remain JavaScript-rendered, so pinpoint article numbers are still NOT asserted unless separately confirmed. The enumeration surfaced no in-force transboundary water treaty (no Kura or Enguri basin agreement) in the FAOLEX water-area corpus.",
   "_targets_and_financing": "Sector targets and the financing gap are not set by a single Georgian law, so they are sourced to OECD assessments (secondary) and surfaced as key_insights, not as instruments. Verified by reading the source PDFs on 2026-06-02: (1) OECD water-policy outlook for Georgia, Moldova and Ukraine (2021), Table 2.11, full-reform scenario: present value of additional financial requirements GEL 793.4 million (EUR 198.9 million), of which wastewater and water-supply projects GEL 784.0 million (EUR 196.5 million), horizon to 2030, largely donor-dependent (https://www.oecd.org/content/dam/oecd/en/publications/reports/2021/07/developing-a-water-policy-outlook-for-georgia-the-republic-of-moldova-and-ukraine_a1b2f035/512a52aa-en.pdf). (2) OECD 10th National Policy Dialogue overview, Georgia, Jan 2024: the only firm sanitation milestone is the EU Urban Waste Water Directive approximation target 'at least ten urban WWTPs in major settlements', which slipped from 2021 to 2025 to 2026, and the household water-metering target is left 'to be determined' (https://www.oecd.org/content/dam/oecd/en/about/programmes/water-policy-reforms-in-eecca/georgia/overview_10th_georgia_npd_jan_2024.pdf). The nearest thing to a non-revenue-water performance norm is GNERC's normative drinking-water-loss rule (Resolution No. 45 of 2017, LEX-FAOC187451), already in the corpus, which caps the loss level recoverable in tariffs but is not an NRW reduction target. Negative findings: no quantified national target for water or sanitation access was located; Georgia is a Party to the UNECE-WHO Protocol on Water and Health but does not appear to have adopted Article-6 national targets, a point drawn from secondary summaries and NOT confirmed against the (access-blocked) primary UNECE reports, so it is flagged, not asserted. Caution: the '2014-2030 WSS Strategy' and 'entire population by 2028' figures elsewhere in the 2021 OECD report belong to Moldova, not Georgia, and were excluded.",
+  "_revisions": [
+    {
+      "date": "2026-06-10",
+      "claim": "national-WSS-policy-exists",
+      "location": "data/georgia.ts (wss_urban policy cell); data/georgia-insights.ts (new lead insight); intro",
+      "old_text": "No consolidated national urban-WSS policy / Georgia has no national WSS policy.",
+      "new_text": "A national WSS policy exists: the Water Supply and Sanitation Vision and Policy Statement (MRDI, November 2021). Nuance preserved: it is a non-binding vision/policy statement (unofficial English translation), not a binding WSS framework law.",
+      "source": "WSS Vision & Policy Statement (MRDI, Nov 2021), https://moi.gov.ge/files/1/%E1%83%A1%E1%83%94%E1%83%A5%E1%83%A2%E1%83%9D%E1%83%A0%E1%83%98%E1%83%A1%20%E1%83%92%E1%83%90%E1%83%9C%E1%83%95%E1%83%98%E1%83%97%E1%83%90%E1%83%A0%E1%83%94%E1%83%91%E1%83%90/Vision%20and%20Policy.pdf"
+    },
+    {
+      "date": "2026-06-10",
+      "claim": "drinking-water-standard-adopted-2014",
+      "location": "data/georgia.ts (wss_urban + wss_rural regulation cells); data/georgia-insights.ts (drinking-water insight); manifest drinking-water entry",
+      "old_text": "No drinking-water-quality technical regulation has been adopted; revised standards reportedly slipping to 2030 (treated as a regulatory gap).",
+      "new_text": "A drinking-water-quality standard has been in force since 2014 (Government Decree N58, 15 Jan 2014). What remains pending is the EU-aligned revision (~2030).",
+      "source": "Government of Georgia Decree N58 of 15 Jan 2014, https://matsne.gov.ge/ka/document/view/2196792; local primary copy 'Drinking-water technical regulation 2014 (GEO).pdf' in the 2026-06-10 OneDrive drop"
+    },
+    {
+      "date": "2026-06-10",
+      "claim": "rustavi-separately-licensed",
+      "location": "data/georgia.ts (wss_urban headline + institutions cell); data/georgia-insights.ts (urban-split insight)",
+      "old_text": "Georgian Water and Power (GWP) serves Tbilisi, Mtskheta and Rustavi.",
+      "new_text": "GWP serves Tbilisi and Mtskheta; Rustavi is served by the separately-licensed Rustavi Water. This also REVERSES the implementation plan's own §4.4 'no change' decision, which had relied on a secondary roster; the primary MRDI roster lists Rustavi Water as a distinct licensed utility.",
+      "source": "WSS Vision & Policy Statement (MRDI, Nov 2021), Appendix 2, Table 1 (licensed-utility roster)"
+    },
+    {
+      "date": "2026-06-10",
+      "claim": "access-targets-set-from-wss-vision",
+      "location": "data/georgia-targets.ts (water_access + sanitation national rows)",
+      "old_text": "water_access: qualitative aim only / no quantified access target; sanitation: No quantified national target (not_set).",
+      "new_text": "Both rows now carry the 2030 WSS Vision goal (universal safe water; adequate sanitation) against the GEOSTAT-2020 baseline (77.6% / 79.2%), status 'set', with the explicit caveat that the baseline is a one-off 2020 survey and no quantified intermediate target exists.",
+      "source": "WSS Vision & Policy Statement (MRDI, Nov 2021), Vision section + para 50, fn 7 (GEOSTAT-2020 baseline)"
+    }
+  ],
+  "_misnamed_source_files": [
+    {
+      "file": "Law on Land Amelioration 2005 (GEO).doc",
+      "verified_on": "2026-06-10",
+      "actual_content": "Order No. 36 of 18 March 2005 of the Minister of Environment and Natural Resources approving a regulation on the conservation of agricultural and other lands degraded by toxic production waste and radioactive contamination (a contaminated-land conservation decree under the 2003 Law on Soil Conservation), NOT the Law on Land Amelioration.",
+      "note": "The manifest's 'Law on Land Amelioration' instrument entry correctly cites the FAO-hosted geo54807.pdf (the real Amelioration Law); this mislabeled local .doc is NOT used as that instrument's source. The Amelioration Law full text is therefore NOT present in the 2026-06-10 drop, so its citations remain named-in-words."
+    },
+    {
+      "file": "Irigation Strategy for Georgia 2017-2025  (GEO).pdf",
+      "verified_on": "2026-06-10",
+      "actual_content": "Rural Development Strategy of Georgia for 2017-2020 / Action Plan for 2017 (ENPARD, published with EU / UNDP / FAO support), NOT the Irrigation Strategy 2017-2025.",
+      "note": "The manifest's 'Irrigation Strategy 2017-2025' instrument entry correctly cites the FAO-hosted geo171443.pdf; this mislabeled local PDF is NOT used as that instrument's source."
+    }
+  ],
   "instruments": [
     {
       "short": "Constitution of Georgia",
@@ -357,16 +405,16 @@
       "note": "UWSCG (100% state-owned LLC, overseen by MRDI) registered 14 Jan 2010, merging 66 local water companies; serves urban-type settlements except Tbilisi, Mtskheta, Rustavi, Gardabani and Adjara. The establishing instrument is a Minister's Order (No. 1-1/13), not a matsne-published government ordinance; no matsne id located. mrdi.gov.ge timed out on automated fetch this run; institutional facts corroborated via OECD/MEPA, Devex and the agency listing."
     },
     {
-      "short": "Drinking-water technical regulation",
-      "full_title": "Technical regulation on water quality for human consumption (drinking water)",
+      "short": "Drinking-water technical regulation (Decree N58, 2014)",
+      "full_title": "Government of Georgia Decree No. 58 of 15 January 2014 approving the technical regulation on drinking water",
       "type": "regulation",
-      "year": null,
-      "matsne_url": null,
-      "local_file": null,
+      "year": 2014,
+      "matsne_url": "https://matsne.gov.ge/ka/document/view/2196792",
+      "local_file": "Drinking-water technical regulation 2014 (GEO).pdf",
       "faolex_id": null,
       "faolex_url": null,
-      "status": "pending_check",
-      "note": "As of the OECD/MEPA National Policy Dialogue overview (Jan 2024) the government resolution on drinking-water quality was NOT yet adopted (revised standards slipped to 2030); the Ministry of Health was drafting it, with quality monitoring assigned to the National Food Agency (under MEPA). A FAOLEX listing 'Drinking Water Regulation' (LEX-FAOC227479) exists but its metadata could not be confirmed and is not asserted. Treated in the dataset as a regulatory gap, not as an in-force instrument."
+      "status": "not_in_faolex",
+      "note": "CORRECTED (see _revisions): a national drinking-water-quality standard HAS been in force since 2014 (Government Decree N58, 15 Jan 2014), contrary to the prior 'not yet adopted' reading drawn from the 2024 OECD/MEPA NPD overview. What remains pending is the EU-aligned revision, reportedly slipping to ~2030. matsne id 2196792; the page is Georgian-only and JavaScript-rendered, so any paraphrase is an unofficial machine translation (translate-with-caveat) and pinpoint article numbers are not asserted. Local primary copy held in the 2026-06-10 OneDrive drop. The unconfirmed FAOLEX 'Drinking Water Regulation' lead (LEX-FAOC227479) is still not asserted."
     },
     {
       "short": "EU-Georgia Association Agreement (2014)",
@@ -380,6 +428,31 @@
       "national_url": "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:22014A0830(02)",
       "status": "not_in_faolex",
       "note": "Secondary policy driver: the environmental annex commits Georgia to approximate the EU Water Framework Directive and Drinking Water Directive, the stated driver for the 2023 Water Resources Management Law. EUR-Lex (CELEX 22014A0830(02)) is canonical and resolves (HTTP 200)."
+    },
+    {
+      "short": "WSS Vision & Policy Statement (2021)",
+      "full_title": "Water Supply and Sanitation Vision and Policy Statement of Georgia (MRDI, November 2021)",
+      "type": "policy",
+      "year": 2021,
+      "matsne_url": null,
+      "local_file": "Georgia WSS-Vision and Policy Statement.pdf",
+      "faolex_id": null,
+      "faolex_url": null,
+      "national_url": "https://moi.gov.ge/files/1/%E1%83%A1%E1%83%94%E1%83%A5%E1%83%A2%E1%83%9D%E1%83%A0%E1%83%98%E1%83%A1%20%E1%83%92%E1%83%90%E1%83%9C%E1%83%95%E1%83%98%E1%83%97%E1%83%90%E1%83%A0%E1%83%94%E1%83%91%E1%83%90/Vision%20and%20Policy.pdf",
+      "status": "not_in_faolex",
+      "note": "NEW (anchor for the 2026-06-10 corrections, see _revisions): the national WSS policy that the prior dataset reported as absent. Published by MRDI as an unofficial English translation; the moi.gov.ge PDF resolves (HTTP 200, ~732KB) and was read directly. Carries the GEOSTAT-2020 access baseline (77.6% water / 79.2% sanitation, para 50 + fn 7), the licensed-utility roster (Appendix 2, Table 1, used to correct the Rustavi attribution), and 2030 universal-access goals with a 24/7-supply target (cities by end-2025, rural by end-2030). A policy/vision statement, NOT a binding WSS framework law; pinpoint paragraph numbers cited are read from the English translation PDF."
+    },
+    {
+      "short": "High Mountainous Regions Development Law (2015)",
+      "full_title": "Law of Georgia on the Development of High Mountainous Regions (No. 4036-RS, 16 July 2015)",
+      "type": "sectoral_law",
+      "year": 2015,
+      "matsne_url": "https://matsne.gov.ge/en/document/view/2924386",
+      "local_file": "2024-2030 STRATEGY FOR DEVELOPMENT OF HIGH MOUNTAIN SETTLEMENTS OF GEORGIA.pdf",
+      "faolex_id": null,
+      "faolex_url": null,
+      "status": "not_in_faolex",
+      "note": "NEW: framework law (No. 4036-RS) underpinning the state obligation to develop high-mountain settlements, including basic infrastructure such as water supply; referenced from the rural-WSS policy cell. The cited instrument is the 2015 LAW (matsne /2924386, English, resolves HTTP 200). NOTE the local_file is the 2024-2030 implementing STRATEGY (a secondary document), not the law itself; per the plan we cite the verifiable law, not the strategy. Not FAOLEX-indexed."
     }
   ]
 }

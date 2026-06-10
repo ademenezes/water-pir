@@ -3,6 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import { getCountry } from "../../data";
 import { Matrix, type MatrixCellTarget } from "../components/Matrix/Matrix";
 import { MatrixCellPanel } from "../components/Matrix/MatrixCellPanel";
+import { Flag } from "../components/Flag";
 
 /**
  * Per-country matrix view at `/country/:code/matrix`. Kept as a backwards-
@@ -27,7 +28,7 @@ export function MatrixView() {
   return (
     <div className="space-y-8">
       <header>
-        <div className="eyebrow">{country.flag_emoji} {country.name}</div>
+        <div className="eyebrow"><Flag emoji={country.flag_emoji} title={country.name} className="mr-1.5" />{country.name}</div>
         <h1 className="mt-3 font-display text-[clamp(28px,4vw,44px)] font-extrabold leading-[1.05] tracking-tightest text-brand-ink">
           WSIP&nbsp;×&nbsp;PIR matrix.
         </h1>

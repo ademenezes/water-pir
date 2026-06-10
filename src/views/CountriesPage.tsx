@@ -4,6 +4,7 @@ import { WSIP_COUNTRIES } from "../../data/countries-meta";
 import type { CountryStatus, CountryMeta } from "../../data/countries-meta";
 import { listCountries } from "../../data";
 import { Droplet } from "../components/brand/Droplet";
+import { Flag } from "../components/Flag";
 
 type Filter = "all" | "live" | "pipeline" | "planned";
 
@@ -177,7 +178,9 @@ function CountryRow({
   const inner = (
     <div className="grid grid-cols-12 items-start gap-4 py-6 group">
       <div className="col-span-12 md:col-span-1 flex items-start">
-        <span className="text-[32px] leading-none">{c.flag}</span>
+        <span className="text-[32px] leading-none">
+          <Flag emoji={c.flag} title={c.name} className="rounded-[3px]" />
+        </span>
       </div>
 
       <div className="col-span-12 md:col-span-5">

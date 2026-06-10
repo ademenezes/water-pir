@@ -3,6 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import { getCountry } from "../../data";
 import { PIR_DIMENSIONS, SUBSECTOR_LABELS, WSIP_SOLUTIONS } from "../framework";
 import { Droplet } from "../components/brand/Droplet";
+import { Flag } from "../components/Flag";
 import type {
   CoverageStatus,
   InstitutionRole,
@@ -91,7 +92,7 @@ export function SubsectorDeepDive() {
         <div className="mt-6 grid grid-cols-12 gap-8 items-end">
           <div className="col-span-12 md:col-span-8">
             <div className="eyebrow">
-              {country.flag_emoji} {country.name}&nbsp;·&nbsp;{country.code}
+              <Flag emoji={country.flag_emoji} title={country.name} className="mr-1.5" />{country.name}&nbsp;·&nbsp;{country.code}
               &nbsp;·&nbsp;Updated&nbsp;
               <span className="tabular-nums">{country.last_updated}</span>
             </div>
